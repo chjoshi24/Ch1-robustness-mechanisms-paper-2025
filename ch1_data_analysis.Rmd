@@ -1,0 +1,317 @@
+---
+title: "ch1_data_analysis"
+author: "Chinmay Joshi"
+date: "2023-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Required libraries
+```{r}
+library(dplyr)
+library(googlesheets4)
+```
+
+Converting relevant columns to factors and numbers
+
+Fall 2022 data
+```{r}
+
+fall_2022_data<-read_sheet("https://docs.google.com/spreadsheets/d/1FPRGuBRdiHnLm_N69nAY1XQ4KUyYbEUaDxLwup3Zw-8/edit#gid=0")
+fall_2022_data<-as.data.frame(fall_2022_data)
+fall_2022_data$`Location of the ant`<-as.factor(fall_2022_data$`Location of the ant`)
+fall_2022_data$`Ant choice`<-as.factor(fall_2022_data$`Ant choice`)
+fall_2022_data$Treatment<-as.factor(fall_2022_data$Treatment)
+fall_2022_data$Video<-as.factor(fall_2022_data$Video)
+fall_2022_data$`Angle measurement 1`<-as.numeric(fall_2022_data$`Angle measurement 1`)
+fall_2022_data$`Angle measurement 2`<-as.numeric(fall_2022_data$`Angle measurement 2`)
+fall_2022_data$`Angle measurement 3`<-as.numeric(fall_2022_data$`Angle measurement 3`)
+
+#Ignore the warnings here
+```
+
+
+Gaster angle analysis only done for fall 2022 data, so these following steps are needed before analysis
+
+Subsetting zone 1 data (area on the setup where the perturbation was introduced). Then it is followed by taking average for a given frame, and then averaging over all the frames for a given video to get the final usuable datasheet.
+
+```{r}
+zone1_data<-subset(fall_2022_data,fall_2022_data$`Location of the ant`=="Zone1")
+zone1_data$`Gaster touching the paper`<-as.factor(zone1_data$`Gaster touching the paper`)
+
+zone1_data_modified<-zone1_data %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+zone1_modified_byvideo<-zone1_data_modified %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+zone1_modified_byvideo<-as.data.frame(zone1_modified_byvideo)
+
+#This dataframe contains gaster angle and all the choices including abandonment 
+fall_2022_data<-zone1_modified_byvideo
+
+#New dataframe to store the Treatment and choices data only(without abandonment data)
+fall_2022_data_choices<-data.frame(fall_2022_data$Treatment,fall_2022_data$`Ant choice`)
+
+fall_2022_data_choices<-subset(fall_2022_data_choices,fall_2022_data_choices$fall_2022_data..Ant.choice.!="Abandoned")
+
+colnames(fall_2022_data_choices)<-c("treatment","choices")
+
+#To count ant choices for the given treatment (for reporting in the manuscript writing)
+fall_2022_data %>% 
+  group_by(Treatment,) %>%
+  count(`Ant choice`)
+
+```
+
+Fall 2023 data
+
+Video analysis is still not done for these vidoes,so only the ant choices are being analyzed.
+```{r}
+fall_2023_data<-read_sheet("https://docs.google.com/spreadsheets/d/1UvuY_wv78jGxdG5KQwZlSYvwqsPIHxr0fkeslZk4AkM/edit#gid=0")
+fall_2023_data<-as.data.frame(fall_2023_data)
+fall_2023_data$`Ant choice`<-as.factor(fall_2023_data$`Ant choice`)
+fall_2023_data$`Treatment (Control/Experimental)`<-as.factor(fall_2023_data$`Treatment (Control/Experimental)`)
+
+#To count ant choices for the given treatment (for reporting in the manuscript writing)
+
+fall_2023_data_counting<-data.frame(fall_2023_data$`Treatment (Control/Experimental)`,fall_2023_data$`Ant choice`)
+
+colnames(fall_2023_data_counting)<-c("treatment","choices")
+
+fall_2023_data_counting %>% 
+  group_by(treatment,) %>%
+  count(choices)
+
+
+#Since the correct and wrong choices are not explicitly recorded in the datasheet,the datasheet needs to be edited by removing data for abandoned ants, and putting correct and wrong choice labels depending on ant's choice and the feeder position.
+
+fall_2023_data_choices<-subset(fall_2023_data,fall_2023_data$`Ant choice`!="Abandoned")
+
+fall_2023_data_choices$`Ant choice`<- ifelse(fall_2023_data_choices$`Ant choice`==fall_2023_data_choices$`Side/arm of feeder`,"Correct","Wrong")
+
+fall_2023_data_choices<-data.frame(fall_2023_data_choices$`Treatment (Control/Experimental)`,fall_2023_data_choices$`Ant choice`)
+
+colnames(fall_2023_data_choices)<-c("treatment","choices")
+
+fall_2023_data_choices %>% 
+  group_by(treatment,) %>%
+  count(choices)
+
+```
+
+
+Analysis related to ant choices:
+
+Combining fall 2022 and fall 2023 choice dataset into one big dataset.
+```{r}
+
+#Combining the choices data from both seasons
+combined_choices<-rbind(fall_2022_data_choices,fall_2023_data_choices)
+
+#Removing uncessary factor levels.
+combined_choices$choices<- droplevels(combined_choices$choices)
+
+#Creating contingency table
+choice_freq_table<-table(combined_choices)
+
+fisher.test(choice_freq_table)
+
+#Running binomial test for the control and experimental seperately
+
+#control
+binom.test(19,23,0.5)
+
+#experimental
+binom.test(3,5,0.5)
+
+
+```
+
+Analyzing abandonment data
+
+Here, any choice that was made by ant means that the ant stayed on the trail
+```{r}
+
+#Fall 2022 data
+fall_2022_data_abandonment<-fall_2022_data
+
+
+fall_2022_data_abandonment$`Ant choice`<-ifelse(fall_2022_data_abandonment$`Ant choice`=="Correct"|fall_2022_data_abandonment$`Ant choice`=="Wrong","On trail","Abandoned")
+
+fall_2022_data_abandonment<-data.frame(fall_2022_data_abandonment$Treatment,fall_2022_data_abandonment$`Ant choice`)
+
+colnames(fall_2022_data_abandonment)<-c("treatment","choices")
+
+
+#Fall 2023 data
+
+fall_2023_data_abandonment<-data.frame(fall_2023_data$`Treatment (Control/Experimental)`,fall_2023_data$`Ant choice`)
+
+colnames(fall_2023_data_abandonment)<-c("treatment","choices")
+
+fall_2023_data_abandonment$choices<- ifelse(fall_2023_data_abandonment$choices=="Right"|fall_2023_data_abandonment$choices=="Left","On trail","Abandoned")
+
+#Combining both the data to run fisher's exact test
+combined_abandonment_data<-rbind(fall_2022_data_abandonment,fall_2023_data_abandonment)
+
+choice_freq_table_1<-table(combined_abandonment_data)
+
+fisher.test(choice_freq_table_1)
+
+#Running binomial test for the control and experimental seperately
+
+#control
+binom.test(4,27,0.5)
+
+#experimental
+binom.test(31,36,0.5)
+
+```
+
+Analyzing gaster angles (only for the fall 2022 data)
+
+I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
+```{r}
+fall_2022_data_gaster<-subset(fall_2022_data,fall_2022_data$`Ant choice`=="Correct")
+
+fall_2022_data_gaster %>%
+  group_by(Treatment) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle))
+
+wilcox.test(fall_2022_data_gaster$mean_gaster_angle~fall_2022_data_gaster$Treatment)
+
+#boxplot of choices
+boxplot(fall_2022_data_gaster$mean_gaster_angle~fall_2022_data_gaster$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+
+
+```
+
+
+Other analyses done on the data
+
+
+Subsetting data experimental and control data and then testing if the gaster angles are significantly difference within the treatments for the ants that made a choice vs. the ants that abandoned.
+```{r}
+
+experimental<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Treatment=="Experimental")
+
+experimental_abandoned<-subset(experimental,Ant.choice=="Abandoned")
+experimental_choice<-subset(experimental,Ant.choice!="Abandoned")
+experimental_correct_choice<-subset(experimental_choice,Ant.choice=="Correct")
+experimental_wrong_choice<-subset(experimental_choice,Ant.choice!="Correct")
+
+
+t.test(experimental_abandoned$mean_gaster_angle,experimental_choice$mean_gaster_angle)
+
+t.test(experimental_correct_choice$mean_gaster_angle,experimental_abandoned$mean_gaster_angle)
+
+t.test(experimental_correct_choice$mean_gaster_angle,experimental_wrong_choice$mean_gaster_angle)
+
+
+#Gaster angles of ant that abandoned and that made a choice is not significantly different. Same goes with the correct choice vs. abandoned, and correct vs. wrong choice. 
+
+control<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Treatment=="Control")
+
+control_abandoned<-subset(control,Ant.choice=="Abandoned")
+control_choice<-subset(control,Ant.choice!="Abandoned")
+control_correct_choice<-subset(control_choice,Ant.choice=="Correct")
+control_wrong_choice<-subset(control_choice,Ant.choice!="Correct")
+
+t.test(control_correct_choice$mean_gaster_angle,control_wrong_choice$mean_gaster_angle)
+
+#Variance test between the treatments for the ants that made a choice
+var.test(experimental_choice$mean_gaster_angle, control_choice$mean_gaster_angle)
+
+
+#Gaster angles between correct and wrong choices are not significantly different from each other for the control
+```
+
+Running t-test on average gaster angle for control vs. experimental data for ants that made a correct choice vs. the ants that 
+```{r}
+t.test(control_correct_choice$mean_gaster_angle,experimental_correct_choice$mean_gaster_angle)
+
+```
+
+
+
+Average gaster angle data was combined for ants that went to food vs. the ants that either abandoned or went to wrong arm (both treatments combined). Also another subsetting was done to compare gaster angles between ants that abandoned and ants that made a correct choice (both treatments combined)
+```{r}
+
+combined_choice<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Ant.choice=="Correct")
+combined_no_choice<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Ant.choice!="Correct")
+combined_abandoned<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Ant.choice=="Abandoned")
+combined_wrong_choice<-subset(zone1_modified_byvideo,zone1_modified_byvideo$Ant.choice=="Wrong")
+
+t.test(combined_choice$mean_gaster_angle,combined_no_choice$mean_gaster_angle)
+t.test(combined_choice$mean_gaster_angle,combined_abandoned$mean_gaster_angle)
+t.test(combined_choice$mean_gaster_angle,combined_wrong_choice$mean_gaster_angle)
+
+#No significant difference found in the average gaster angle.
+
+```
+
+Boxplots
+```{r}
+
+boxplot(zone1_modified_byvideo$mean_gaster_angle~zone1_modified_byvideo$exp,xlab = "Choices made by ant", ylab = "Mean gaster angles")
+
+boxplot(experimental$mean_gaster_angle~experimental$exp,xlab = "Choices made by ant", ylab = "Mean gaster angles")
+
+boxplot(control$mean_gaster_angle~control$exp,xlab = "Choices made by ant", ylab = "Mean gaster angles")
+
+
+boxplot(zone1_modified_byvideo$mean_gaster_angle~zone1_modified_byvideo$Treatment,xlab="Group", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+par(cex.lab=1,cex.axis=1)
+
+
+data_1<-subset(zone1_modified_byvideo,zone1_modified_byvideo$exp!="Abandoned")
+
+boxplot(data_1$mean_gaster_angle~data_1$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+par(cex.lab=1,cex.axis=1)
+
+
+```
+
+
+Analysis related to gaster touching the paper
+Steps:
+1. Count number of times gaster touched the paper for every video
+2. Then compare that with experimental and control (overall)
+```{r}
+zone1_modified_2<-zone1_data %>%
+  group_by(Gaster.touching.the.paper,Treatment) %>%
+  summarise(n=n())
+zone1_modified_2<-as.data.frame(zone1_modified_2)
+
+experimental_1<-subset(zone1_modified_2,zone1_modified_2$Treatment=="experimental")
+control_1<-subset(zone1_modified_2,zone1_modified_2$Treatment=="Control")
+barplot(experimental_1$n~experimental_1$Gaster.touching.the.paper,xlab="Gaster touching the paper", ylab="Frequency",main="Frequency of gaster touching the paper in experimental")
+barplot(control_1$n~control_1$Gaster.touching.the.paper,xlab="Gaster touching the paper", ylab="Frequency",main="Frequency of gaster touching the paper in control")
+
+gaster_touching_data<-subset(zone1_modified_2,zone1_modified_2$Gaster.touching.the.paper=="Yes")
+
+gaster_touching_data$n<-c(0.081,0.078)
+
+#Barplot of gaster touching frequency/proportion between experimental and control
+barplot(gaster_touching_data$n~gaster_touching_data$Treatment,xlab="Groups",ylab="Proportion of times gaster touched the paper surface")
+
+#Running Fisher's exact test on the proportions
+
+gaster_data<-as.table(cbind(c(5,5),c(57,64)))
+dimnames(gaster_data)<-list(exp_type=c("control","experimental"),gaster_touched=c("yes","no"))
+  data.frame(
+  "Yes"= c(5,5),
+  "No"= c(57,64),row.names=c("control","experimental"))
+
+fisher.test(gaster_data)
+
+#No significant difference between gaster touched and not touched in experimental vs. control
+
+```
+
+
+
