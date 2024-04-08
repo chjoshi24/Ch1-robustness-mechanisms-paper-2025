@@ -115,6 +115,20 @@ combined_choices<-rbind(fall_2022_data_choices,fall_2023_data_choices)
 #Removing uncessary factor levels.
 combined_choices$choices<- droplevels(combined_choices$choices)
 
+#Adding the choice data to this that was omitted temporarily due to videos being out of focus
+
+temp_choice<-c("Wrong","Correct","Correct","Wrong","Correct")
+temp_treatment<-c("Experimental","Experimental","Experimental","Experimental","Control")
+
+temp_data<-data.frame(temp_treatment,temp_choice)
+colnames(temp_data)<-c("treatment","choices")
+
+combined_choices_edited<-rbind(combined_choices,temp_data)
+
+choice_freq_table_edited<-table(combined_choices_edited)
+
+fisher.test(choice_freq_table_edited)
+
 #Creating contingency table
 choice_freq_table<-table(combined_choices)
 
@@ -161,6 +175,17 @@ combined_abandonment_data<-rbind(fall_2022_data_abandonment,fall_2023_data_aband
 choice_freq_table_1<-table(combined_abandonment_data)
 
 fisher.test(choice_freq_table_1)
+
+#Adding the abandonment data to this that was omitted temporarily due to videos being out of focus
+
+temp_choice_1<-c("On trail","Abandoned","On trail","On trail","On trail","On trail","On trail","Abandoned","Abandoned","Abandoned")
+temp_treatment_1<-c("Experimental","Experimental","Experimental","Experimental","Experimental","Control","Experimental","Experimental","Experimental","Experimental")
+temp_abandon<-data.frame(temp_treatment_1,temp_choice_1)
+colnames(temp_abandon)<-c("treatment","choices")
+
+combined_abandonment_data_edited<-rbind(combined_abandonment_data,temp_abandon)
+
+choice_freq_table_1_edited<-table(combined_abandonment_data_edited)
 
 #Running binomial test for the control and experimental seperately
 
