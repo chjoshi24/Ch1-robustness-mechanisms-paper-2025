@@ -117,8 +117,8 @@ combined_choices$choices<- droplevels(combined_choices$choices)
 
 #Adding the choice data to this that was omitted temporarily due to videos being out of focus
 
-temp_choice<-c("Wrong","Correct","Correct","Wrong","Correct")
-temp_treatment<-c("Experimental","Experimental","Experimental","Experimental","Control")
+temp_choice<-c("Wrong","Correct","Wrong","Wrong","Correct","Wrong")
+temp_treatment<-c("Experimental","Experimental","Experimental","Experimental","Control","Experimental")
 
 temp_data<-data.frame(temp_treatment,temp_choice)
 colnames(temp_data)<-c("treatment","choices")
@@ -137,10 +137,10 @@ fisher.test(choice_freq_table)
 #Running binomial test for the control and experimental seperately
 
 #control
-binom.test(19,23,0.5)
+binom.test(20,24,0.5)
 
 #experimental
-binom.test(3,5,0.5)
+binom.test(4,10,0.5)
 
 
 ```
