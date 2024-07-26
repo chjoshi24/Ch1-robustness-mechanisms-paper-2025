@@ -103,6 +103,58 @@ fall_2023_data_choices %>%
 
 ```
 
+High concentration data from Fall 2023 and Summer 2024
+
+```{r}
+fall_2023_data_3m<-read_sheet("https://docs.google.com/spreadsheets/d/1UvuY_wv78jGxdG5KQwZlSYvwqsPIHxr0fkeslZk4AkM/edit?gid=506128673#gid=506128673",sheet="Data_3M sucrose")
+fall_2023_data_3m<-as.data.frame(fall_2023_data_3m)
+fall_2023_data_3m$`Ant choice`<-as.factor(fall_2023_data_3m$`Ant choice`)
+fall_2023_data_3m$`Treatment (Control/Experimental)`<-as.factor(fall_2023_data_3m$`Treatment (Control/Experimental)`)
+
+#Modifying the column of choices to correct/wrong choice by matching it with feeder position column
+
+fall_2023_data_3m_choices<-subset(fall_2023_data_3m,fall_2023_data_3m$`Ant choice`!="Abandoned")
+
+fall_2023_data_3m_choices$`Ant choice`<- ifelse(fall_2023_data_3m_choices$`Ant choice`==fall_2023_data_3m_choices$`Side/arm of feeder`,"Correct","Wrong")
+
+fall_2023_data_3m_choices<-data.frame(fall_2023_data_3m_choices$`Treatment (Control/Experimental)`,fall_2023_data_3m_choices$`Ant choice`)
+
+colnames(fall_2023_data_3m_choices)<-c("treatment","choices")
+
+
+summer_2024_data_3m<-read_sheet("https://docs.google.com/spreadsheets/d/1lPkGkT4vRmqpSdu5HWjKZL-jaAVoRs118nmB2sqmHtI/edit?gid=701924732#gid=701924732",sheet="3M data")
+summer_2024_data_3m<-as.data.frame(summer_2024_data_3m)
+summer_2024_data_3m$`Ant choice`<-as.factor(summer_2024_data_3m$`Ant choice`)
+summer_2024_data_3m$`Treatment (Control/Experimental)`<-as.factor(summer_2024_data_3m$`Treatment (Control/Experimental)`)
+
+#Modifying the column of choices to correct/wrong choice by matching it with feeder position column
+
+summer_2024_data_3m_choices<-subset(summer_2024_data_3m,summer_2024_data_3m$`Ant choice`!="Abandoned")
+
+summer_2024_data_3m_choices$`Ant choice`<- ifelse(summer_2024_data_3m_choices$`Ant choice`==summer_2024_data_3m_choices$`Side/arm of feeder`,"Correct","Wrong")
+
+summer_2024_data_3m_choices<-data.frame(summer_2024_data_3m_choices$`Treatment (Control/Experimental)`,summer_2024_data_3m_choices$`Ant choice`)
+
+colnames(summer_2024_data_3m_choices)<-c("treatment","choices")
+
+
+#Combining both data sets
+
+choice_data_3m_combined<-rbind(fall_2023_data_3m_choices,summer_2024_data_3m_choices)
+
+choice_data_3m_combined_freq<-table(choice_data_3m_combined)
+fisher.test(choice_data_3m_combined_freq)
+
+#control
+binom.test(7,11,0.5)
+
+#experimental
+binom.test(3,8,0.5)
+
+
+```
+
+
 
 Analysis related to ant choices:
 
