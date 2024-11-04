@@ -58,7 +58,9 @@ fall_2024_3m<-fall_2024_3m %>%
 
 ```
 
-############### ANALYZING CHOICES ############################
+###################################################################
+ANALYZING CHOICES FOR 1.5M AND 3M EXPERIMENTS
+###########################################################
 
 The correct and wrong choices are not explicitly recorded in the main datasheet. So the ant choice can be extracted by using ifelse statements by comparing the feeder position and the choice that ant made.
 
@@ -111,60 +113,6 @@ binom.test(4,12,0.5)
 #Non-significant 
 ```
 
-Subsetting as per the setup: Fall 2022 was done on a setup with a slightly smaller T-maze stem so only analyzing Fall 2023 and Fall 2024 data here
-
-Result:
-
-```{r}
-combined_choices_setup2<-rbind(fall_2023_1.5m_choices,fall_2024_1.5m_choices)
-
-combined_choices_setup2<-data.frame(combined_choices_setup2$`Treatment (Control/Experimental)`,combined_choices_setup2$`Ant choice`)
-
-colnames(combined_choices_setup2)<-c("treatment","choice")
-
-#Converting this data into a table for the fisher's test
-combined_choices_setup2<-table(combined_choices_setup2)
-
-fisher.test(combined_choices_setup2)
-#Not significant
-
-#Binomial test for control data
-binom.test(14,15,0.5)
-#Significant!
-
-#Binomial test for experimental data
-binom.test(1,3,0.5)
-#Non-significant 
-
-
-```
-
-
-Analyzing data from Fall 2022 alone given the experiment was conducted using a slightly smaller setup
-
-Result:
-
-```{r}
-setup1<-data.frame(fall_2022_1.5m_choices$`Treatment (Control/Experimental)`,fall_2022_1.5m_choices$`Ant choice`)
-
-colnames(setup1)<-c("treatment","choice")
-
-#Converting this data into a table for the fisher's test
-setup1<-table(setup1)
-
-fisher.test(setup1)
-#Non-significant
-
-#Binomial test for control data
-binom.test(9,12,0.5)
-#Not Significant!
-
-#Binomial test for experimental data
-binom.test(3,9,0.5)
-#Non-significant 
-
-
-```
 
 3M data choice analysis
 
@@ -216,7 +164,9 @@ binom.test(1,3,0.5)
 ```
 
 
-############### ANALYZING ABANDONMENT DATA###########################
+#################################################################
+ANALYZING ABANDONMENT DATA FOR 1.5M AND 3M EXPERIMENTS
+##################################################################
 
 Whenever ant makes a choice, it stays on the trail and when it abandons it does not. So transforming the data accordingly and combining the dataframes to analyze abandonment
 
@@ -244,7 +194,6 @@ fisher.test(combined_abandonment)
 #Binomial test for control data
 binom.test(5,32,0.5)
 #Significantly more ants stay on the trail than abandon here
-
 
 #Binomial test for experimental data
 binom.test(39,51,0.5)
@@ -283,7 +232,122 @@ binom.test(22,40,0.5)
 
 ```
 
-############# COMPARING 1.5M AND 3M EXPERIMENTS TO FIND IF THE SUCROSE CONCENTRATION INCREASE CHANGED CHOICE MAKING OR ABANDONMENT PATTERN IN ANTS######################
+
+################################################################
+ANALYZING 1.5M EXPERIMENTS AS PER THE SETUP USED
+Fall 2022 data was collected on a setup with a slightly smaller T-maze stem (with same T-maze arm length).
+################################################################
+Analyzing data from Fall 2022 alone
+
+Sample size: n=40 (n=13 for control and n=27 for experimental)
+
+Result:None of the tests are significant. This indicates that the overall sample size of Fall 2022 data was too low to infer a meaningful result.
+
+```{r}
+
+#Analyzing choices
+setup1<-data.frame(fall_2022_1.5m_choices$`Treatment (Control/Experimental)`,fall_2022_1.5m_choices$`Ant choice`)
+
+colnames(setup1)<-c("treatment","choice")
+
+#Converting this data into a table for the fisher's test
+setup1<-table(setup1)
+
+fisher.test(setup1)
+#Non-significant
+
+#Binomial test for control data
+binom.test(9,12,0.5)
+#Not Significant!
+
+#Binomial test for experimental data
+binom.test(3,9,0.5)
+#Non-significant 
+
+#Analyzing abandonment
+
+setup1_abandonment<-data.frame(fall_2022_1.5m$`Treatment (Control/Experimental)`,fall_2022_1.5m$abandonment)
+
+colnames(setup1_abandonment)<-c("treatment","abandonment")
+
+#Converting this into a table for fisher's test
+setup1_abandonment<-table(setup1_abandonment)
+
+fisher.test(setup1_abandonment)
+#Significant!
+
+#Control 
+binom.test(1,13,0.5)
+#Significant: More ants stay on the trail than abandon
+
+#Experimental
+binom.test(18,27,0.5)
+#Not significant: Ants here do not significantly abandon the trail more than staying on the trail. 
+
+```
+
+Analyzing Fall 2023 and Fall 2024 data together
+Combined sample size:n=43 (n=19 for the control, and n=24 for experimental)
+
+Result: 
+(1) Choices result: Fisher's test was not significant indicating that there is no relationship between the treatments and the choices made by ants. But the Binomial test for the control trials alone were significant.
+(2) Abandonment result: Fisher's test was significant. The binomial tests for both control and treatments were significant. 
+
+Together this indicates that ants reliably used pheromone trails to reach the food source in the absence of perturbations. Perturbations resulted in more abandonment than their absence.
+
+```{r}
+combined_choices_setup2<-rbind(fall_2023_1.5m_choices,fall_2024_1.5m_choices)
+
+combined_choices_setup2<-data.frame(combined_choices_setup2$`Treatment (Control/Experimental)`,combined_choices_setup2$`Ant choice`)
+
+colnames(combined_choices_setup2)<-c("treatment","choice")
+
+#Converting this data into a table for the fisher's test
+combined_choices_setup2<-table(combined_choices_setup2)
+
+fisher.test(combined_choices_setup2)
+#Not significant
+
+#Binomial test for control data
+binom.test(14,15,0.5)
+#Significant!
+
+#Binomial test for experimental data
+binom.test(1,3,0.5)
+#Non-significant 
+
+#Analyzing abandonment
+
+setup2_abandonment<-rbind(fall_2023_1.5m,fall_2024_1.5m)
+
+setup2_abandonment<-data.frame(setup2_abandonment$`Treatment (Control/Experimental)`,setup2_abandonment$abandonment)
+
+colnames(setup2_abandonment)<-c("treatment","abandonment")
+
+#Converting this into a table for fisher's test
+setup2_abandonment<-table(setup2_abandonment)
+
+fisher.test(setup2_abandonment)
+#Significant!
+
+#Control 
+binom.test(4,19,0.5)
+#Significant: More ants stay on the trail than abandon
+
+#Experimental
+binom.test(21,24,0.5)
+#Significant: More ants abandon the trail here than staying on the trail
+
+```
+
+
+RESULT FROM SEPERATELY ANALYZING 2022 DATA AND 2023+2024 DATA:
+- Common significant result: Ants reliably use pheromone trail in the absence of the perturbation, indicating that the T-maze stem length does not affect ant's motivation to forage in absence of the perturbation.
+- Abandonment is slightly higher in 2023+2024 data (87.5%) compared to 2022 data alone (67.5%).IMP point to note: The sample size for the experimental treatment for 2022 was slightly higher than 2023+2024 combined (n=27 for 2022, and n=24 for 2023+2024 combined). So maybe this could be due to seasonal differences in the behavior or longer T-maze length initiates more abandonment only when the pheromone trail is perturbed.
+
+###################################################################
+COMPARING 1.5M AND 3M EXPERIMENTS TO FIND IF THE SUCROSE CONCENTRATION INCREASE CHANGED CHOICE MAKING OR ABANDONMENT PATTERN IN ANTS
+#####################################################################
 
 
 Comparing correct vs. wrong choices across 1.5M and 3M treatments
