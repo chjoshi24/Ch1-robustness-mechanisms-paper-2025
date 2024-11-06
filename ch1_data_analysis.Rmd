@@ -58,8 +58,51 @@ fall_2024_3m<-fall_2024_3m %>%
 
 ```
 
+Importing data from analysis ready datasheets in the google drive for the videos that were analyzed to get the average gaster angle for each trial. Followed by that converting relevant columns to factors and numbers
+
+Fall 2022 data
+```{r}
+
+fall_2022_gaster_angle<-as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1FPRGuBRdiHnLm_N69nAY1XQ4KUyYbEUaDxLwup3Zw-8/edit#gid=0"))
+
+fall_2022_gaster_angle$`Location of the ant`<-as.factor(fall_2022_gaster_angle$`Location of the ant`)
+
+fall_2022_gaster_angle$`Ant choice`<-as.factor(fall_2022_gaster_angle$`Ant choice`)
+
+fall_2022_gaster_angle$Treatment<-as.factor(fall_2022_gaster_angle$Treatment)
+
+fall_2022_gaster_angle$Video<-as.factor(fall_2022_gaster_angle$Video)
+
+fall_2022_gaster_angle$`Angle measurement 1`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 1`)
+
+fall_2022_gaster_angle$`Angle measurement 2`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 2`)
+
+fall_2022_gaster_angle$`Angle measurement 3`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 3`)
+
+#Ignore the warnings here
+```
+
+Subsetting zone 1 data (area on the setup where the perturbation was introduced). Then it is followed by taking average for a given frame, and then averaging over all the frames for a given video to get the final usuable datasheet.
+
+```{r}
+fall_2022_gaster_angle<-subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Location of the ant`=="Zone1")
+fall_2022_gaster_angle$`Gaster touching the paper`<-as.factor(fall_2022_gaster_angle$`Gaster touching the paper`)
+
+fall_2022_gaster_angle<-fall_2022_gaster_angle %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+fall_2022_gaster_angle<-fall_2022_gaster_angle %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+#Dataframe to be used for the analysis. This also contains gaster angles for the ants that abandoned.
+fall_2022_gaster_angle<-as.data.frame(fall_2022_gaster_angle)
+
+```
+
+
 ###################################################################
-ANALYZING CHOICES FOR 1.5M AND 3M EXPERIMENTS
+ANALYZING CHOICE and ABANDONMENT DATA FOR 1.5M EXPERIMENT
 ###########################################################
 
 The correct and wrong choices are not explicitly recorded in the main datasheet. So the ant choice can be extracted by using ifelse statements by comparing the feeder position and the choice that ant made.
@@ -102,6 +145,7 @@ colnames(combined_choices)<-c("treatment","choice")
 combined_choices<-table(combined_choices)
 
 fisher.test(combined_choices)
+chisq.test(combined_choices,correct = F)
 #Significant!
 
 #Binomial test for control data
@@ -114,8 +158,47 @@ binom.test(4,12,0.5)
 ```
 
 
-3M data choice analysis
+1.5M abandonment data analysis
 
+Whenever ant makes a choice (correct or wrong), it stays on the trail and when it abandons it does not. So transforming the data accordingly and combining the dataframes to analyze abandonment
+
+```{r}
+
+fall_2022_1.5m$abandonment<-ifelse(fall_2022_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
+
+fall_2023_1.5m$abandonment<-ifelse(fall_2023_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
+
+fall_2024_1.5m$abandonment<-ifelse(fall_2024_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
+
+#Combining all the dataframes
+combined_abandonment<-rbind(fall_2022_1.5m,fall_2023_1.5m,fall_2024_1.5m)
+
+combined_abandonment<-data.frame(combined_abandonment$`Treatment (Control/Experimental)`,combined_abandonment$abandonment)
+
+colnames(combined_abandonment)<-c("treatment","abandonment")
+
+combined_abandonment<-table(combined_abandonment)
+
+fisher.test(combined_abandonment)
+chisq.test(combined_abandonment,correct = F)
+#Significant!
+
+#Binomial test for control data
+binom.test(5,32,0.5)
+#Significantly more ants stay on the trail than abandon here
+
+#Binomial test for experimental data
+binom.test(39,51,0.5)
+#Significantly more ants abandon the trail than stay on the trail
+
+```
+
+#################################################################
+ANALYZING CHOICE AND ABANDONMENT DATA FOR 3M EXPERIMENT
+##################################################################
+
+
+3M data choice analysis
 ```{r}
 #Fall 2023
 fall_2023_3m_choices<-fall_2023_3m %>%
@@ -142,8 +225,9 @@ colnames(combined_choices_3m)<-c("treatment","choice")
 #Converting into table for fisher's test
 combined_choices_3m<-table(combined_choices_3m)
 
-fisher.test(combined_choices_3m)
-#Non-significant
+fisher.test(combined_choices_3m)#Non-significant
+
+chisq.test(combined_choices_3m,correct = F) #Significant
 
 #Binomial test for control data
 binom.test(25,31,0.5)
@@ -163,45 +247,10 @@ binom.test(1,3,0.5)
  
 ```
 
-
-#################################################################
-ANALYZING ABANDONMENT DATA FOR 1.5M AND 3M EXPERIMENTS
-##################################################################
-
-Whenever ant makes a choice, it stays on the trail and when it abandons it does not. So transforming the data accordingly and combining the dataframes to analyze abandonment
-
-1.5M abandonment data analysis
-```{r}
-
-fall_2022_1.5m$abandonment<-ifelse(fall_2022_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
-
-fall_2023_1.5m$abandonment<-ifelse(fall_2023_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
-
-fall_2024_1.5m$abandonment<-ifelse(fall_2024_1.5m$`Ant choice`=="Abandoned","Abandoned","On-trail")
-
-#Combining all the dataframes
-combined_abandonment<-rbind(fall_2022_1.5m,fall_2023_1.5m,fall_2024_1.5m)
-
-combined_abandonment<-data.frame(combined_abandonment$`Treatment (Control/Experimental)`,combined_abandonment$abandonment)
-
-colnames(combined_abandonment)<-c("treatment","abandonment")
-
-combined_abandonment<-table(combined_abandonment)
-
-fisher.test(combined_abandonment)
-#Significant!
-
-#Binomial test for control data
-binom.test(5,32,0.5)
-#Significantly more ants stay on the trail than abandon here
-
-#Binomial test for experimental data
-binom.test(39,51,0.5)
-#Significantly more ants abandon the trail than stay on the trail
-
-```
-
 3M abandonment data analysis
+
+Whenever ant makes a choice (correct or wrong), it stays on the trail and when it abandons it does not. So transforming the data accordingly and combining the dataframes to analyze abandonment
+
 
 ```{r}
 fall_2023_3m$abandonment<-ifelse(fall_2023_3m$`Ant choice`=="Abandoned","Abandoned","On-trail")
@@ -219,6 +268,8 @@ colnames(combined_abandonment_3m)<-c("treatment","abandonment")
 #Converting data into a table for fisher's test
 combined_abandonment_3m<-table(combined_abandonment_3m)
 
+chisq.test(combined_abandonment_3m,correct = F) #Significant
+
 fisher.test(combined_abandonment_3m)
 #Significant!
 
@@ -233,118 +284,6 @@ binom.test(22,40,0.5)
 ```
 
 
-################################################################
-ANALYZING 1.5M EXPERIMENTS AS PER THE SETUP USED
-Fall 2022 data was collected on a setup with a slightly smaller T-maze stem (with same T-maze arm length).
-################################################################
-Analyzing data from Fall 2022 alone
-
-Sample size: n=40 (n=13 for control and n=27 for experimental)
-
-Result:None of the tests are significant. This indicates that the overall sample size of Fall 2022 data was too low to infer a meaningful result.
-
-```{r}
-
-#Analyzing choices
-setup1<-data.frame(fall_2022_1.5m_choices$`Treatment (Control/Experimental)`,fall_2022_1.5m_choices$`Ant choice`)
-
-colnames(setup1)<-c("treatment","choice")
-
-#Converting this data into a table for the fisher's test
-setup1<-table(setup1)
-
-fisher.test(setup1)
-#Non-significant
-
-#Binomial test for control data
-binom.test(9,12,0.5)
-#Not Significant!
-
-#Binomial test for experimental data
-binom.test(3,9,0.5)
-#Non-significant 
-
-#Analyzing abandonment
-
-setup1_abandonment<-data.frame(fall_2022_1.5m$`Treatment (Control/Experimental)`,fall_2022_1.5m$abandonment)
-
-colnames(setup1_abandonment)<-c("treatment","abandonment")
-
-#Converting this into a table for fisher's test
-setup1_abandonment<-table(setup1_abandonment)
-
-fisher.test(setup1_abandonment)
-#Significant!
-
-#Control 
-binom.test(1,13,0.5)
-#Significant: More ants stay on the trail than abandon
-
-#Experimental
-binom.test(18,27,0.5)
-#Not significant: Ants here do not significantly abandon the trail more than staying on the trail. 
-
-```
-
-Analyzing Fall 2023 and Fall 2024 data together
-Combined sample size:n=43 (n=19 for the control, and n=24 for experimental)
-
-Result: 
-(1) Choices result: Fisher's test was not significant indicating that there is no relationship between the treatments and the choices made by ants. But the Binomial test for the control trials alone were significant.
-(2) Abandonment result: Fisher's test was significant. The binomial tests for both control and treatments were significant. 
-
-Together this indicates that ants reliably used pheromone trails to reach the food source in the absence of perturbations. Perturbations resulted in more abandonment than their absence.
-
-```{r}
-combined_choices_setup2<-rbind(fall_2023_1.5m_choices,fall_2024_1.5m_choices)
-
-combined_choices_setup2<-data.frame(combined_choices_setup2$`Treatment (Control/Experimental)`,combined_choices_setup2$`Ant choice`)
-
-colnames(combined_choices_setup2)<-c("treatment","choice")
-
-#Converting this data into a table for the fisher's test
-combined_choices_setup2<-table(combined_choices_setup2)
-
-fisher.test(combined_choices_setup2)
-#Not significant
-
-#Binomial test for control data
-binom.test(14,15,0.5)
-#Significant!
-
-#Binomial test for experimental data
-binom.test(1,3,0.5)
-#Non-significant 
-
-#Analyzing abandonment
-
-setup2_abandonment<-rbind(fall_2023_1.5m,fall_2024_1.5m)
-
-setup2_abandonment<-data.frame(setup2_abandonment$`Treatment (Control/Experimental)`,setup2_abandonment$abandonment)
-
-colnames(setup2_abandonment)<-c("treatment","abandonment")
-
-#Converting this into a table for fisher's test
-setup2_abandonment<-table(setup2_abandonment)
-
-fisher.test(setup2_abandonment)
-#Significant!
-
-#Control 
-binom.test(4,19,0.5)
-#Significant: More ants stay on the trail than abandon
-
-#Experimental
-binom.test(21,24,0.5)
-#Significant: More ants abandon the trail here than staying on the trail
-
-```
-
-
-RESULT FROM SEPERATELY ANALYZING 2022 DATA AND 2023+2024 DATA:
-- Common significant result: Ants reliably use pheromone trail in the absence of the perturbation, indicating that the T-maze stem length does not affect ant's motivation to forage in absence of the perturbation.
-- Abandonment is slightly higher in 2023+2024 data (87.5%) compared to 2022 data alone (67.5%).IMP point to note: The sample size for the experimental treatment for 2022 was slightly higher than 2023+2024 combined (n=27 for 2022, and n=24 for 2023+2024 combined). So maybe this could be due to seasonal differences in the behavior or longer T-maze length initiates more abandonment only when the pheromone trail is perturbed.
-
 ###################################################################
 COMPARING 1.5M AND 3M EXPERIMENTS TO FIND IF THE SUCROSE CONCENTRATION INCREASE CHANGED CHOICE MAKING OR ABANDONMENT PATTERN IN ANTS
 #####################################################################
@@ -353,17 +292,17 @@ COMPARING 1.5M AND 3M EXPERIMENTS TO FIND IF THE SUCROSE CONCENTRATION INCREASE 
 Comparing correct vs. wrong choices across 1.5M and 3M treatments
 ```{r}
 
-combined_choices<-rbind(fall_2022_1.5m_choices,fall_2023_1.5m_choices,fall_2024_1.5m_choices)
+combined_choices_comparison<-rbind(fall_2022_1.5m_choices,fall_2023_1.5m_choices,fall_2024_1.5m_choices)
 
 #Creating a new column with the treatment and experiment label
-combined_choices$treatment_label<-ifelse(combined_choices$`Treatment (Control/Experimental)`=="Control","Control_1.5m","Exp_1.5m")
+combined_choices_comparison$treatment_label<-ifelse(combined_choices_comparison$`Treatment (Control/Experimental)`=="Control","Control_1.5m","Exp_1.5m")
 
-combined_choices_3m<-rbind(fall_2023_3m_choices,fall_2024_3m_choices)
+combined_choices_comparison_3m<-rbind(fall_2023_3m_choices,fall_2024_3m_choices)
 
 #Creating a new column with the treatment and experiment label
-combined_choices_3m$treatment_label<-ifelse(combined_choices_3m$`Treatment (Control/Experimental)`=="Control","Control_3m","Exp_3m")
+combined_choices_comparison_3m$treatment_label<-ifelse(combined_choices_comparison_3m$`Treatment (Control/Experimental)`=="Control","Control_3m","Exp_3m")
 
-all_exp_combined<-rbind(combined_choices,combined_choices_3m)
+all_exp_combined<-rbind(combined_choices_comparison,combined_choices_comparison_3m)
 
 all_exp_combined<-data.frame(all_exp_combined$`Treatment (Control/Experimental)`,all_exp_combined$`Ant choice`,all_exp_combined$treatment_label)
 
@@ -381,6 +320,7 @@ all_exp_combined_control<-subset(all_exp_combined_control,select=-treatment)
 all_exp_combined_control<-table(all_exp_combined_control)
 
 fisher.test(all_exp_combined_control)
+chisq.test(all_exp_combined_control,correct = F)
 #Non-significant
 
 #EXPERIMENTAL TREATMENTS (1.5M VS. 3M)
@@ -395,6 +335,7 @@ all_exp_combined_exp<-subset(all_exp_combined_exp,select=-treatment)
 all_exp_combined_exp<-table(all_exp_combined_exp)
 
 fisher.test(all_exp_combined_exp)
+chisq.test(all_exp_combined_exp,correct = F)
 #Non-significant
 
 ```
@@ -402,16 +343,16 @@ fisher.test(all_exp_combined_exp)
 Comparing abandonment across 1.5M and 3M treatments
 
 ```{r}
-combined_abandonment<-rbind(fall_2022_1.5m,fall_2023_1.5m,fall_2024_1.5m)
+combined_abandonment_comparison<-rbind(fall_2022_1.5m,fall_2023_1.5m,fall_2024_1.5m)
 
-combined_abandonment_3m<-rbind(fall_2023_3m,fall_2024_3m)
+combined_abandonment_comparison_3m<-rbind(fall_2023_3m,fall_2024_3m)
 
 #Creating a new column with the treatment and experiment label
-combined_abandonment$treatment_label<-ifelse(combined_abandonment$`Treatment (Control/Experimental)`=="Control","Control_1.5m","Exp_1.5m")
+combined_abandonment_comparison$treatment_label<-ifelse(combined_abandonment_comparison$`Treatment (Control/Experimental)`=="Control","Control_1.5m","Exp_1.5m")
 
-combined_abandonment_3m$treatment_label<-ifelse(combined_abandonment_3m$`Treatment (Control/Experimental)`=="Control","Control_3m","Exp_3m")
+combined_abandonment_comparison_3m$treatment_label<-ifelse(combined_abandonment_comparison_3m$`Treatment (Control/Experimental)`=="Control","Control_3m","Exp_3m")
 
-all_exp_combined_abandonment<-rbind(combined_abandonment,combined_abandonment_3m)
+all_exp_combined_abandonment<-rbind(combined_abandonment_comparison,combined_abandonment_comparison_3m)
 
 all_exp_combined_abandonment<-data.frame(all_exp_combined_abandonment$`Treatment (Control/Experimental)`,all_exp_combined_abandonment$abandonment,all_exp_combined_abandonment$treatment_label)
 
@@ -429,6 +370,7 @@ all_exp_combined_control_abandonment<-subset(all_exp_combined_control_abandonmen
 all_exp_combined_control_abandonment<-table(all_exp_combined_control_abandonment)
 
 fisher.test(all_exp_combined_control_abandonment)
+chisq.test(all_exp_combined_control_abandonment,correct=F)
 #Non-significant
 
 #EXPERIMENTAL TREATMENTS (1.5M VS. 3M)
@@ -443,73 +385,27 @@ all_exp_combined_exp_abandonment<-subset(all_exp_combined_exp_abandonment,select
 all_exp_combined_exp_abandonment<-table(all_exp_combined_exp_abandonment)
 
 fisher.test(all_exp_combined_exp_abandonment)
+chisq.test(all_exp_combined_exp_abandonment,correct=F)
 #Significant!! This indicates that higher surcose concentration significantly decreases the abandonment! Although it does not improve the ability of ants to make more correct choices!
 
 
 ```
 
 
-EDIT THIS CODE FOR GASTER ANGLE!!!!!
+
+############################################################################ ANALYZING GASTER ANGLES BETWEEN CONTROL AND EXPERIMENTAL TREATMENTS FOR 1.5M AND 3M DATA ###################################
 
 
-Importing data from analysis ready datasheets in the google drive for the videos that were analyzed to get the average gaster angle for each trial.
-
-Converting relevant columns to factors and numbers
-
-Fall 2022 data
-```{r}
-
-fall_2022_data<-read_sheet("https://docs.google.com/spreadsheets/d/1FPRGuBRdiHnLm_N69nAY1XQ4KUyYbEUaDxLwup3Zw-8/edit#gid=0")
-fall_2022_data<-as.data.frame(fall_2022_data)
-fall_2022_data$`Location of the ant`<-as.factor(fall_2022_data$`Location of the ant`)
-fall_2022_data$`Ant choice`<-as.factor(fall_2022_data$`Ant choice`)
-fall_2022_data$Treatment<-as.factor(fall_2022_data$Treatment)
-fall_2022_data$Video<-as.factor(fall_2022_data$Video)
-fall_2022_data$`Angle measurement 1`<-as.numeric(fall_2022_data$`Angle measurement 1`)
-fall_2022_data$`Angle measurement 2`<-as.numeric(fall_2022_data$`Angle measurement 2`)
-fall_2022_data$`Angle measurement 3`<-as.numeric(fall_2022_data$`Angle measurement 3`)
-
-#Ignore the warnings here
-```
 
 
 Gaster angle analysis only done for fall 2022 data, so these following steps are needed before analysis
 
-Subsetting zone 1 data (area on the setup where the perturbation was introduced). Then it is followed by taking average for a given frame, and then averaging over all the frames for a given video to get the final usuable datasheet.
 
-```{r}
-zone1_data<-subset(fall_2022_data,fall_2022_data$`Location of the ant`=="Zone1")
-zone1_data$`Gaster touching the paper`<-as.factor(zone1_data$`Gaster touching the paper`)
-
-zone1_data_modified<-zone1_data %>%
-  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
-
-zone1_modified_byvideo<-zone1_data_modified %>%
-  group_by(Video,Treatment,`Ant choice`) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
-zone1_modified_byvideo<-as.data.frame(zone1_modified_byvideo)
-
-#This dataframe contains gaster angle and all the choices including abandonment 
-fall_2022_data<-zone1_modified_byvideo
-
-#New dataframe to store the Treatment and choices data only(without abandonment data)
-fall_2022_data_choices<-data.frame(fall_2022_data$Treatment,fall_2022_data$`Ant choice`)
-
-fall_2022_data_choices<-subset(fall_2022_data_choices,fall_2022_data_choices$fall_2022_data..Ant.choice.!="Abandoned")
-
-colnames(fall_2022_data_choices)<-c("treatment","choices")
-
-```
-
-Fall 2023 data
-
-Analyzing gaster angles
-
-I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
+IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
 ```{r}
 #Fall 2022 data
 
-fall_2022_data_gaster<-as.data.frame(subset(fall_2022_data,fall_2022_data$`Ant choice`=="Correct"))
+fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_data,fall_2022_data$`Ant choice`=="Correct"))
 
 fall_2022_data_gaster %>%
   group_by(Treatment) %>%
@@ -684,6 +580,121 @@ fisher.test(gaster_data)
 #No significant difference between gaster touched and not touched in experimental vs. control
 
 ```
+
+
+
+SUPPLEMENTARY ANALYSES
+################################################################
+ANALYZING 1.5M AND 3M EXPERIMENTS YEAR WISE
+################################################################
+
+1.5M DATA ANALYSIS
+
+FALL 2024
+Sample size: n=10 (Sample size too low to do any meaningful analysis on this data alone)
+
+FALL 2022
+Sample size: n=40 (n=13 for control and n=27 for experimental)
+
+Result: 
+Significant results: Chi-square test for abandonment and binomial test for control for abandonment.
+
+```{r}
+#Choices
+fall_2022_choices<-data.frame(fall_2022_1.5m_choices$`Treatment (Control/Experimental)`,fall_2022_1.5m_choices$`Ant choice`)
+
+colnames(fall_2022_choices)<-c("treatment","choice")
+
+#Converting this data into a table for the fisher's test
+fall_2022_choices<-table(fall_2022_choices)
+
+fisher.test(fall_2022_choices)
+chisq.test(fall_2022_choices,correct = T)#Applying the correction since the sample size is low for each of the treatment combination
+#Non-significant
+
+#Binomial test for control data
+binom.test(9,12,0.5)
+#Not Significant!
+
+#Binomial test for experimental data
+binom.test(3,9,0.5)
+#Non-significant 
+
+#Abandonment
+fall_2022_abandonment<-data.frame(fall_2022_1.5m$`Treatment (Control/Experimental)`,fall_2022_1.5m$abandonment)
+
+colnames(fall_2022_abandonment)<-c("treatment","abandonment")
+
+#Converting this into a table for fisher's test
+fall_2022_abandonment<-table(fall_2022_abandonment)
+
+fisher.test(setup1_abandonment)
+chisq.test(fall_2022_abandonment,correct = F)
+#Significant!
+
+#Control 
+binom.test(1,13,0.5)
+#Significant: More ants stay on the trail than abandon
+
+#Experimental
+binom.test(18,27,0.5)
+#Not significant: Ants here do not significantly abandon the trail more than staying on the trail. 
+
+```
+
+FALL 2023
+Sample size: n=33 (n=15 for control and n=18 for experimental)
+
+```{r}
+#Choices
+fall_2023_choices<-data.frame(fall_2023_1.5m_choices$`Treatment (Control/Experimental)`,fall_2023_1.5m_choices$`Ant choice`)
+
+colnames(fall_2023_choices)<-c("treatment","choice")
+
+#Converting this data into a table for the fisher's test
+fall_2023_choices<-table(fall_2023_choices)
+
+fisher.test(fall_2023_choices)
+chisq.test(fall_2023_choices,correct = T)#Applying the correction since the sample size is low for each of the treatment combination
+#Non-significant
+
+#Binomial test for control data
+binom.test(11,12,0.5)
+#Significant!
+
+#Binomial test for experimental data
+binom.test(1,1,0.5)
+#Non-significant 
+
+#Abandonment
+fall_2023_abandonment<-data.frame(fall_2023_1.5m$`Treatment (Control/Experimental)`,fall_2023_1.5m$abandonment)
+
+colnames(fall_2023_abandonment)<-c("treatment","abandonment")
+
+#Converting this into a table for fisher's test
+fall_2023_abandonment<-table(fall_2023_abandonment)
+
+fisher.test(setup1_abandonment)
+chisq.test(fall_2022_abandonment,correct = F)
+#Significant!
+
+#Control 
+binom.test(1,13,0.5)
+#Significant: More ants stay on the trail than abandon
+
+#Experimental
+binom.test(18,27,0.5)
+#Not significant: Ants here do not significantly abandon the trail more than staying on the trail. 
+
+```
+
+
+
+ 
+
+
+
+EDIT THIS CODE FOR GASTER ANGLE!!!!!
 
 
 
