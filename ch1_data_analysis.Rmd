@@ -13,6 +13,7 @@ Required libraries
 ```{r}
 library(tidyverse)
 library(googlesheets4)
+library(ggplot2)
 ```
 
 Importing datasheets from google drive
@@ -141,6 +142,13 @@ combined_choices<-data.frame(combined_choices$`Treatment (Control/Experimental)`
 
 colnames(combined_choices)<-c("treatment","choice")
 
+#Boxplots of choices
+ggplot(combined_choices,aes(treatment))+
+  geom_bar(aes(fill=choice))+ 
+  xlab("Treatment")+
+  ylab("Total number of choices")+
+  ggtitle("1.5M experiment choice data")+ theme(text=element_text(size=30),axis.text = element_text(size=20))
+
 #Converting this data into a table
 combined_choices<-table(combined_choices)
 
@@ -155,6 +163,7 @@ binom.test(23,27,0.5)
 #Binomial test for experimental data
 binom.test(4,12,0.5)
 #Non-significant 
+
 ```
 
 
@@ -176,6 +185,14 @@ combined_abandonment<-rbind(fall_2022_1.5m,fall_2023_1.5m,fall_2024_1.5m)
 combined_abandonment<-data.frame(combined_abandonment$`Treatment (Control/Experimental)`,combined_abandonment$abandonment)
 
 colnames(combined_abandonment)<-c("treatment","abandonment")
+
+#Boxplot of abandonment
+ggplot(combined_abandonment,aes(treatment))+
+  geom_bar(aes(fill=abandonment))+ 
+  xlab("Treatment")+
+  ylab("Total number of abandonments")+
+  ggtitle("1.5M experiment abandonment data")+ theme(text=element_text(size=25),axis.text = element_text(size=20))
+
 
 combined_abandonment<-table(combined_abandonment)
 
@@ -222,6 +239,13 @@ combined_choices_3m<-data.frame(combined_choices_3m$`Treatment (Control/Experime
 
 colnames(combined_choices_3m)<-c("treatment","choice")
 
+#Boxplots of choices
+ggplot(combined_choices_3m,aes(treatment))+
+  geom_bar(aes(fill=choice))+ 
+  xlab("Treatment")+
+  ylab("Total number of choices")+
+  ggtitle("3M experiment choice data")+ theme(text=element_text(size=30),axis.text = element_text(size=20))
+
 #Converting into table for fisher's test
 combined_choices_3m<-table(combined_choices_3m)
 
@@ -264,6 +288,13 @@ combined_abandonment_3m<-rbind(fall_2023_3m,fall_2024_3m)
 combined_abandonment_3m<-data.frame(combined_abandonment_3m$`Treatment (Control/Experimental)`,combined_abandonment_3m$abandonment)
 
 colnames(combined_abandonment_3m)<-c("treatment","abandonment")
+
+#Boxplot of abandonment
+ggplot(combined_abandonment_3m,aes(treatment))+
+  geom_bar(aes(fill=abandonment))+ 
+  xlab("Treatment")+
+  ylab("Total number of abandonments")+
+  ggtitle("3M experiment abandonment data")+ theme(text=element_text(size=25),axis.text = element_text(size=20))
 
 #Converting data into a table for fisher's test
 combined_abandonment_3m<-table(combined_abandonment_3m)
