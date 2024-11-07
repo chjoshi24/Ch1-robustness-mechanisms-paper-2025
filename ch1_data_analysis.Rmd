@@ -14,6 +14,7 @@ Required libraries
 library(tidyverse)
 library(googlesheets4)
 library(ggplot2)
+library(viridis)
 ```
 
 Importing datasheets from google drive
@@ -147,7 +148,8 @@ ggplot(combined_choices,aes(treatment))+
   geom_bar(aes(fill=choice))+ 
   xlab("Treatment")+
   ylab("Total number of choices")+
-  ggtitle("1.5M experiment choice data")+ theme(text=element_text(size=30),axis.text = element_text(size=20))
+  ggtitle("1.5M experiment choice data")+ theme(text=element_text(size=30),axis.text = element_text(size=20))+
+  scale_fill_colorblind()
 
 #Converting this data into a table
 combined_choices<-table(combined_choices)
@@ -191,7 +193,8 @@ ggplot(combined_abandonment,aes(treatment))+
   geom_bar(aes(fill=abandonment))+ 
   xlab("Treatment")+
   ylab("Total number of abandonments")+
-  ggtitle("1.5M experiment abandonment data")+ theme(text=element_text(size=25),axis.text = element_text(size=20))
+  ggtitle("1.5M experiment abandonment data")+ theme(text=element_text(size=25),axis.text = element_text(size=20))+scale_color_colorblind()
+  
 
 
 combined_abandonment<-table(combined_abandonment)
