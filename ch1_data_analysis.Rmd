@@ -14,16 +14,17 @@ Required libraries
 library(tidyverse)
 library(googlesheets4)
 library(ggplot2)
-library(viridis)
+library(ggthemes)
 ```
 
 Importing datasheets from google drive
-These datasheets only contain information on ant choices and abandonment for control and experimental treatments
+These datasheets only contain information on ant choices and abandonment for control and experimental treatments 
 ```{r}
 
 #Importing 1.5M data from two seasons and doing the necessary transformations in the data
 
-fall_2022_1.5m<-as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1VCywNjZ6dYYV7aQSDPEoWkZnwZupzepO-hj_dxjA9II/edit?gid=0#gid=0"))
+fall_2022_1.5m<-as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1VCywNjZ6dYYV7aQSDPEoWkZnwZupzepO-hj_dxjA9II/edit?gid=0#gid=0")) 
+
 
 fall_2023_1.5m<-as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1UvuY_wv78jGxdG5KQwZlSYvwqsPIHxr0fkeslZk4AkM/edit?gid=0#gid=0",sheet="Data_1.5M sucrose"))
 
