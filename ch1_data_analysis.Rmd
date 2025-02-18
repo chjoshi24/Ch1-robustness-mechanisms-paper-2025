@@ -144,7 +144,7 @@ combined_choices<-data.frame(combined_choices$`Treatment (Control/Experimental)`
 
 colnames(combined_choices)<-c("treatment","choice")
 
-#Boxplots of choices
+#Barplots of choices
 ggplot(combined_choices,aes(treatment))+
   geom_bar(aes(fill=choice))+ 
   xlab("Treatment")+
@@ -189,7 +189,7 @@ combined_abandonment<-data.frame(combined_abandonment$`Treatment (Control/Experi
 
 colnames(combined_abandonment)<-c("treatment","abandonment")
 
-#Boxplot of abandonment
+#Barplot of abandonment
 ggplot(combined_abandonment,aes(treatment))+
   geom_bar(aes(fill=abandonment))+ 
   xlab("Treatment")+
@@ -343,6 +343,15 @@ all_exp_combined<-data.frame(all_exp_combined$`Treatment (Control/Experimental)`
 
 colnames(all_exp_combined)<-c("treatment","choices","exp_type")
 
+#Plotting both experiments choice data together
+ggplot(all_exp_combined,aes(exp_type))+
+geom_bar(aes(fill=choices))+
+  xlab("Treatment")+
+  ylab("Total number of ants")+
+  theme(text=element_text(size=20),axis.text = element_text(size=12))+
+  scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M")) 
+ 
+
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
 #Subsetting control treatments from both experiments and comparing them using fisher's test
@@ -372,6 +381,9 @@ all_exp_combined_exp<-table(all_exp_combined_exp)
 fisher.test(all_exp_combined_exp)
 chisq.test(all_exp_combined_exp,correct = F)
 #Non-significant
+
+
+
 
 ```
 
@@ -423,6 +435,13 @@ fisher.test(all_exp_combined_exp_abandonment)
 chisq.test(all_exp_combined_exp_abandonment,correct=F)
 #Significant!! This indicates that higher surcose concentration significantly decreases the abandonment! Although it does not improve the ability of ants to make more correct choices!
 
+#Plotting both experiments abandonment data together
+ggplot(all_exp_combined_abandonment,aes(exp_type))+
+geom_bar(aes(fill=abandonment))+
+  xlab("Treatment")+
+  ylab("Total number of ants")+
+  theme(text=element_text(size=20),axis.text = element_text(size=12))+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))
+ 
 
 ```
 
