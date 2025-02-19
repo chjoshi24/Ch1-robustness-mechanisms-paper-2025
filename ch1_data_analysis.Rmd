@@ -343,13 +343,19 @@ all_exp_combined<-data.frame(all_exp_combined$`Treatment (Control/Experimental)`
 
 colnames(all_exp_combined)<-c("treatment","choices","exp_type")
 
-#Plotting both experiments choice data together
-ggplot(all_exp_combined,aes(exp_type))+
+sample_size<-as.data.frame(all_exp_combined %>%
+  group_by(exp_type,treatment)%>%
+  summarize(total=n()))
+
+ #Plotting both experiments choice data together
+ ggplot(all_exp_combined,aes(exp_type))+
 geom_bar(aes(fill=choices))+
   xlab("Treatment")+
   ylab("Total number of ants")+
   theme(text=element_text(size=20),axis.text = element_text(size=12))+
-  scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M")) 
+  scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+geom_text(data=sample_size,aes (x=exp_type,y=35),label=paste("n=",sample_size$total))
+
+  
  
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
@@ -405,6 +411,20 @@ all_exp_combined_abandonment<-data.frame(all_exp_combined_abandonment$`Treatment
 
 colnames(all_exp_combined_abandonment)<-c("treatment","abandonment","exp_type")
 
+
+sample_size_1<-as.data.frame(all_exp_combined_abandonment %>%
+  group_by(exp_type,treatment)%>%
+  summarize(total=n()))
+
+
+#Plotting both experiments abandonment data together
+ggplot(all_exp_combined_abandonment,aes(exp_type))+
+geom_bar(aes(fill=abandonment))+
+  xlab("Treatment")+
+  ylab("Total number of ants")+
+  theme(text=element_text(size=20),axis.text = element_text(size=12))+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+geom_text(data=sample_size,aes (x=exp_type,y=60),label=paste("n=",sample_size_1$total))
+ 
+
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
 #Subsetting control treatments from both experiments and comparing them using fisher's test
@@ -435,13 +455,8 @@ fisher.test(all_exp_combined_exp_abandonment)
 chisq.test(all_exp_combined_exp_abandonment,correct=F)
 #Significant!! This indicates that higher surcose concentration significantly decreases the abandonment! Although it does not improve the ability of ants to make more correct choices!
 
-#Plotting both experiments abandonment data together
-ggplot(all_exp_combined_abandonment,aes(exp_type))+
-geom_bar(aes(fill=abandonment))+
-  xlab("Treatment")+
-  ylab("Total number of ants")+
-  theme(text=element_text(size=20),axis.text = element_text(size=12))+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))
- 
+
+
 
 ```
 
