@@ -347,16 +347,41 @@ sample_size<-as.data.frame(all_exp_combined %>%
   group_by(exp_type,treatment)%>%
   summarize(total=n()))
 
- #Plotting both experiments choice data together
- ggplot(all_exp_combined,aes(exp_type))+
+
+#Plotting both experiments choice data together
+ggplot(all_exp_combined,aes(exp_type))+
 geom_bar(aes(fill=choices))+
   xlab("Treatment")+
   ylab("Total number of ants")+
   theme(text=element_text(size=20),axis.text = element_text(size=12))+
-  scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+geom_text(data=sample_size,aes (x=exp_type,y=35),label=paste("n=",sample_size$total))
-
-  
+  scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
+geom_text(data=sample_size,aes (x=exp_type,y=35),label=paste("n=",sample_size$total))+geom_text(stat="prop")
  
+#Another way to plot the graph:
+library(ggstats)
+
+new_df<-as.data.frame(all_exp_combined %>%
+  group_by(exp_type,choices)%>%
+  summarize(total=n()))
+
+choices_plot<-ggplot(new_df)+
+  aes(exp_type,fill=choices,weight=total)+
+  geom_bar(position="fill")+
+  geom_text(stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Choices"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=19))
+#CHANGE THIS!
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
@@ -423,7 +448,31 @@ geom_bar(aes(fill=abandonment))+
   xlab("Treatment")+
   ylab("Total number of ants")+
   theme(text=element_text(size=20),axis.text = element_text(size=12))+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+geom_text(data=sample_size,aes (x=exp_type,y=60),label=paste("n=",sample_size_1$total))
- 
+
+#Another way to plot
+library(ggstats)
+
+new_df_1<-as.data.frame(all_exp_combined_abandonment %>%
+  group_by(exp_type,abandonment)%>%
+  summarize(total=n()))
+
+choices_plot_1<-ggplot(new_df_1)+
+  aes(exp_type,fill=abandonment,weight=total)+
+  geom_bar(position="fill")+
+  geom_text(stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Choices"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=18))
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
