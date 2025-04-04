@@ -365,7 +365,7 @@ new_df<-as.data.frame(all_exp_combined %>%
   summarize(total=n()))
 
 choices_plot<-ggplot(new_df)+
-  aes(exp_type,fill=choices,weight=total)+
+  aes(exp_type,fill=choices,weight=total,by=exp_type)+
   geom_bar(position="fill")+
   geom_text(stat = "prop", position = position_fill(.5),size=7)+
   scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
@@ -382,6 +382,13 @@ choices_plot<-ggplot(new_df)+
    
 choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=19))
 #CHANGE THIS!
+
+
+
+ggplot(new_df,aes(x=exp_type,fill=choices))+
+  geom_bar(position="fill")+scale_y_continuous(labels = scales::percent)
+  
+
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
@@ -457,13 +464,13 @@ new_df_1<-as.data.frame(all_exp_combined_abandonment %>%
   summarize(total=n()))
 
 choices_plot_1<-ggplot(new_df_1)+
-  aes(exp_type,fill=abandonment,weight=total)+
+  aes(exp_type,fill=abandonment,weight=total,by=exp_type)+
   geom_bar(position="fill")+
   geom_text(stat = "prop", position = position_fill(.5),size=7)+
   scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
   xlab("Treatments")+
   ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Choices"))+
+  guides(fill=guide_legend(title="Abandoned or not"))+
   theme_bw()+
     theme(
     plot.background = element_blank(),
@@ -472,7 +479,7 @@ choices_plot_1<-ggplot(new_df_1)+
     panel.border = element_blank()
   ) +  theme(axis.line = element_line(color = 'black'))
    
-choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=18))
+choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=17))
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
