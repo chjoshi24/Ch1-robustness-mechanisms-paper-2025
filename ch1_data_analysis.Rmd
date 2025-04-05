@@ -530,16 +530,7 @@ IMP: I'm only analyzing gaster angle data for the ants that made a correct choic
 ```{r}
 #Fall 2022 data
 
-fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_data,fall_2022_data$`Ant choice`=="Correct"))
-
-fall_2022_data_gaster %>%
-  group_by(Treatment) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle))
-
-wilcox.test(fall_2022_data_gaster$mean_gaster_angle~fall_2022_data_gaster$Treatment)
-
-#boxplot of choices
-boxplot(fall_2022_data_gaster$mean_gaster_angle~fall_2022_data_gaster$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Ant choice`=="Correct"))
 
 
 #Fall 2023 data
@@ -571,14 +562,16 @@ fall_2023_data_gaster_modified<-as.data.frame(subset(fall_2023_data_gaster_modif
 
 #Combining fall 2022 and fall 2023 gaster angle data
 
-combined_gaster_angle<-rbind(fall_2022_data_gaster,fall_2023_data_gaster_modified)
+combined_gaster_angle<-rbind(fall_2022_gaster_angle,fall_2023_data_gaster_modified)
+
+combined_gaster_angle$vertical_mean_angle<-90-(combined_gaster_angle$mean_gaster_angle)
 
 wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
 
 #boxplot of choices
-boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+boxplot(combined_gaster_angle$vertical_mean_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
  
-
+ 
 
 ```
 
