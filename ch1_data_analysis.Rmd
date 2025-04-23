@@ -15,6 +15,7 @@ library(tidyverse)
 library(googlesheets4)
 library(ggplot2)
 library(ggthemes)
+library(ggstats)
 ```
 
 Importing datasheets from google drive
@@ -103,6 +104,152 @@ fall_2022_gaster_angle<-as.data.frame(fall_2022_gaster_angle)
 
 ```
 
+
+
+
+IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
+```{r}
+#Fall 2022 data
+
+fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Ant choice`=="Correct"))
+
+
+#Fall 2023 data
+
+fall_2023_data_gaster<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0")
+fall_2023_data_gaster<-as.data.frame(fall_2023_data_gaster)
+fall_2023_data_gaster$`Ant choice`<-as.factor(fall_2023_data_gaster$`Ant choice`)
+fall_2023_data_gaster$Treatment<-as.factor(fall_2023_data_gaster$Treatment)
+fall_2023_data_gaster$Video<-as.factor(fall_2023_data_gaster$Video)
+fall_2023_data_gaster$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster$`Angle measurement 1`)
+fall_2023_data_gaster$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster$`Angle measurement 2`)
+fall_2023_data_gaster$`Angle measurement 3`<-as.numeric(fall_2023_data_gaster$`Angle measurement 3`)
+#Ignore the warnings here
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2023_data_gaster_modified<-fall_2023_data_gaster %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2023_data_gaster_modified<-fall_2023_data_gaster_modified %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2023_data_gaster_modified<-as.data.frame(fall_2023_data_gaster_modified)
+
+#Subsetting gaster angles for only correct choices and only for control
+fall_2023_data_gaster_modified<-as.data.frame(subset(fall_2023_data_gaster_modified,fall_2023_data_gaster_modified$`Ant choice`=="Correct"))
+
+
+#Fall 2024 1.5 M data
+
+fall_2024_data_gaster<-read_sheet("https://docs.google.com/spreadsheets/d/1ifcf4M9CofkZ9rsHJ0VCdBB_zm3pyKrX6OlZthDkhvc/edit?gid=0#gid=0", sheet = "1.5M_data")
+fall_2024_data_gaster<-as.data.frame(fall_2024_data_gaster)
+fall_2024_data_gaster$Video<-as.factor(fall_2024_data_gaster$Video)
+fall_2024_data_gaster$Treatment<-as.factor(fall_2024_data_gaster$Treatment)
+fall_2024_data_gaster$`Angle measurement 1`<-as.numeric(fall_2024_data_gaster$`Angle measurement 1`)
+fall_2024_data_gaster$`Angle measurement 2`<-as.numeric(fall_2024_data_gaster$`Angle measurement 2`)
+fall_2024_data_gaster$`Angle measurement 3`<-as.numeric(fall_2024_data_gaster$`Angle measurement 3`)
+#Ignore the warnings here
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2024_data_gaster_modified<-fall_2024_data_gaster %>%
+  transmute(Video,Treatment,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2024_data_gaster_modified<-fall_2024_data_gaster_modified %>%
+  group_by(Video,Treatment) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2024_data_gaster_modified<-as.data.frame(fall_2024_data_gaster_modified)
+
+
+#Combining fall 2022 and fall 2023 gaster angle data
+
+combined_gaster_angle<-rbind(fall_2022_gaster_angle,fall_2023_data_gaster_modified)
+
+ 
+#Combining this will Fall 2024 data
+
+combined_gaster_angle<-rbind(combined_gaster_angle,fall_2024_data_gaster_modified)
+
+ 
+wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
+
+#boxplot of choices
+boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+ 
+ 
+
+```
+
+
+3M data
+
+```{r}
+#Fall 2023 data
+
+fall_2023_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0",sheet="3M data")
+fall_2023_data_gaster_3m<-as.data.frame(fall_2023_data_gaster_3m)
+fall_2023_data_gaster_3m$`Ant choice`<-as.factor(fall_2023_data_gaster_3m$`Ant choice`)
+fall_2023_data_gaster_3m$Treatment<-as.factor(fall_2023_data_gaster$Treatment)
+fall_2023_data_gaster_3m$Video<-as.factor(fall_2023_data_gaster_3m$Video)
+fall_2023_data_gaster_3m$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 1`)
+fall_2023_data_gaster_3m$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 2`)
+fall_2023_data_gaster_3m$`Angle measurement 3`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 3`)
+#Ignore the warnings here
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_3m %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_modified_3m %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2023_data_gaster_modified_3m<-as.data.frame(fall_2023_data_gaster_modified_3m)
+
+#Subsetting gaster angles for only correct choices and only for control
+fall_2023_data_gaster_modified_3m<-as.data.frame(subset(fall_2023_data_gaster_modified_3m,fall_2023_data_gaster_modified_3m$`Ant choice`=="Correct"))
+
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_modified_3m[-3]
+
+#Fall 2024 data
+
+fall_2024_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/1ifcf4M9CofkZ9rsHJ0VCdBB_zm3pyKrX6OlZthDkhvc/edit?gid=0#gid=0",sheet ="3M_data")
+fall_2024_data_gaster_3m<-as.data.frame(fall_2024_data_gaster_3m)
+fall_2024_data_gaster_3m$Treatment<-as.factor(fall_2024_data_gaster_3m$Treatment)
+fall_2024_data_gaster_3m$Video<-as.factor(fall_2024_data_gaster_3m$Video)
+fall_2024_data_gaster_3m$`Angle measurement 1`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 1`)
+fall_2024_data_gaster_3m$`Angle measurement 2`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 2`)
+fall_2024_data_gaster_3m$`Angle measurement 3`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 3`)
+ 
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2024_data_gaster_modified_3m<-fall_2024_data_gaster_3m %>%
+  transmute(Video,Treatment,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2024_data_gaster_modified_3m<-fall_2024_data_gaster_modified_3m %>%
+  group_by(Video,Treatment) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2024_data_gaster_modified_3m<-as.data.frame(fall_2024_data_gaster_modified_3m)
+
+combined_gaster_angle_3m<-rbind(fall_2023_data_gaster_modified_3m,fall_2024_data_gaster_modified_3m)
+
+combined_gaster_angle_3m %>%
+  group_by(Treatment)%>%
+  summarize(n(),median(mean_gaster_angle,na.rm=T))
+  
+ 
+wilcox.test(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment)
+
+
+boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+ 
+```
 
 ###################################################################
 ANALYZING CHOICE and ABANDONMENT DATA FOR 1.5M EXPERIMENT
@@ -523,60 +670,9 @@ chisq.test(all_exp_combined_exp_abandonment,correct=F)
 
 
 
-Gaster angle analysis only done for fall 2022 data, so these following steps are needed before analysis
 
 
-IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
-```{r}
-#Fall 2022 data
-
-fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Ant choice`=="Correct"))
-
-
-#Fall 2023 data
-
-fall_2023_data_gaster<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0")
-fall_2023_data_gaster<-as.data.frame(fall_2023_data_gaster)
-fall_2023_data_gaster$`Ant choice`<-as.factor(fall_2023_data_gaster$`Ant choice`)
-fall_2023_data_gaster$Treatment<-as.factor(fall_2023_data_gaster$Treatment)
-fall_2023_data_gaster$Video<-as.factor(fall_2023_data_gaster$Video)
-fall_2023_data_gaster$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster$`Angle measurement 1`)
-fall_2023_data_gaster$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster$`Angle measurement 2`)
-fall_2023_data_gaster$`Angle measurement 3`<-as.numeric(fall_2023_data_gaster$`Angle measurement 3`)
-#Ignore the warnings here
-
-#Averaging the three gaster angle measurements for a given frame
-fall_2023_data_gaster_modified<-fall_2023_data_gaster %>%
-  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
-
-#Averaging gaster angles over all the frames for a given video
-fall_2023_data_gaster_modified<-fall_2023_data_gaster_modified %>%
-  group_by(Video,Treatment,`Ant choice`) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
-
-fall_2023_data_gaster_modified<-as.data.frame(fall_2023_data_gaster_modified)
-
-#Subsetting gaster angles for only correct choices and only for control
-fall_2023_data_gaster_modified<-as.data.frame(subset(fall_2023_data_gaster_modified,fall_2023_data_gaster_modified$`Ant choice`=="Correct"))
-
-
-#Combining fall 2022 and fall 2023 gaster angle data
-
-combined_gaster_angle<-rbind(fall_2022_gaster_angle,fall_2023_data_gaster_modified)
-
-combined_gaster_angle$vertical_mean_angle<-90-(combined_gaster_angle$mean_gaster_angle)
-
-wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
-
-#boxplot of choices
-boxplot(combined_gaster_angle$vertical_mean_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
  
- 
-
-```
-
-
-
 Other analyses done on the data
 
 
