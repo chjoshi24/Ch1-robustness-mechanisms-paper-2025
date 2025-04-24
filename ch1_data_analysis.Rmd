@@ -165,9 +165,10 @@ fall_2024_data_gaster_modified<-as.data.frame(fall_2024_data_gaster_modified)
 
 
 #Combining fall 2022 and fall 2023 gaster angle data
-
+ 
 combined_gaster_angle<-rbind(fall_2022_gaster_angle,fall_2023_data_gaster_modified)
 
+combined_gaster_angle<-combined_gaster_angle[-3]
  
 #Combining this will Fall 2024 data
 
@@ -177,7 +178,7 @@ combined_gaster_angle<-rbind(combined_gaster_angle,fall_2024_data_gaster_modifie
 wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
 
 #boxplot of choices
-boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
+boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
  
  
 
@@ -192,7 +193,7 @@ boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,
 fall_2023_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0",sheet="3M data")
 fall_2023_data_gaster_3m<-as.data.frame(fall_2023_data_gaster_3m)
 fall_2023_data_gaster_3m$`Ant choice`<-as.factor(fall_2023_data_gaster_3m$`Ant choice`)
-fall_2023_data_gaster_3m$Treatment<-as.factor(fall_2023_data_gaster$Treatment)
+fall_2023_data_gaster_3m$Treatment<-as.factor(fall_2023_data_gaster_3m$Treatment)
 fall_2023_data_gaster_3m$Video<-as.factor(fall_2023_data_gaster_3m$Video)
 fall_2023_data_gaster_3m$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 1`)
 fall_2023_data_gaster_3m$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 2`)
@@ -246,8 +247,9 @@ combined_gaster_angle_3m %>%
  
 wilcox.test(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment)
 
+#Boxplot of the gaster angles
+boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
 
-boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",main="Mean gaster angles for perturbed vs. unperturbed experiments",range=0)
  
 ```
 
@@ -505,7 +507,9 @@ geom_bar(aes(fill=choices))+
 geom_text(data=sample_size,aes (x=exp_type,y=35),label=paste("n=",sample_size$total))+geom_text(stat="prop")
  
 #Another way to plot the graph:
-library(ggstats)
+sample_size<-as.data.frame(all_exp_combined %>%
+  group_by(exp_type,treatment)%>%
+  summarize(total=n()))
 
 new_df<-as.data.frame(all_exp_combined %>%
   group_by(exp_type,choices)%>%
@@ -514,7 +518,7 @@ new_df<-as.data.frame(all_exp_combined %>%
 choices_plot<-ggplot(new_df)+
   aes(exp_type,fill=choices,weight=total,by=exp_type)+
   geom_bar(position="fill")+
-  geom_text(stat = "prop", position = position_fill(.5),size=7)+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
   scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
   xlab("Treatments")+
   ylab("Percentage ants")+
@@ -527,15 +531,11 @@ choices_plot<-ggplot(new_df)+
     panel.border = element_blank()
   ) +  theme(axis.line = element_line(color = 'black'))
    
-choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=19))
-#CHANGE THIS!
 
-
-
-ggplot(new_df,aes(x=exp_type,fill=choices))+
-  geom_bar(position="fill")+scale_y_continuous(labels = scales::percent)
+choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=19))+ 
+  geom_hline(yintercept = 0.5, linetype = "dashed")
   
-
+  
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
@@ -613,7 +613,7 @@ new_df_1<-as.data.frame(all_exp_combined_abandonment %>%
 choices_plot_1<-ggplot(new_df_1)+
   aes(exp_type,fill=abandonment,weight=total,by=exp_type)+
   geom_bar(position="fill")+
-  geom_text(stat = "prop", position = position_fill(.5),size=7)+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
   scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control 1.5M","Control_3m"= "Control 3M", "Exp_1.5m"="Experimental 1.5M","Exp_3m" = "Experimental 3M"))+
   xlab("Treatments")+
   ylab("Percentage ants")+
@@ -626,7 +626,7 @@ choices_plot_1<-ggplot(new_df_1)+
     panel.border = element_blank()
   ) +  theme(axis.line = element_line(color = 'black'))
    
-choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=17))
+choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=17))+geom_hline(yintercept = 0.5, linetype = "dashed")
 
 #CONTROL TREATMENTS (1.5M VS. 3M)
 
