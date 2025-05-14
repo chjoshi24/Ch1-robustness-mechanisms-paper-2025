@@ -118,6 +118,9 @@ fall_2024_data_gaster_modified<-fall_2024_data_gaster_modified %>%
 
 fall_2024_data_gaster_modified<-as.data.frame(fall_2024_data_gaster_modified)
 
+fall_2022_gaster_angle$year<-2022
+fall_2023_data_gaster_modified$year<-2023
+fall_2024_data_gaster_modified$year<-2024
 
 #Combining fall 2022 and fall 2023 gaster angle data
  
@@ -129,11 +132,16 @@ combined_gaster_angle<-combined_gaster_angle[-3]
 
 combined_gaster_angle<-rbind(combined_gaster_angle,fall_2024_data_gaster_modified)
 
+combined_gaster_angle$f_year<-as.factor(combined_gaster_angle$year)
+
  
 wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
 
 #boxplot gaster angles
 boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
+
+#adding individual points to the boxplot
+stripchart(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,method="jitter",add=T,vertical=T,pch=19)
  
 
 ```
@@ -170,6 +178,9 @@ fall_2023_data_gaster_modified_3m<-as.data.frame(subset(fall_2023_data_gaster_mo
 
 fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_modified_3m[-3]
 
+fall_2023_data_gaster_modified_3m$year<-2023
+ 
+
 #Fall 2024 data
 
 fall_2024_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/1ifcf4M9CofkZ9rsHJ0VCdBB_zm3pyKrX6OlZthDkhvc/edit?gid=0#gid=0",sheet ="3M_data")
@@ -192,7 +203,12 @@ fall_2024_data_gaster_modified_3m<-fall_2024_data_gaster_modified_3m %>%
 
 fall_2024_data_gaster_modified_3m<-as.data.frame(fall_2024_data_gaster_modified_3m)
 
+
+fall_2024_data_gaster_modified_3m$year<-2024
+
 combined_gaster_angle_3m<-rbind(fall_2023_data_gaster_modified_3m,fall_2024_data_gaster_modified_3m)
+
+combined_gaster_angle_3m$f_year<-as.factor(combined_gaster_angle_3m$year)
 
 combined_gaster_angle_3m %>%
   group_by(Treatment)%>%
@@ -204,8 +220,36 @@ wilcox.test(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$
 #Boxplot of the gaster angles
 boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
 
+stripchart(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,method="jitter",add=T,vertical=T,pch=19)
+
  
 ```
+
+
+```{r}
+
+par(mfrow=c(1,2))
+#1.5m
+#boxplot gaster angles
+boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="Low sucrose experiment",ylim=c(35,65))
+
+#adding individual points to the boxplot
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=1,data=combined_gaster_angle[combined_gaster_angle$year==2022, ])
+ 
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=combined_gaster_angle[combined_gaster_angle$year==2023, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=combined_gaster_angle[combined_gaster_angle$year==2024, ])
+
+#3M
+#Boxplot of the gaster angles
+boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose experiment",ylim=c(35,65))
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=combined_gaster_angle_3m[combined_gaster_angle_3m$year==2023, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=combined_gaster_angle_3m[combined_gaster_angle_3m$year==2024, ])
+
+```
+
 
 ###################################################################
 ANALYZING CHOICE and ABANDONMENT DATA FOR BOTH ExPERIMENTS
