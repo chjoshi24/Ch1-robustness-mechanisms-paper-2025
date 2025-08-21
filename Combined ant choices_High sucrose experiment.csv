@@ -1,4 +1,4 @@
-Date,Time,Observer,Colony ID,Treatment (Control/Experimental),Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
+Date,Time,Observer,Colony ID,Treatment ,Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
 10/6/2023,5:21 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny, 32C",35.5,32
 10/6/2023,5:21 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny, 32C",35.5,32
 10/8/2023,5:20 PM,Chinmay,C4F23,Control,Right,Right,Correct,Yes,"Sunny, 35C",32,32

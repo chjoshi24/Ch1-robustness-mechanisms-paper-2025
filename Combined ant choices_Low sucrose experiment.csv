@@ -1,4 +1,4 @@
-Date,Time,Observer,Colony ID,Treatment (Control/Experimental),Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
+Date,Time,Observer,Colony ID,Treatment,Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
 9/27/2022,4:45 PM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
 9/27/2022,4:45 PM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
 10/3/2022,5:50 PM,Chinmay,Colony 1,Experimental,Right,Left,Wrong,No,Partly cloudy,NA,NA
