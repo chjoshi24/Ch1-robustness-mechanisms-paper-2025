@@ -1,0 +1,84 @@
+Date,Time,Observer,Colony ID,Treatment (Control/Experimental),Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
+9/27/2022,4:45 PM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
+9/27/2022,4:45 PM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
+10/3/2022,5:50 PM,Chinmay,Colony 1,Experimental,Right,Left,Wrong,No,Partly cloudy,NA,NA
+10/7/2022,10:10 AM,Chinmay,Colony 1,Experimental,Right,Abandoned,Abandoned,No,Sunny,NA,NA
+10/7/2022,10:10 AM,Chinmay,Colony 1,Experimental,Right,Abandoned,Abandoned,No,Sunny,NA,NA
+10/8/2022,11:15 AM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
+10/8/2022,11:15 AM,Chinmay,Colony 1,Experimental,Left,Right,Wrong,No,Sunny,NA,NA
+10/10/2022,4:50 PM,Chinmay,Colony 1,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy,NA,NA
+10/10/2022,4:50 PM,Chinmay,Colony 1,Experimental,Right,Right,Correct,Yes,Partly cloudy,NA,NA
+10/11/2022,5:30 PM,Chinmay,Colony 1,Experimental,Left,Right,Wrong,No,Sunny,NA,NA
+10/11/2022,5:30 PM,Chinmay,Colony 1,Experimental,Left,Abandoned,Abandoned,No,Sunny,NA,NA
+10/17/2022,1:00 PM,Chinmay,Colony 2,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy,NA,NA
+10/17/2022,4:30 PM,Chinmay,Colony 2,Experimental,Left,Left,Correct,Yes,Partly cloudy,NA,NA
+10/19/2022,4:20 PM,Chinmay,Colony 3,Experimental,Right,Left,Wrong,No,Partly cloudy,NA,NA
+10/19/2022,4:20 PM,Chinmay,Colony 3,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy,NA,NA
+10/19/2022,5:45 PM,Chinmay,Colony 3,Control,Left,Left,Correct,Yes,Partly cloudy,NA,NA
+10/19/2022,5:45 PM,Chinmay,Colony 3,Control,Left,Left,Correct,No,Partly cloudy,NA,NA
+10/19/2022,5:45 PM,Chinmay,Colony 3,Control,Left,Left,Correct,Yes,Partly cloudy,NA,NA
+10/20/2022,4:10 PM,Chinmay,Colony 3,Experimental,Left,Abandoned,Abandoned,No,Partly cloudy,NA,NA
+10/20/2022,4:10 PM,Chinmay,Colony 3,Experimental,Left,Right,Wrong,No,Partly cloudy,NA,NA
+10/20/2022,4:10 PM,Chinmay,Colony 3,Experimental,Left,Abandoned,Abandoned,No,Partly cloudy,NA,NA
+10/20/2022,5:30 PM,Chinmay,Colony 3,Control,Right,Right,Correct,Yes,Partly cloudy,NA,NA
+10/20/2022,5:30 PM,Chinmay,Colony 3,Control,Right,Right,Correct,Yes,Partly cloudy,NA,NA
+10/22/2022,2:30 PM,Chinmay,Colony 3,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy and slightly windy,NA,NA
+10/22/2022,2:30 PM,Chinmay,Colony 3,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy and slightly windy,NA,NA
+10/22/2022,2:30 PM,Chinmay,Colony 3,Experimental,Right,Right,Correct,No,Partly cloudy and slightly windy,NA,NA
+10/22/2022,3:10 PM,Chinmay,Colony 3,Control,Left,Abandoned,Abandoned,No,Partly cloudy and slightly windy,NA,NA
+10/22/2022,3:10 PM,Chinmay,Colony 3,Control,Left,Left,Correct,Yes,Partly cloudy and slightly windy,NA,NA
+10/22/2022,3:10 PM,Chinmay,Colony 3,Control,Left,Left,Correct,Yes,Partly cloudy and slightly windy,NA,NA
+10/23/2022,3:30 PM,Chinmay,Colony 3,Experimental,Left,Abandoned,Abandoned,No,Cloudy and slightly windy,NA,NA
+10/23/2022,3:30 PM,Chinmay,Colony 3,Experimental,Left,Abandoned,Abandoned,No,Cloudy and slightly windy,NA,NA
+10/23/2022,3:30 PM,Chinmay,Colony 3,Experimental,Left,Abandoned,Abandoned,No,Cloudy and slightly windy,NA,NA
+10/25/2022,4:00 PM,Chinmay,Colony 3,Control,Right,Left,Wrong,Yes,Sunny,NA,NA
+10/25/2022,4:00 PM,Chinmay,Colony 3,Control,Right,Left,Wrong,Yes,Sunny,NA,NA
+10/26/2022,4:10 PM,Chinmay,Colony 3,Experimental,Right,Left,Wrong,Yes,Sunny,NA,NA
+10/31/2022,1:35 PM,Chinmay,Colony 3,Control,Right,Right,Correct,Yes,Sunny,NA,NA
+10/31/2022,1:35 PM,Chinmay,Colony 3,Control,Right,Left,Wrong,Yes,Sunny,NA,NA
+11/1/2022,4:45 PM,Chinmay,Colony 3,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy and slightly windy,NA,NA
+11/1/2022,4:45 PM,Chinmay,Colony 3,Experimental,Right,Abandoned,Abandoned,No,Partly cloudy and slightly windy,NA,NA
+11/2/2022,5:30 PM,Chinmay,Colony 3,Control,Left,Left,Correct,Yes,Partly cloudy and slightly windy,NA,NA
+9/22/2023,5:45 PM,Chinmay,C1F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 35C",32,29
+9/22/2023,5:45 PM,Chinmay,C1F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 35C",32,29
+9/25/2023,5:40 PM,Chinmay,C2F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 38C",37.5,33.5
+9/25/2023,5:40 PM,Chinmay,C2F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 38C",37.5,33.5
+9/27/2023,5:10 PM,Chinmay,C3F23,Control,Left,Left,Correct,Yes,"Sunny, 38C",35,33.5
+9/27/2023,5:40 PM,Tyler,C3F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 38C",32.5,33.5
+9/27/2023,5:40 PM,Tyler,C3F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 38C",32.5,33.5
+9/27/2023,5:40 PM,Tyler,C3F23,Experimental,Right,Abandoned,Abandoned,No,"Sunny, 38C",32.5,33.5
+9/28/2023,5:40 PM,Tyler,C3F23,Control,Right,Right,Correct,Yes,"Sunny and partly windy, 37C",33,34
+9/29/2023,10:45 AM,Chinmay,C3F23,Control,Left,Left,Correct,Yes,"Sunny, 32 C",30.5,33.5
+9/29/2023,5:20 PM,Chinmay,C3F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 37C",35,35.5
+9/29/2023,5:20 PM,Chinmay,C3F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 37C",35,35.5
+9/29/2023,5:20 PM,Chinmay,C3F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 37C",35,35.5
+10/2/2023,5:15 PM,Tyler,C4F23,Control,Right,Abandoned,Abandoned,No,"Sunny, 25C",29.5,27.5
+10/3/2023,9:44 AM,Tyler,C4F23,Control,Left,Left,Correct,Yes,Sunny,31,33.5
+10/3/2023,9:44 AM,Tyler,C3F23,Control,Right,Left,Wrong,Yes,"Sunny, 30C",28,29.5
+10/10/2023,4:42 PM,Chinmay,C4F23,Control,Left,Left,Correct,Yes,"Sunny, 33C",32.5,21.5
+10/11/2023,5:09 PM,Tyler,C5F23,Experimental,Left,Left,Correct,Yes,"Sunny and partly windy, 33C",33.5,30
+10/11/2023,5:09 PM,Tyler,C5F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 33C",33.5,30
+10/12/2023,4:40 PM,Tyler,C4F23,Control,Right,Right,Correct,Yes,"Sunny and partly windy, 28C",28.5,27.5
+10/13/2023,4:12 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly cloudy, 31.1C",30,29.5
+10/13/2023,5:34 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly cloudy, 29C",28.5,29
+10/13/2023,5:34 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly cloudy, 29C",28.5,29
+10/16/2023,4:56 PM,Tyler,C6F23,Control,Left,Left,Correct,Yes,"Sunny and partly cloudy, 36.5C",35,34
+10/17/2023,11:34 AM,Chinmay,C6F23,Control,Right,Right,Correct,Yes,"Sunny and partly cloudy, 31C",36.5,38
+10/19/2023,4:55 PM,Tyler,C6F23,Control,Left,Left,Correct,Yes,"Sunny, 37C",33.5,33
+10/20/2023,11:38 AM,Chinmay,C3F23,Control,Left,Left,Correct,Yes,"Sunny, 34C",28.5,31
+10/20/2023,4:25 PM,Chinmay,C6F23,Control,Right,Abandoned,Abandoned,No,"Sunny, 37C",35.5,34
+10/20/2023,5:02 PM,Chinmay,C5F23,Control,Left,Left,Correct,Yes,"Sunny, 37C",36,34
+10/23/2023,4:30 PM,Chinmay,C6F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 30C",32,29.5
+10/23/2023,4:30 PM,Chinmay,C6F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 30C",32,29.5
+10/23/2023,4:30 PM,Chinmay,C6F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny and partly windy, 30C",32,29.5
+10/25/2023,5:08 PM,Tyler,C5F23,Control,Right,Abandoned,Abandoned,No,"Sunny, 25C",28,26.5
+6/16/2024,7:00 PM,Chinmay,C1F24,Experimental,Right,Abandoned,Abandoned,No,Sunny,NA,NA
+6/16/2024,7:00 PM,Chinmay,C1F24,Experimental,Right,Left,Wrong,Yes,Sunny,NA,NA
+9/4/2024,5:40 PM,Chinmay,C4F24,Control,Left,Abandoned,Abandoned,No,Sunny,39.4,35.6
+9/8/2024,6:20 PM,Chinmay,C2F24,Control,Right,Right,Correct,Yes,Sunny,34.2,32.9
+9/9/2024,6:30 PM,Chinmay,C5F24,Control,Left,Left,Correct,No,Sunny,37.3,33.5
+9/16/2024,5:00 PM,Chinmay,C2F24,Control,Right,Right,Correct,Yes,Cloudy,32.7,30.3
+9/18/2024,5:10 PM,Chinmay,C4F24,Experimental,Left,Abandoned,Abandoned,No,Sunny,37.2,35.9
+9/18/2024,5:10 PM,Chinmay,C4F24,Experimental,Left,Right,Wrong,No,Sunny,37.2,35.9
+9/24/2024,5:00 PM,Chinmay,C2F24,Experimental,Left,Abandoned,Abandoned,No,Sunny,35.1,32.3
+9/24/2024,5:00 PM,Chinmay,C2F24,Experimental,Left,Abandoned,Abandoned,No,Sunny,35.1,32.3

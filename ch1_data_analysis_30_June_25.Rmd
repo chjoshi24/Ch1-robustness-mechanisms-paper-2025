@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Required libraries
 ```{r}
 library(tidyverse)
-#library(googlesheets4)
+library(googlesheets4)
 library(ggplot2)
 library(ggthemes)
 library(ggstats)
@@ -21,123 +21,235 @@ library(ggstats)
  
 Importing data from analysis ready datasheets in the google drive for the videos that were analyzed to get the average gaster angle for each trial. Followed by that converting relevant columns to factors and numbers
 
-Gaster angle data
-
-
+Fall 2022 data
 ```{r}
 
-#LOW SUCROSE EXPERIMENT
-gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment.csv")
+fall_2022_gaster_angle<-as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1FPRGuBRdiHnLm_N69nAY1XQ4KUyYbEUaDxLwup3Zw-8/edit#gid=0"))
 
-#Converting the relevant columns to factors
-gaster_angle_low_sucrose$Location.of.the.ant<-as.factor(gaster_angle_low_sucrose$Location.of.the.ant)
- 
-gaster_angle_low_sucrose$Ant.choice<-as.factor(gaster_angle_low_sucrose$Ant.choice)
-gaster_angle_low_sucrose$Treatment<-as.factor(gaster_angle_low_sucrose$Treatment)
-gaster_angle_low_sucrose$Video<-as.factor(gaster_angle_low_sucrose$Video)
-gaster_angle_low_sucrose$Year<-as.factor(gaster_angle_low_sucrose$Year)
+fall_2022_gaster_angle$`Location of the ant`<-as.factor(fall_2022_gaster_angle$`Location of the ant`)
 
-#Converting gaster angle measures to numbers
-gaster_angle_low_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.1)
-gaster_angle_low_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.2)
-gaster_angle_low_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.3)
+fall_2022_gaster_angle$`Ant choice`<-as.factor(fall_2022_gaster_angle$`Ant choice`)
+
+fall_2022_gaster_angle$Treatment<-as.factor(fall_2022_gaster_angle$Treatment)
+
+fall_2022_gaster_angle$Video<-as.factor(fall_2022_gaster_angle$Video)
+
+fall_2022_gaster_angle$`Angle measurement 1`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 1`)
+
+fall_2022_gaster_angle$`Angle measurement 2`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 2`)
+
+fall_2022_gaster_angle$`Angle measurement 3`<-as.numeric(fall_2022_gaster_angle$`Angle measurement 3`)
+
+#Ignore the warnings here
+```
+
+Subsetting zone 1 data (area on the setup where the perturbation was introduced). Then it is followed by taking average for a given frame, and then averaging over all the frames for a given video to get the final usuable datasheet.
+
+```{r}
+fall_2022_gaster_angle<-subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Location of the ant`=="Zone1")
+fall_2022_gaster_angle$`Gaster touching the paper`<-as.factor(fall_2022_gaster_angle$`Gaster touching the paper`)
+
+fall_2022_gaster_angle<-fall_2022_gaster_angle %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+fall_2022_gaster_angle<-fall_2022_gaster_angle %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+#Dataframe to be used for the analysis. This also contains gaster angles for the ants that abandoned.
+fall_2022_gaster_angle<-as.data.frame(fall_2022_gaster_angle)
+
+```
+
+
+IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments
+```{r}
+#Fall 2022 data
+
+fall_2022_gaster_angle<-as.data.frame(subset(fall_2022_gaster_angle,fall_2022_gaster_angle$`Ant choice`=="Correct"))
+
+
+#Importing Fall 2023 data and doing similar tranformations as above
+
+fall_2023_data_gaster<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0")
+fall_2023_data_gaster<-as.data.frame(fall_2023_data_gaster)
+fall_2023_data_gaster$`Ant choice`<-as.factor(fall_2023_data_gaster$`Ant choice`)
+fall_2023_data_gaster$Treatment<-as.factor(fall_2023_data_gaster$Treatment)
+fall_2023_data_gaster$Video<-as.factor(fall_2023_data_gaster$Video)
+fall_2023_data_gaster$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster$`Angle measurement 1`)
+fall_2023_data_gaster$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster$`Angle measurement 2`)
+fall_2023_data_gaster$`Angle measurement 3`<-as.numeric(fall_2023_data_gaster$`Angle measurement 3`)
 #Ignore the warnings here
 
+#Averaging the three gaster angle measurements for a given frame
+fall_2023_data_gaster_modified<-fall_2023_data_gaster %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
 
-#HIGH SUCROSE EXPERIMENT
-gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment.csv")
+#Averaging gaster angles over all the frames for a given video
+fall_2023_data_gaster_modified<-fall_2023_data_gaster_modified %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
 
-#Converting the relevant columns to factors
+fall_2023_data_gaster_modified<-as.data.frame(fall_2023_data_gaster_modified)
+
+#Subsetting gaster angles for only correct choices and only for control
+fall_2023_data_gaster_modified<-as.data.frame(subset(fall_2023_data_gaster_modified,fall_2023_data_gaster_modified$`Ant choice`=="Correct"))
+
+
+#Fall 2024 1.5 M data
+
+fall_2024_data_gaster<-read_sheet("https://docs.google.com/spreadsheets/d/1ifcf4M9CofkZ9rsHJ0VCdBB_zm3pyKrX6OlZthDkhvc/edit?gid=0#gid=0", sheet = "1.5M_data")
+fall_2024_data_gaster<-as.data.frame(fall_2024_data_gaster)
+fall_2024_data_gaster$Video<-as.factor(fall_2024_data_gaster$Video)
+fall_2024_data_gaster$Treatment<-as.factor(fall_2024_data_gaster$Treatment)
+fall_2024_data_gaster$`Angle measurement 1`<-as.numeric(fall_2024_data_gaster$`Angle measurement 1`)
+fall_2024_data_gaster$`Angle measurement 2`<-as.numeric(fall_2024_data_gaster$`Angle measurement 2`)
+fall_2024_data_gaster$`Angle measurement 3`<-as.numeric(fall_2024_data_gaster$`Angle measurement 3`)
+#Ignore the warnings here
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2024_data_gaster_modified<-fall_2024_data_gaster %>%
+  transmute(Video,Treatment,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2024_data_gaster_modified<-fall_2024_data_gaster_modified %>%
+  group_by(Video,Treatment) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2024_data_gaster_modified<-as.data.frame(fall_2024_data_gaster_modified)
+
+fall_2022_gaster_angle$year<-2022
+fall_2023_data_gaster_modified$year<-2023
+fall_2024_data_gaster_modified$year<-2024
+
+#Combining fall 2022 and fall 2023 gaster angle data
+ 
+combined_gaster_angle<-rbind(fall_2022_gaster_angle,fall_2023_data_gaster_modified)
+
+combined_gaster_angle<-combined_gaster_angle[-3]
+ 
+#Combining this will Fall 2024 data
+
+combined_gaster_angle<-rbind(combined_gaster_angle,fall_2024_data_gaster_modified)
+
+combined_gaster_angle$f_year<-as.factor(combined_gaster_angle$year)
+
+ 
+wilcox.test(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment)
+
+#boxplot gaster angles
+boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
+
+#adding individual points to the boxplot
+stripchart(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,method="jitter",add=T,vertical=T,pch=19)
+ 
+
+```
+
+
+3M data
+
+```{r}
+#Fall 2023 data
+
+fall_2023_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/17etkrXmeS3bdT7omTB1WCpzjvrimKpTp73nBw-TwXyY/edit?gid=0#gid=0",sheet="3M data")
+fall_2023_data_gaster_3m<-as.data.frame(fall_2023_data_gaster_3m)
+fall_2023_data_gaster_3m$`Ant choice`<-as.factor(fall_2023_data_gaster_3m$`Ant choice`)
+fall_2023_data_gaster_3m$Treatment<-as.factor(fall_2023_data_gaster_3m$Treatment)
+fall_2023_data_gaster_3m$Video<-as.factor(fall_2023_data_gaster_3m$Video)
+fall_2023_data_gaster_3m$`Angle measurement 1`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 1`)
+fall_2023_data_gaster_3m$`Angle measurement 2`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 2`)
+fall_2023_data_gaster_3m$`Angle measurement 3`<-as.numeric(fall_2023_data_gaster_3m$`Angle measurement 3`)
+#Ignore the warnings here
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_3m %>%
+  transmute(Video,Treatment,`Ant choice`,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_modified_3m %>%
+  group_by(Video,Treatment,`Ant choice`) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2023_data_gaster_modified_3m<-as.data.frame(fall_2023_data_gaster_modified_3m)
+
+#Subsetting gaster angles for only correct choices and only for control
+fall_2023_data_gaster_modified_3m<-as.data.frame(subset(fall_2023_data_gaster_modified_3m,fall_2023_data_gaster_modified_3m$`Ant choice`=="Correct"))
+
+fall_2023_data_gaster_modified_3m<-fall_2023_data_gaster_modified_3m[-3]
+
+fall_2023_data_gaster_modified_3m$year<-2023
+ 
+
+#Fall 2024 data
+
+fall_2024_data_gaster_3m<-read_sheet("https://docs.google.com/spreadsheets/d/1ifcf4M9CofkZ9rsHJ0VCdBB_zm3pyKrX6OlZthDkhvc/edit?gid=0#gid=0",sheet ="3M_data")
+fall_2024_data_gaster_3m<-as.data.frame(fall_2024_data_gaster_3m)
+fall_2024_data_gaster_3m$Treatment<-as.factor(fall_2024_data_gaster_3m$Treatment)
+fall_2024_data_gaster_3m$Video<-as.factor(fall_2024_data_gaster_3m$Video)
+fall_2024_data_gaster_3m$`Angle measurement 1`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 1`)
+fall_2024_data_gaster_3m$`Angle measurement 2`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 2`)
+fall_2024_data_gaster_3m$`Angle measurement 3`<-as.numeric(fall_2024_data_gaster_3m$`Angle measurement 3`)
+ 
+
+#Averaging the three gaster angle measurements for a given frame
+fall_2024_data_gaster_modified_3m<-fall_2024_data_gaster_3m %>%
+  transmute(Video,Treatment,mean_gaster_angle=rowMeans(select(.,`Angle measurement 1`:`Angle measurement 3`)))
+
+#Averaging gaster angles over all the frames for a given video
+fall_2024_data_gaster_modified_3m<-fall_2024_data_gaster_modified_3m %>%
+  group_by(Video,Treatment) %>%
+  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T))
+
+fall_2024_data_gaster_modified_3m<-as.data.frame(fall_2024_data_gaster_modified_3m)
+
+
+fall_2024_data_gaster_modified_3m$year<-2024
+
+combined_gaster_angle_3m<-rbind(fall_2023_data_gaster_modified_3m,fall_2024_data_gaster_modified_3m)
+
+combined_gaster_angle_3m$f_year<-as.factor(combined_gaster_angle_3m$year)
+
+combined_gaster_angle_3m %>%
+  group_by(Treatment)%>%
+  summarize(n(),median(mean_gaster_angle,na.rm=T))
   
-gaster_angle_high_sucrose$Ant.choice<-as.factor(gaster_angle_high_sucrose$Ant.choice)
-gaster_angle_high_sucrose$Treatment<-as.factor(gaster_angle_high_sucrose$Treatment)
-gaster_angle_high_sucrose$Video<-as.factor(gaster_angle_high_sucrose$Video)
-gaster_angle_high_sucrose$Year<-as.factor(gaster_angle_high_sucrose$Year)
-
-
-#Converting gaster angle measures to numbers
-gaster_angle_high_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.1)
-gaster_angle_high_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.2)
-gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.3)
-#Ignore the warnings here
-
-```
-
-Subsetting zone 1 data (area on the setup where the perturbation was introduced). Then it is followed by taking average for a given frame, and then averaging over all the frames for a given video to get the final usuable datasheet. Only for low sucrose experiment data in Fall 2022, the data were collected for zone1 and zone2. For fall 2023 and 2024, all the data were collected in zone1 for both experiment types
-
-```{r}
-
-#LOW SUCROSE EXPERIMENT
-gaster_angle_low_sucrose_ready<-subset(gaster_angle_low_sucrose,gaster_angle_low_sucrose$Location.of.the.ant=="Zone1")
-
-gaster_angle_low_sucrose_ready<-gaster_angle_low_sucrose_ready %>%
-  transmute(Video,Treatment,Ant.choice,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
-
-gaster_angle_low_sucrose_ready<-as.data.frame(gaster_angle_low_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Year) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
-
-
-
-#HIGH SUCROSE EXPERIMENT
-
-gaster_angle_high_sucrose_ready<-gaster_angle_high_sucrose %>%
-  transmute(Video,Treatment,Ant.choice,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
-
-gaster_angle_high_sucrose_ready<-as.data.frame(gaster_angle_high_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Year) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
-
-
-```
-
-IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments. So, I'm subsetting the data where ants made correct choices. These are the two dataframes that will be used for further analyses.
-
-```{r}
  
-gaster_angle_low_sucrose_ready<-na.omit(subset(gaster_angle_low_sucrose_ready,gaster_angle_low_sucrose_ready$Ant.choice=="Correct"))
+wilcox.test(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment)
 
-gaster_angle_high_sucrose_ready<-na.omit(subset(gaster_angle_high_sucrose_ready,gaster_angle_high_sucrose_ready$Ant.choice=="Correct"))
+#Boxplot of the gaster angles
+boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5)
 
+stripchart(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,method="jitter",add=T,vertical=T,pch=19)
+
+ 
 ```
 
-
-Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
-```{r}
-wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) #Significant difference
-
-wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) #No significant difference
-
-```
-
-Boxplots for the gaster angles for both experiments with experiment years shown using different symbols
 
 ```{r}
 
 par(mfrow=c(1,2))
+#1.5m
+#boxplot gaster angles
+boxplot(combined_gaster_angle$mean_gaster_angle~combined_gaster_angle$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="Low sucrose (1.5 M) experiment",ylim=c(35,65))
 
-#LOW SUCROSE EXPERIMENT
-boxplot(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="Low sucrose (1.5 M) experiment",ylim=c(35,65))
-
-#Adding individual points to the boxplot
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=1,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2022, ])
+#adding individual points to the boxplot
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=1,data=combined_gaster_angle[combined_gaster_angle$year==2022, ])
  
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2023, ])
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=combined_gaster_angle[combined_gaster_angle$year==2023, ])
 
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2024, ])
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=combined_gaster_angle[combined_gaster_angle$year==2024, ])
 
-#HIGH SUCROSE EXPERIMENT
-boxplot(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose (3 M) experiment",ylim=c(35,65))
+#3M
+#Boxplot of the gaster angles
+boxplot(combined_gaster_angle_3m$mean_gaster_angle~combined_gaster_angle_3m$Treatment,xlab="Treatment", ylab=NULL,range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose (3 M) experiment",ylim=c(35,65),yaxt="n")
 
-#Adding individual points to the boxplot
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2023, ])
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=combined_gaster_angle_3m[combined_gaster_angle_3m$year==2023, ])
 
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2024, ])
-
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=combined_gaster_angle_3m[combined_gaster_angle_3m$year==2024, ])
 
 ```
 
- 
 
 ###################################################################
 ANALYZING CHOICE and ABANDONMENT DATA FOR BOTH ExPERIMENTS
