@@ -23,9 +23,9 @@ ANALYZING CHOICE and ABANDONMENT DATA FOR BOTH EXPERIMENTS
 ```{r}
 #Importing the datasheets,and converting the relevant columns into factors
 
-low_sucrose_experiment_data<-read.csv("Combined ant choices_Low sucrose experiment.csv")
+low_sucrose_experiment_data<-read.csv("Combined ant choices_Low sucrose experiment_2025.csv")
 
-high_sucrose_experiment_data<-read.csv("Combined ant choices_High sucrose experiment.csv")
+high_sucrose_experiment_data<-read.csv("Combined ant choices_High sucrose experiment_2025.csv")
 
 #Extracting the columns needed for choice and abandonment analysis
 low_sucrose_experiment_choices<-data.frame(low_sucrose_experiment_data$Treatment,low_sucrose_experiment_data$Ant.choice)
@@ -41,6 +41,7 @@ low_sucrose_experiment_choices$choices<-as.factor(low_sucrose_experiment_choices
 
 high_sucrose_experiment_choices$treatment<-as.factor(high_sucrose_experiment_choices$treatment)
 high_sucrose_experiment_choices$choices<-as.factor(high_sucrose_experiment_choices$choices)
+
 ```
 
 
@@ -67,7 +68,7 @@ binom.test(23,27,0.5)
 #Significant!
 
 #Binomial test for experimental data
-binom.test(4,12,0.5)
+binom.test(8,16,0.5)
 #Non-significant 
  
 #3M DATA CHOICE ANALYSIS
@@ -91,7 +92,7 @@ binom.test(25,31,0.5)
 #Significant!
 
 #Binomial test for experimental data
-binom.test(9,18,0.5)
+binom.test(11,21,0.5)
 #Non-significant 
 ```
 
@@ -116,7 +117,7 @@ binom.test(5,32,0.5)
 #Significantly more ants stay on the trail than abandon here
 
 #Binomial test for experimental data
-binom.test(39,51,0.5)
+binom.test(55,71,0.5)
 #Significantly more ants abandon the trail than stay on the trail
 
 #HIGH SUCROSE EXPERIMENT ABANDONMENT ANALYSIS
@@ -136,7 +137,7 @@ binom.test(2,33,0.5) #Significant
 #Significantly more ants stay on the trail than abandon here
 
 #Binomial test for experimental data
-binom.test(22,40,0.5)
+binom.test(30,51,0.5)
 #Non-significant
 
 ```
@@ -239,6 +240,7 @@ all_exp_combined_experimental_abandonment_only_table<-table(all_exp_combined_exp
 
 chisq.test(all_exp_combined_experimental_abandonment_only_table,correct = F)
 #Significant!
+
 ```
 
 
@@ -310,7 +312,7 @@ GASTER ANGLE DATA ANALYSIS
 ```{r}
 
 #LOW SUCROSE EXPERIMENT
-gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment.csv")
+gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment_2025.csv")
 
 #Converting the relevant columns to factors
 gaster_angle_low_sucrose$Location.of.the.ant<-as.factor(gaster_angle_low_sucrose$Location.of.the.ant)
@@ -328,7 +330,7 @@ gaster_angle_low_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_low_sucros
 
 
 #HIGH SUCROSE EXPERIMENT
-gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment.csv")
+gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment_2025.csv")
 
 #Converting the relevant columns to factors
   
@@ -384,7 +386,7 @@ gaster_angle_high_sucrose_ready<-na.omit(subset(gaster_angle_high_sucrose_ready,
 
 Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
 ```{r}
-wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) #Significant difference
+wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) #No Significant difference
 
 wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) #No significant difference
 
@@ -406,6 +408,9 @@ stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,d
 
 stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2024, ])
 
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=20,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2025, ])
+
+
 #HIGH SUCROSE EXPERIMENT
 boxplot(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose (3 M) experiment",ylim=c(35,65))
 
@@ -413,6 +418,9 @@ boxplot(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucr
 stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2023, ])
 
 stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2024, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=20,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2025, ])
+
 
 ```
 
