@@ -23,9 +23,9 @@ ANALYZING CHOICE and ABANDONMENT DATA FOR BOTH EXPERIMENTS
 ```{r}
 #Importing the datasheets,and converting the relevant columns into factors
 
-low_sucrose_experiment_data<-read.csv("Combined ant choices_Low sucrose experiment_2025.csv")
+low_sucrose_experiment_data<-read.csv("Combined ant choices_Low sucrose experiment_2025_edited.csv")
 
-high_sucrose_experiment_data<-read.csv("Combined ant choices_High sucrose experiment_2025.csv")
+high_sucrose_experiment_data<-read.csv("Combined ant choices_High sucrose experiment_2025_edited.csv")
 
 #Extracting the columns needed for choice and abandonment analysis
 low_sucrose_experiment_choices<-data.frame(low_sucrose_experiment_data$Treatment,low_sucrose_experiment_data$Ant.choice)
@@ -64,7 +64,7 @@ low_sucrose_experiment_choices_only_table<-table(low_sucrose_experiment_choices_
 chisq.test(low_sucrose_experiment_choices_only_table,correct = F)
 
 #Binomial test for control data
-binom.test(23,27,0.5)
+binom.test(36,40,0.5)
 #Significant!
 
 #Binomial test for experimental data
@@ -88,7 +88,7 @@ chisq.test(high_sucrose_experiment_choices_only_table,correct = F)
 #Significant
 
 #Binomial test for control data
-binom.test(25,31,0.5)
+binom.test(27,33,0.5)
 #Significant!
 
 #Binomial test for experimental data
@@ -133,7 +133,7 @@ chisq.test(high_sucrose_experiment_abandonment_table,correct = F)
 
 
 #Binomial test for control data
-binom.test(2,33,0.5) #Significant
+binom.test(2,34,0.5) #Significant
 #Significantly more ants stay on the trail than abandon here
 
 #Binomial test for experimental data
