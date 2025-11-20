@@ -1,4 +1,4 @@
-Date,Time,Observer,Colony ID,Treatment (Control/Experimental),Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
+Date,Time,Observer,Colony ID,Treatment ,Side/arm of feeder,Side that ant went towards,Ant choice,Ant fed on feeder,Weather notes,Ground temperature (Degree celsius),Setup temperature (Degree Celsius)
 10/6/2023,5:21 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny, 32C",35.5,32
 10/6/2023,5:21 PM,Tyler,C4F23,Experimental,Left,Abandoned,Abandoned,No,"Sunny, 32C",35.5,32
 10/8/2023,5:20 PM,Chinmay,C4F23,Control,Right,Right,Correct,Yes,"Sunny, 35C",32,32
@@ -72,16 +72,3 @@ Date,Time,Observer,Colony ID,Treatment (Control/Experimental),Side/arm of feeder
 10/25/2024,5:45 PM,Chinmay,C7F24,Control,Right,Right,Correct,Yes,Sunny,28.5,26.3
 10/28/2024,5:15 PM,Chinmay,C7F24,Experimental,Left,Abandoned,Abandoned,No,Sunny,28.5,26.7
 10/28/2024,5:15 PM,Chinmay,C7F24,Experimental,Left,Abandoned,Abandoned,No,Sunny,28.5,26.7
-10/7/2025,5:30 PM,Chinmay,C1F25,Experimental,Right,Abandoned,Abandoned,No,Sunny,33.2,31.8
-10/7/2025,5:30 PM,Chinmay,C1F25,Experimental,Right,Abandoned,Abandoned,No,Sunny,33.2,31.8
-10/9/2025,4:30 PM,Chinmay,C1F25,Experimental,Left,Abandoned,Abandoned,No,Cloudy,30.3,29.8
-10/9/2025,4:30 PM,Chinmay,C1F25,Experimental,Left,Abandoned,Abandoned,No,Cloudy,30.3,29.8
-10/9/2025,4:30 PM,Chinmay,C2F25,Experimental,Right,Abandoned,Abandoned,No,Cloudy,29.7,28.5
-10/9/2025,4:30 PM,Chinmay,C2F25,Experimental,Right,Left,Wrong,No,Cloudy,29.7,28.5
-10/10/2025,4:50 PM,Chinmay,C1F25,Experimental,Right,Abandoned,Abandoned,No,Cloudy,NA,NA
-10/10/2025,4:50 PM,Chinmay,C1F25,Experimental,Right,Abandoned,Abandoned,No,Cloudy,NA,NA
-10/15/2025,2:50 PM,Chinmay,C1F25,Experimental,Left,Abandoned,Abandoned,No,Sunny,30.7,29.3
-10/15/2025,2:50 PM,Chinmay,C1F25,Experimental,Left,Left,Correct,Yes,Sunny,30.7,29.3
-10/16/2025,4:30 PM,Chinmay,C1F25,Experimental,Right,Right,Correct,Yes,Sunny and partly windy,27.8,26.1
-11/13/2025,4:10 PM,Chinmay,C1F25,Control,Left,Left,Correct,Yes,Cloudy and partly windy,28.1,26.5
-11/14/2025,4:45 PM,Chinmay,C1F25,Control,Left,Left,Correct,Yes,Sunny and partly windy,28.3,26.9
