@@ -279,7 +279,7 @@ choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=15))
 
 ```
 
-BOXPLOTS OF ABANDONMENT ACROSS BOTH EXPERIMENTS
+BARCHARTS OF ABANDONMENT ACROSS BOTH EXPERIMENTS
 ```{r}
  
 abandon_combined<-as.data.frame(all_exp_combined_data_choices %>%
