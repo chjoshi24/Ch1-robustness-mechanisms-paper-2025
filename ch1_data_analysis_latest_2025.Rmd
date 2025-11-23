@@ -12,7 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 Required libraries
 ```{r}
 library(tidyverse)
-#library(googlesheets4)
 library(ggplot2)
 library(ggthemes)
 library(ggstats)
