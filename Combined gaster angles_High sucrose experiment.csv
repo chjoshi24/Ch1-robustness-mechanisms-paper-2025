@@ -1,52 +1,4 @@
-Video,Frame no.,Date of video,Colony,Date of analysis,Treatment,Year,Observer doing the analysis,Length in pixels of Zone2,Length in pixels of Zone1,End of bridge,Ant choice,Angle measurement 1,Angle measurement 2,Angle measurement 3,Reason for NA (Angle measurement),Gaster touching the paper,Comments
-DSC_8656,463,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,na,ant too blurry
-DSC_8656,466,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,na,ant too blurry
-DSC_8656,469,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant on side of maze,na,ant on side of maze
-DSC_8656,472,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant on side of maze,na,ant on side of maze
-DSC_8656,475,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant on side of maze,na,ant on side of maze
-DSC_8656,478,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant on side of maze,na,ant on side of maze
-DSC_8656,481,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant on side of maze,na,ant on side of maze
-DSC_8656,484,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,na,ant too blurry
-DSC_8656,487,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,no,
-DSC_8656,490,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,no,
-DSC_8656,493,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,no,
-DSC_8656,496,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant too blurry,na,ant too blurry
-DSC_8656,499,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant too blurry
-DSC_8656,502,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8656,505,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant too blurry
-DSC_8656,508,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant too blurry
-DSC_8656,511,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant too blurry
-DSC_8656,514,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant too blurry
-DSC_8656,517,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant not sideways
-DSC_8656,520,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant not sideways
-DSC_8656,523,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant not sideways
-DSC_8656,526,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,na,ant not sideways
-DSC_8656,529,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,798.04,532.027,Right,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8657,223,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,226,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,229,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,232,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,235,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,238,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,241,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,244,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,247,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,250,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,253,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,256,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,259,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant on side of t maze,na,ant on side of t maze
-DSC_8657,262,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,455,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,458,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,461,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,464,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,467,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,470,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,473,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
-DSC_8657,476,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,no,
-DSC_8657,479,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,no,
-DSC_8657,482,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,no,
-DSC_8657,485,10/6/2023,C4F23,12/14/2023,Experimental,2023,Hayley,776.064,517.376,Right,Abandoned,NA,NA,NA,ant is too blurry,na,ant is too blurry
+Video,Frame.no.,Date.of.video,Colony,Date.of.analysis,Treatment,Year,Observer.doing.the.analysis,Length.in.pixels.of.Zone2,Length.in.pixels.of.Zone1,End.of.bridge,Ant.choice,Angle.measurement.1,Angle.measurement.2,Angle.measurement.3,Reason.for.NA..Angle.measurement.,Gaster.touching.the.paper,Comments
 DSC_8662,11276,10/8/2023,C4F23,12/14/2023,Control,2023,Hayley,912.219,608.146,Right,Correct,NA,NA,NA,ant too blurry,na,ant too blurry
 DSC_8662,11279,10/8/2023,C4F23,12/14/2023,Control,2023,Hayley,912.219,608.146,Right,Correct,NA,NA,NA,ant too blurry,na,ant too blurry
 DSC_8662,11282,10/8/2023,C4F23,12/14/2023,Control,2023,Hayley,912.219,608.146,Right,Correct,NA,NA,NA,ant not sideways,na,cant distinguish legs and shadows
@@ -130,18 +82,6 @@ DSC_8674,18056,10/12/2023,C3F23,12/14/2023,Control,2023,Hayley,792.003,528.002,L
 DSC_8674,18059,10/12/2023,C3F23,12/14/2023,Control,2023,Hayley,792.003,528.002,Left,Correct,37.807,36.87,37.764,,no,
 DSC_8674,18062,10/12/2023,C3F23,12/14/2023,Control,2023,Hayley,792.003,528.002,Left,Correct,39.417,38.641,39.354,,no,
 DSC_8674,18065,10/12/2023,C3F23,12/14/2023,Control,2023,Hayley,792.003,528.002,Left,Correct,NA,NA,NA,ant not sideways,no,
-DSC_8678,108,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,na,ant not sideways
-DSC_8678,111,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,na,cant distinguis if it is the stinger or the gaster
-DSC_8678,114,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,117,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,na,ant leaning over edge of maze
-DSC_8678,120,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,na,ant leaning over edge of maze
-DSC_8678,123,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,126,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,129,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,132,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,135,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
-DSC_8678,138,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,na,ant leaning over edge of maze
-DSC_8678,141,10/13/2023,C5F23,12/14/2023,Experimental,2023,Hayley,858.336,572.224,Left,Abandoned,NA,NA,NA,ant not sideways,no,
 DSC_8833,985,7/3/2024,C2F24,1/23/2025,Experimental,2024,Tiffany,498.58,770.53,Right,Correct,47.478,44.231,40.855,,No,
 DSC_8833,988,7/3/2024,C2F24,1/30/2025,Experimental,2024,Tiffany,498.58,770.53,Right,Correct,45.476,43.584,40.32,,No,
 DSC_8833,991,7/3/2024,C2F24,1/30/2025,Experimental,2024,Tiffany,498.58,770.53,Right,Correct,44.766,43.694,40.723,,No,
@@ -300,7 +240,7 @@ DSC_9056,8807,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,
 DSC_9056,8810,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9056,8813,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9056,8816,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,NA,NA,NA,Ant very blurry,NA,
-DSC_9056,8819,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,49.137,50.185,49.000,,NA,
+DSC_9056,8819,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,49.137,50.185,49,,NA,
 DSC_9056,8822,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,50.771,50.043,48.877,,NA,
 DSC_9056,8825,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,46.455,48.655,48.447,,No,
 DSC_9056,8828,8/22/2024,C4F24,3/29/2025,Experimental,2024,Tiffany,486.06,751.18,Left,Correct,NA,NA,NA,Ant very blurry,No,
@@ -357,7 +297,7 @@ DSC_9127,5084,9/2/2024,C5F24,4/4/2025,Control,2024,Tiffany,482.06,745,Left,Corre
 DSC_9127,5087,9/2/2024,C5F24,4/4/2025,Control,2024,Tiffany,482.06,745,Left,Correct,NA,NA,NA,Ant very blurry,No,
 DSC_9127,5090,9/2/2024,C5F24,4/4/2025,Control,2024,Tiffany,482.06,745,Left,Correct,NA,NA,NA,Ant very blurry,No,
 DSC_9127,5093,9/2/2024,C5F24,4/4/2025,Control,2024,Tiffany,482.06,745,Left,Correct,NA,NA,NA,Ant very blurry,No,
-DSC_9127,5096,9/2/2024,C5F24,11/20/2025,Control,2024,Chinmay,482.06,745,Left,Correct,48.480,49.934,48.050, ,NA,
+DSC_9127,5096,9/2/2024,C5F24,11/20/2025,Control,2024,Chinmay,482.06,745,Left,Correct,48.48,49.934,48.05, ,NA,
 DSC_9139,14211,9/3/2024,C5F24,11/19/2025,Control,2024,Chinmay,490,752.27,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9139,14214,9/3/2024,C5F24,11/19/2025,Control,2024,Chinmay,490,752.27,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9139,14217,9/3/2024,C5F24,11/19/2025,Control,2024,Chinmay,490,752.27,Left,Correct,NA,NA,NA,Ant very blurry,NA,
@@ -496,7 +436,7 @@ DSC_9266,8164,9/22/2024,C4F24,4/11/2025,Experimental,2024,Tiffany,520,803.63,Rig
 DSC_9266,8167,9/22/2024,C4F24,4/11/2025,Experimental,2024,Tiffany,520,803.63,Right,Correct,43.604,41.836,41.468,,NA,
 DSC_9294,2897,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,NA,NA,NA,Ant not completely sideways,No,
 DSC_9294,2900,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,NA,NA,NA,Ant not completely sideways,No,
-DSC_9294,2903,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,35.700,35.287,34.019,Ant not completely sideways,No,
+DSC_9294,2903,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,35.7,35.287,34.019,Ant not completely sideways,No,
 DSC_9294,2906,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,37.117,36.601,36.603,Ant very blurry,No,
 DSC_9294,2909,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,NA,NA,NA,Ant very blurry,No,
 DSC_9294,2912,9/26/2024,C4F24,11/4/2025,Control,2024,Chinmay,508.14,785.3,Right,Correct,44.792,43.544,44.119,Ant very blurry,No,
@@ -550,7 +490,7 @@ DSC_9311,12951,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Rig
 DSC_9311,12954,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12957,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12960,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
-DSC_9311,12963,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Right,Correct,48.200,47.508,48.325,,NA,
+DSC_9311,12963,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Right,Correct,48.2,47.508,48.325,,NA,
 DSC_9311,12966,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12969,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12972,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Right,Correct,46.808,46.105,46.569,,NA,
@@ -561,7 +501,7 @@ DSC_9311,12984,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Righ
 DSC_9311,12987,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12990,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9311,12993,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant not completely sideways,No,
-DSC_9311,12996,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Right,Correct,46.020,45.190,45.520,,Yes,
+DSC_9311,12996,10/2/2024,C2F24,11/19/2025,Control,2024,Chinmay,516.01,797.47,Right,Correct,46.02,45.19,45.52,,Yes,
 DSC_9311,12999,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
 DSC_9311,13002,10/2/2024,C2F24,4/15/2025,Control,2024,Tiffany,516.01,797.47,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
 DSC_9315,1489,10/3/2024,C5F24,11/19/2025,Experimental,2024,Chinmay,494,763.45,Left,Correct,NA,NA,NA,Ant not completely sideways,NA,
@@ -630,7 +570,7 @@ DSC_9339,872,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,
 DSC_9339,875,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9339,878,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9339,881,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
-DSC_9339,884,10/12/2024,C1F24,11/20/2025,Control,2024,Chinmay,506.09,782.13,Left,Correct,52.224,51.210,51.565, ,NA,
+DSC_9339,884,10/12/2024,C1F24,11/20/2025,Control,2024,Chinmay,506.09,782.13,Left,Correct,52.224,51.21,51.565, ,NA,
 DSC_9339,887,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9339,890,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_9339,893,10/12/2024,C1F24,4/17/2025,Control,2024,Tiffany,506.09,782.13,Left,Correct,NA,NA,NA,Ant very blurry,NA,
@@ -856,7 +796,7 @@ DSC_9457,19570,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.1
 DSC_9457,19573,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,48.028,48.242,47.048,,Yes,
 DSC_9457,19576,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,48.812,49.209,48.308,,Yes,
 DSC_9457,19579,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,46.758,46.654,45.239,,Yes,
-DSC_9457,19582,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,42.665,41.100,41.841,,NA,
+DSC_9457,19582,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,42.665,41.1,41.841,,NA,
 DSC_9457,19585,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,46.273,45.127,45.383,,Yes,
 DSC_9457,19588,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,44.67,43.785,44.324,,NA,
 DSC_9457,19591,10/16/2025,C1F25,10/27/2025,Experimental,2025,Chinmay,496.4,767.16,Right,Correct,43.807,42.754,43.021,,NA,
@@ -917,65 +857,65 @@ DSC_8861,5169,7/10/2024,C1F24,11/6/2025,Experimental,2024,Chinmay,420.02,649.12,
 DSC_8861,5172,7/10/2024,C1F24,11/6/2025,Experimental,2024,Chinmay,420.02,649.12,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_8861,5175,7/10/2024,C1F24,11/6/2025,Experimental,2024,Chinmay,420.02,649.12,Right,Correct,NA,NA,NA,Ant very blurry,NA,
 DSC_8861,5178,7/10/2024,C1F24,11/6/2025,Experimental,2024,Chinmay,420.02,649.12,Right,Correct,NA,NA,NA,Ant very blurry,NA,
-DSC_9517,757,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,760,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,763,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,50.608,50.194,50.7,,NA,
-DSC_9517,766,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,47.726,48.215,47.726,,Yes,
-DSC_9517,769,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,772,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,775,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,778,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,781,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,784,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,787,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,790,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,793,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,796,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,48.814,49.515,48.649,,NA,
-DSC_9517,799,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,802,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,49.331,48.814,48.756,,NA,
-DSC_9517,805,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,47.911,48.814,47.045,,NA,
-DSC_9517,808,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,811,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,46.619,46.169,47.291,,Yes,
-DSC_9517,814,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,50.582,50.374,51.808,,NA,
-DSC_9517,817,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant not completely sideways,Yes,
-DSC_9517,820,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
-DSC_9517,823,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
-DSC_9517,826,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,829,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,49.243,48.118,49.226,,NA,
-DSC_9517,832,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,835,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,838,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9517,841,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.70,Right,Correct,46.975,46.638,45.702,,NA,
-DSC_9519,5013,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,45.894,45.995,45.725,,Yes,
-DSC_9519,5016,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,46.701,46.869,45.994,,Yes,
-DSC_9519,5019,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.562,47.42,47.231,,NA,
-DSC_9519,5022,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,46.591,46.899,46.167,,NA,
-DSC_9519,5025,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.445,47.794,46.266,,Yes,
-DSC_9519,5028,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.862,47.175,47.478,,Yes,
-DSC_9519,5031,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,48.18,48.568,48.715,,NA,
-DSC_9519,5034,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,48.918,48.715,48.068,,NA,
-DSC_9519,5037,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9519,5040,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,50.332,50.194,50.332,,NA,
-DSC_9519,5043,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,48.735,47.47,48.444,,NA,
-DSC_9519,5046,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.886,47.558,46.507,,Yes,
-DSC_9519,5049,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,51.149,51.34,50.418,,NA,
-DSC_9519,5052,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.42,46.333,46.911,,NA,
-DSC_9519,5055,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,46.736,47.885,46.637,,NA,
-DSC_9519,5058,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,50.145,51.138,50.976,,NA,
-DSC_9519,5061,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,50.61,49.69,49.591,,NA,
-DSC_9519,5064,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,49.996,49.791,49.399,,NA,
-DSC_9519,5067,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.231,47.535,47.11,,Yes,
-DSC_9519,5070,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,50.856,49.333,50.149,,NA,
-DSC_9519,5073,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,46.851,46.872,46.444,,Yes,
-DSC_9519,5076,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,46.267,45.807,46.191,,Yes,
-DSC_9519,5079,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.899,48.918,48.013,,No,
-DSC_9519,5082,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,47.054,46.877,47.61,,NA,
-DSC_9519,5085,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,49.538,48.576,49.978,,NA,
-DSC_9519,5088,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,49.145,48.971,49.754,,NA,
-DSC_9519,5091,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9519,5094,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,49.658,49.566,49.289,,No,
-DSC_9519,5097,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9519,5100,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,48.53,47.534,48.621,,NA,
-DSC_9519,5103,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9519,5106,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
-DSC_9519,5109,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536.00,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,757,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,760,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,763,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,50.608,50.194,50.7,,NA,
+DSC_9517,766,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,47.726,48.215,47.726,,Yes,
+DSC_9517,769,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,772,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,775,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,778,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,781,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,784,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,787,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,790,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,793,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,796,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,48.814,49.515,48.649,,NA,
+DSC_9517,799,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,802,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,49.331,48.814,48.756,,NA,
+DSC_9517,805,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,47.911,48.814,47.045,,NA,
+DSC_9517,808,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,811,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,46.619,46.169,47.291,,Yes,
+DSC_9517,814,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,50.582,50.374,51.808,,NA,
+DSC_9517,817,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant not completely sideways,Yes,
+DSC_9517,820,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
+DSC_9517,823,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant not completely sideways,NA,
+DSC_9517,826,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,829,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,49.243,48.118,49.226,,NA,
+DSC_9517,832,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,835,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,838,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9517,841,11/13/2025,C1F25,11/17/2025,Control,2025,Chinmay,520.04,803.7,Right,Correct,46.975,46.638,45.702,,NA,
+DSC_9519,5013,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,45.894,45.995,45.725,,Yes,
+DSC_9519,5016,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,46.701,46.869,45.994,,Yes,
+DSC_9519,5019,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.562,47.42,47.231,,NA,
+DSC_9519,5022,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,46.591,46.899,46.167,,NA,
+DSC_9519,5025,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.445,47.794,46.266,,Yes,
+DSC_9519,5028,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.862,47.175,47.478,,Yes,
+DSC_9519,5031,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,48.18,48.568,48.715,,NA,
+DSC_9519,5034,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,48.918,48.715,48.068,,NA,
+DSC_9519,5037,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9519,5040,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,50.332,50.194,50.332,,NA,
+DSC_9519,5043,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,48.735,47.47,48.444,,NA,
+DSC_9519,5046,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.886,47.558,46.507,,Yes,
+DSC_9519,5049,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,51.149,51.34,50.418,,NA,
+DSC_9519,5052,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.42,46.333,46.911,,NA,
+DSC_9519,5055,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,46.736,47.885,46.637,,NA,
+DSC_9519,5058,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,50.145,51.138,50.976,,NA,
+DSC_9519,5061,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,50.61,49.69,49.591,,NA,
+DSC_9519,5064,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,49.996,49.791,49.399,,NA,
+DSC_9519,5067,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.231,47.535,47.11,,Yes,
+DSC_9519,5070,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,50.856,49.333,50.149,,NA,
+DSC_9519,5073,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,46.851,46.872,46.444,,Yes,
+DSC_9519,5076,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,46.267,45.807,46.191,,Yes,
+DSC_9519,5079,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.899,48.918,48.013,,No,
+DSC_9519,5082,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,47.054,46.877,47.61,,NA,
+DSC_9519,5085,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,49.538,48.576,49.978,,NA,
+DSC_9519,5088,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,49.145,48.971,49.754,,NA,
+DSC_9519,5091,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9519,5094,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,49.658,49.566,49.289,,No,
+DSC_9519,5097,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9519,5100,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,48.53,47.534,48.621,,NA,
+DSC_9519,5103,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9519,5106,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,
+DSC_9519,5109,11/14/2025,C1F25,11/17/2025,Control,2025,Chinmay,536,828.36,Right,Correct,NA,NA,NA,Ant too blurry,NA,

@@ -312,7 +312,7 @@ GASTER ANGLE DATA ANALYSIS
 ```{r}
 
 #LOW SUCROSE EXPERIMENT
-gaster_angle_low_sucrose<-read.csv("Combined gaster angles_ Low sucrose experiment.csv")
+gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment.csv")
 
 #Converting the relevant columns to factors
 gaster_angle_low_sucrose$Ant.choice<-as.factor(gaster_angle_low_sucrose$Ant.choice)
@@ -331,7 +331,6 @@ gaster_angle_low_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_low_sucros
 gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment.csv")
 
 #Converting the relevant columns to factors
-  
 gaster_angle_high_sucrose$Ant.choice<-as.factor(gaster_angle_high_sucrose$Ant.choice)
 gaster_angle_high_sucrose$Treatment<-as.factor(gaster_angle_high_sucrose$Treatment)
 gaster_angle_high_sucrose$Video<-as.factor(gaster_angle_high_sucrose$Video)
@@ -347,7 +346,9 @@ gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucr
 ```
 
 
-Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video
+Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video.
+IMP Note: We only analyzed gaster angles for the ants that made a correct choice in both treatments across the two experiments.
+
 ```{r}
 
 #LOW SUCROSE EXPERIMENT
@@ -359,6 +360,8 @@ gaster_angle_low_sucrose_ready<-as.data.frame(gaster_angle_low_sucrose_ready %>%
   group_by(Video,Treatment,Ant.choice,Year) %>%
   summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
 
+gaster_angle_low_sucrose_ready<-na.omit(gaster_angle_low_sucrose_ready)
+
 #HIGH SUCROSE EXPERIMENT
 
 gaster_angle_high_sucrose_ready<-gaster_angle_high_sucrose %>%
@@ -368,15 +371,7 @@ gaster_angle_high_sucrose_ready<-as.data.frame(gaster_angle_high_sucrose_ready %
   group_by(Video,Treatment,Ant.choice,Year) %>%
   summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
 
-```
-
-IMP: I'm only analyzing gaster angle data for the ants that made a correct choices across both the treatments. So, I'm subsetting the data where ants made correct choices. These are the two dataframes that will be used for further analyses.
-
-```{r}
- 
-gaster_angle_low_sucrose_ready<-na.omit(subset(gaster_angle_low_sucrose_ready,gaster_angle_low_sucrose_ready$Ant.choice=="Correct"))
-
-gaster_angle_high_sucrose_ready<-na.omit(subset(gaster_angle_high_sucrose_ready,gaster_angle_high_sucrose_ready$Ant.choice=="Correct"))
+gaster_angle_high_sucrose_ready<-na.omit(gaster_angle_high_sucrose_ready)
 
 #Average gaster angle calculations:
 gaster_angle_low_sucrose_ready %>%
@@ -392,9 +387,11 @@ gaster_angle_high_sucrose_ready %>%
 
 Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
 ```{r}
-wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) #No Significant difference
+wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) 
+#No Significant difference
 
-wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) #No significant difference
+wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) 
+#No significant difference
 
 ```
 
