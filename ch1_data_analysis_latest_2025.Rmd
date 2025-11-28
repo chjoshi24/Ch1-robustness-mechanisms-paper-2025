@@ -275,6 +275,60 @@ choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=15))
   geom_hline(yintercept = 0.5, linetype = "dashed")+
   scale_fill_manual(values=c("violet","gray50"))
 
+
+#Separate graphs as per experiment type
+
+#Low sucorse
+choices_combined_low_sucrose<-choices_combined[c(1,2,5,6),]
+
+choices_combined_low_sucrose$label<-factor(choices_combined_low_sucrose$label,levels=c("Control_1.5m","Exp_1.5m"))
+ 
+choices_plot<-ggplot(choices_combined_low_sucrose)+
+  aes(label,fill=choices,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control", "Exp_1.5m"="Experimental"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Choices"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+
+choices_plot+theme(text=element_text(size=28),axis.text = element_text(size=20))+ 
+  geom_hline(yintercept = 0.5, linetype = "dashed")+ggtitle("Low sucrose experiment") 
+
+
+#High sucrose
+choices_combined_high_sucrose<-choices_combined[c(3,4,7,8),]
+
+choices_combined_high_sucrose$label<-factor(choices_combined_high_sucrose$label,levels=c("Control_3m","Exp_3m"))
+ 
+choices_plot<-ggplot(choices_combined_high_sucrose)+
+  aes(label,fill=choices,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_3m"="Control", "Exp_3m"="Experimental"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Choices"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+
+choices_plot+theme(text=element_text(size=28),axis.text = element_text(size=20))+ 
+  geom_hline(yintercept = 0.5, linetype = "dashed")+ggtitle("High sucrose experiment") 
+
 ```
 
 BARCHARTS OF ABANDONMENT ACROSS BOTH EXPERIMENTS
@@ -303,6 +357,58 @@ choices_plot_1<-ggplot(abandon_combined)+
   ) +  theme(axis.line = element_line(color = 'black'))
    
 choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=15))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))
+
+
+#Separate graphs as per experiment type
+
+#Low sucrose
+abandon_combined_low_sucrose<-abandon_combined[c(1,2,3,4),]
+
+abandon_combined_low_sucrose$label<-factor(abandon_combined_low_sucrose$label,levels=c("Control_1.5m","Exp_1.5m"))
+
+choices_plot_1<-ggplot(abandon_combined_low_sucrose)+
+  aes(label,fill=abandonment,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control", "Exp_1.5m"="Experimental"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank(),
+    legend.position = "none"
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+choices_plot_1+theme(text=element_text(size=28),axis.text = element_text(size=20))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))+
+  ggtitle("Low sucrose experiment") 
+
+#High sucrose experiment
+
+abandon_combined_high_sucrose<-abandon_combined[c(5,6,7,8),]
+
+abandon_combined_high_sucrose$label<-factor(abandon_combined_high_sucrose$label,levels=c("Control_3m","Exp_3m"))
+
+choices_plot_1<-ggplot(abandon_combined_high_sucrose)+
+  aes(label,fill=abandonment,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_3m"="Control", "Exp_3m"="Experimental"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Abandoned or not"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+choices_plot_1+theme(text=element_text(size=28),axis.text = element_text(size=20))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))+
+  ggtitle("High sucrose experiment") 
 
 ```
 
