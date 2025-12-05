@@ -259,15 +259,7 @@ choices_combined<-as.data.frame(choices_combined %>%
 choices_combined <- choices_combined %>%
   group_by(label) %>%
   mutate(
-    percent = total / sum(total) * 100,
-    n = sum(total)
-  )
-
-choices_combined <- choices_combined %>%
-  group_by(label) %>%
-  mutate(
-    percent = total / sum(total) * 100,
-    n = sum(total)
+    percent = total / sum(total) * 100
   )
 
 
@@ -438,9 +430,7 @@ Subsetting gaster angles as per ant choices and whether the ants fed or not
 
 ```{r}
 #Low sucrose
-gaster_angle_low_sucrose_wrong_choices_unfed<-subset(gaster_angle_low_sucrose_ready,Ant.fed.on.the.feeder=="No" & Ant.choice=="Wrong")
 
-gaster_angle_low_sucrose_correct_choices<-subset(gaster_angle_low_sucrose_ready,Ant.choice=="Correct")
 
 #This contains data for the ants that made correct choices, and also includes the ants that made a wrong choice, but did not feed on the sucrose
 gaster_angle_low_sucrose_graph1<-rbind(gaster_angle_low_sucrose_wrong_choices_unfed,gaster_angle_low_sucrose_correct_choices)
