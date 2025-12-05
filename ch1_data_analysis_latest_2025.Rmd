@@ -276,17 +276,17 @@ ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
   geom_text(
     aes(label = paste0("n=", total)),
     position = position_stack(vjust = 0.5),
-    size = 6,          # larger geom_text labels
+    size = 6,           
     color = "white"
   ) +
   scale_y_continuous() +
-  labs(x = "", y = "Proportion of ants", fill = "Choices") +  # legend title
+  labs(x = "", y = "Proportion of ants", fill = "Choices") +   
   theme_minimal(base_size = 14) +
   theme(
     axis.text.x = element_text(size = 13),
     axis.title.y = element_text(size = 22),
-    axis.text.y = element_text(size = 18),# bigger y-axis label
-    legend.title = element_text(size = 20),           # bigger legend title
+    axis.text.y = element_text(size = 18), 
+    legend.title = element_text(size = 20),            
     panel.grid.major.x = element_blank()
   ) +geom_hline(yintercept = 50, linetype = "dashed")+
   scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
@@ -324,10 +324,10 @@ ggplot(abandon_combined, aes(x = label, y = percent, fill = abandonment)) +
   labs(x = "", y = "Proportion of ants") +
   theme_minimal(base_size = 14) +
   theme(
-    axis.text.x  = element_text(hjust = 0.5, size = 16), # straight x-axis labels, bigger size
-    axis.text.y  = element_text(size = 16),              # bigger y-axis numbers
-    axis.title.y = element_text(size = 18),              # bigger y-axis label
-    legend.title = element_text(size = 18),              # bigger legend title
+    axis.text.x  = element_text(hjust = 0.5, size = 13),  
+    axis.text.y  = element_text(size = 16),               
+    axis.title.y = element_text(size = 18),               
+    legend.title = element_text(size = 18),              
     panel.grid.major.x = element_blank()
   ) +
   geom_hline(yintercept = 50, linetype = "dashed") +
