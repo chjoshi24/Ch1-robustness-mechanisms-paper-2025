@@ -1,0 +1,43 @@
+  Old R code
+
+choices_plot<-ggplot(choices_combined)+
+  aes(label,fill=choices,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Choices"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+
+choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=15))+ 
+  geom_hline(yintercept = 0.5, linetype = "dashed")+
+  scale_fill_manual(values=c("violet","gray50"))
+
+
+#Abandonment data
+
+choices_plot_1<-ggplot(abandon_combined)+
+  aes(label,fill=abandonment,weight=total,by=label)+
+  geom_bar(position="fill")+
+  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
+  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
+  xlab("Treatments")+
+  ylab("Percentage ants")+
+  guides(fill=guide_legend(title="Abandoned or not"))+
+  theme_bw()+
+    theme(
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank()
+  ) +  theme(axis.line = element_line(color = 'black'))
+   
+choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=15))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))

@@ -242,6 +242,8 @@ chisq.test(all_exp_combined_experimental_abandonment_only_table,correct = F)
 ```
 
 
+
+
 BOXPLOTS OF ANT CHOICES ACROSS BOTH EXPERIMENTS
 ```{r}
 
@@ -252,82 +254,44 @@ choices_combined$label<-factor(choices_combined$label,levels=c("Control_1.5m","C
 
 choices_combined<-as.data.frame(choices_combined %>%
   group_by(label,choices)%>%
-  summarize(total=n()))
+  summarize(total=n())) 
 
-choices_plot<-ggplot(choices_combined)+
-  aes(label,fill=choices,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Choices"))+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank()
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
+choices_combined <- choices_combined %>%
+  group_by(label) %>%
+  mutate(
+    percent = total / sum(total) * 100,
+    n = sum(total)
+  )
 
-choices_plot+theme(text=element_text(size=25),axis.text = element_text(size=15))+ 
-  geom_hline(yintercept = 0.5, linetype = "dashed")+
-  scale_fill_manual(values=c("violet","gray50"))
+choices_combined <- choices_combined %>%
+  group_by(label) %>%
+  mutate(
+    percent = total / sum(total) * 100,
+    n = sum(total)
+  )
 
 
-#Separate graphs as per experiment type
+ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
+  geom_bar(stat = "identity", color = "black") +
+  geom_text(
+    aes(label = paste0("n=", total)),
+    position = position_stack(vjust = 0.5),
+    size = 6,          # larger geom_text labels
+    color = "white"
+  ) +
+  scale_y_continuous() +
+  labs(x = "", y = "Proportion of ants", fill = "Choices") +  # legend title
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(size = 13),
+    axis.title.y = element_text(size = 22),
+    axis.text.y = element_text(size = 18),# bigger y-axis label
+    legend.title = element_text(size = 20),           # bigger legend title
+    panel.grid.major.x = element_blank()
+  ) +geom_hline(yintercept = 50, linetype = "dashed")+
+  scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
+  guides(fill=guide_legend(title="Choices"))
 
-#Low sucorse
-choices_combined_low_sucrose<-choices_combined[c(1,2,5,6),]
-
-choices_combined_low_sucrose$label<-factor(choices_combined_low_sucrose$label,levels=c("Control_1.5m","Exp_1.5m"))
- 
-choices_plot<-ggplot(choices_combined_low_sucrose)+
-  aes(label,fill=choices,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control", "Exp_1.5m"="Experimental"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Choices"))+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank()
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
-
-choices_plot+theme(text=element_text(size=28),axis.text = element_text(size=20))+ 
-  geom_hline(yintercept = 0.5, linetype = "dashed")+ggtitle("Low sucrose experiment") 
-
-
-#High sucrose
-choices_combined_high_sucrose<-choices_combined[c(3,4,7,8),]
-
-choices_combined_high_sucrose$label<-factor(choices_combined_high_sucrose$label,levels=c("Control_3m","Exp_3m"))
- 
-choices_plot<-ggplot(choices_combined_high_sucrose)+
-  aes(label,fill=choices,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_3m"="Control", "Exp_3m"="Experimental"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Choices"))+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank()
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
-
-choices_plot+theme(text=element_text(size=28),axis.text = element_text(size=20))+ 
-  geom_hline(yintercept = 0.5, linetype = "dashed")+ggtitle("High sucrose experiment") 
 
 ```
 
@@ -340,75 +304,42 @@ abandon_combined<-as.data.frame(all_exp_combined_data_choices %>%
 
 abandon_combined$label<-factor(abandon_combined$label,levels=c("Control_1.5m","Control_3m","Exp_1.5m","Exp_3m"))
 
-choices_plot_1<-ggplot(abandon_combined)+
-  aes(label,fill=abandonment,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Abandoned or not"))+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank()
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
-choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=15))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))
+abandon_combined<-as.data.frame(abandon_combined %>%
+  group_by(label) %>%
+  mutate(
+    percent = total / sum(total) * 100,
+    n = sum(total)
+  ))
 
+ggplot(abandon_combined, aes(x = label, y = percent, fill = abandonment)) +
+  geom_bar(stat = "identity", color = "black") +
+  # Show individual sample sizes inside each stack
+  geom_text(
+    aes(label = paste0("n=", total)),   # use total for each segment
+    position = position_stack(vjust = 0.5),  # centers text in each segment
+    size = 6,                           # larger geom_text labels
+    color = "white"
+  ) +
+  scale_y_continuous() +
+  labs(x = "", y = "Proportion of ants") +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x  = element_text(hjust = 0.5, size = 16), # straight x-axis labels, bigger size
+    axis.text.y  = element_text(size = 16),              # bigger y-axis numbers
+    axis.title.y = element_text(size = 18),              # bigger y-axis label
+    legend.title = element_text(size = 18),              # bigger legend title
+    panel.grid.major.x = element_blank()
+  ) +
+  geom_hline(yintercept = 50, linetype = "dashed") +
+  scale_x_discrete(labels = c(
+    "Control_1.5m" = "Control (1.5 M)",
+    "Control_3m"   = "Control (3 M)",
+    "Exp_1.5m"     = "Experimental (1.5 M)",
+    "Exp_3m"       = "Experimental (3 M)"
+  )) +
+  guides(fill = guide_legend(title = "Abandonment")) +
+  scale_fill_manual(values = c("violet", "gray50"))
 
-#Separate graphs as per experiment type
-
-#Low sucrose
-abandon_combined_low_sucrose<-abandon_combined[c(1,2,3,4),]
-
-abandon_combined_low_sucrose$label<-factor(abandon_combined_low_sucrose$label,levels=c("Control_1.5m","Exp_1.5m"))
-
-choices_plot_1<-ggplot(abandon_combined_low_sucrose)+
-  aes(label,fill=abandonment,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_1.5m"="Control", "Exp_1.5m"="Experimental"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank(),
-    legend.position = "none"
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
-choices_plot_1+theme(text=element_text(size=28),axis.text = element_text(size=20))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))+
-  ggtitle("Low sucrose experiment") 
-
-#High sucrose experiment
-
-abandon_combined_high_sucrose<-abandon_combined[c(5,6,7,8),]
-
-abandon_combined_high_sucrose$label<-factor(abandon_combined_high_sucrose$label,levels=c("Control_3m","Exp_3m"))
-
-choices_plot_1<-ggplot(abandon_combined_high_sucrose)+
-  aes(label,fill=abandonment,weight=total,by=label)+
-  geom_bar(position="fill")+
-  geom_text(aes(label = scales::percent(..prop.., accuracy = 1)),stat = "prop", position = position_fill(.5),size=7)+
-  scale_y_continuous(labels = scales::percent)+scale_x_discrete(labels=c("Control_3m"="Control", "Exp_3m"="Experimental"))+
-  xlab("Treatments")+
-  ylab("Percentage ants")+
-  guides(fill=guide_legend(title="Abandoned or not"))+
-  theme_bw()+
-    theme(
-    plot.background = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_blank()
-  ) +  theme(axis.line = element_line(color = 'black'))
-   
-choices_plot_1+theme(text=element_text(size=28),axis.text = element_text(size=20))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))+
-  ggtitle("High sucrose experiment") 
 
 ```
 
@@ -424,6 +355,7 @@ gaster_angle_low_sucrose$Ant.choice<-as.factor(gaster_angle_low_sucrose$Ant.choi
 gaster_angle_low_sucrose$Treatment<-as.factor(gaster_angle_low_sucrose$Treatment)
 gaster_angle_low_sucrose$Video<-as.factor(gaster_angle_low_sucrose$Video)
 gaster_angle_low_sucrose$Year<-as.factor(gaster_angle_low_sucrose$Year)
+gaster_angle_low_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_low_sucrose$Ant.fed.on.the.feeder)
 
 #Converting gaster angle measures to numbers
 gaster_angle_low_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.1)
@@ -440,6 +372,7 @@ gaster_angle_high_sucrose$Ant.choice<-as.factor(gaster_angle_high_sucrose$Ant.ch
 gaster_angle_high_sucrose$Treatment<-as.factor(gaster_angle_high_sucrose$Treatment)
 gaster_angle_high_sucrose$Video<-as.factor(gaster_angle_high_sucrose$Video)
 gaster_angle_high_sucrose$Year<-as.factor(gaster_angle_high_sucrose$Year)
+gaster_angle_high_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_high_sucrose$Ant.fed.on.the.feeder)
 
 
 #Converting gaster angle measures to numbers
@@ -451,6 +384,7 @@ gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucr
 ```
 
 
+ 
 Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video.
 IMP Note: We only analyzed gaster angles for the ants that made a correct choice in both treatments across the two experiments.
 
@@ -459,24 +393,33 @@ IMP Note: We only analyzed gaster angles for the ants that made a correct choice
 #LOW SUCROSE EXPERIMENT
  
 gaster_angle_low_sucrose_ready<-gaster_angle_low_sucrose %>%
-  transmute(Video,Treatment,Ant.choice,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
+  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder, Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
 
 gaster_angle_low_sucrose_ready<-as.data.frame(gaster_angle_low_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Year) %>%
+  group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>%
   summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
 
 gaster_angle_low_sucrose_ready<-na.omit(gaster_angle_low_sucrose_ready)
 
+
 #HIGH SUCROSE EXPERIMENT
 
 gaster_angle_high_sucrose_ready<-gaster_angle_high_sucrose %>%
-  transmute(Video,Treatment,Ant.choice,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
+  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
 
 gaster_angle_high_sucrose_ready<-as.data.frame(gaster_angle_high_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Year) %>%
+  group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>%
   summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
 
 gaster_angle_high_sucrose_ready<-na.omit(gaster_angle_high_sucrose_ready)
+
+
+#Summary of ants that made choices and fed on feeder or not
+low_sucrose_summary<-gaster_angle_low_sucrose_ready[,c(2,3,4)]
+table(low_sucrose_summary)
+
+high_sucrose_summary<-gaster_angle_high_sucrose_ready[,c(2,3,4)]
+table(high_sucrose_summary)
 
 #Average gaster angle calculations:
 gaster_angle_low_sucrose_ready %>%
@@ -490,6 +433,56 @@ gaster_angle_high_sucrose_ready %>%
 ```
 
 
+ 
+Subsetting gaster angles as per ant choices and whether the ants fed or not
+
+```{r}
+#Low sucrose
+gaster_angle_low_sucrose_wrong_choices_unfed<-subset(gaster_angle_low_sucrose_ready,Ant.fed.on.the.feeder=="No" & Ant.choice=="Wrong")
+
+gaster_angle_low_sucrose_correct_choices<-subset(gaster_angle_low_sucrose_ready,Ant.choice=="Correct")
+
+#This contains data for the ants that made correct choices, and also includes the ants that made a wrong choice, but did not feed on the sucrose
+gaster_angle_low_sucrose_graph1<-rbind(gaster_angle_low_sucrose_wrong_choices_unfed,gaster_angle_low_sucrose_correct_choices)
+
+ggplot(gaster_angle_low_sucrose_graph1,aes(Treatment,mean_gaster_angle,fill=Ant.choice))+stat_boxplot(geom="errorbar")+geom_boxplot(outlier.shape = NA)+ theme_minimal()+xlab("Treatment")+ylab("Average gaster angle")+geom_jitter(aes(color=Year))+ggtitle("Low sucrose experiment")+guides(fill=guide_legend(title="Ant choice"))
+
+#Comparing gaster angles for correct vs. wrong choices within the treatment
+
+exp_low_sucrose_data_exp<-gaster_angle_low_sucrose_graph1 %>%
+  filter(Treatment=="Experimental")
+wilcox.test(exp_low_sucrose_data_exp$mean_gaster_angle~exp_low_sucrose_data_exp$Ant.choice) 
+#No Significant difference
+
+
+#High sucrose
+#Low sucrose
+gaster_angle_high_sucrose_wrong_choices_unfed<-subset(gaster_angle_high_sucrose_ready,Ant.fed.on.the.feeder=="No" & Ant.choice=="Wrong")
+
+gaster_angle_high_sucrose_correct_choices<-subset(gaster_angle_high_sucrose_ready,Ant.choice=="Correct")
+
+#This contains data for the ants that made correct choices, and also includes the ants that made a wrong choice, but did not feed on the sucrose
+gaster_angle_high_sucrose_graph1<-rbind(gaster_angle_high_sucrose_wrong_choices_unfed,gaster_angle_high_sucrose_correct_choices)
+
+ggplot(gaster_angle_high_sucrose_graph1,aes(Treatment,mean_gaster_angle,fill=Ant.choice))+stat_boxplot(geom="errorbar")+geom_boxplot(outlier.shape = NA)+ theme_minimal()+xlab("Treatment")+ylab("Average gaster angle")+geom_jitter(aes(color=Year))+ggtitle("High sucrose experiment")+guides(fill=guide_legend(title="Ant choice"))
+
+#Comparing gaster angles for correct vs. wrong choices within the treatment
+
+exp_high_sucrose_data_exp<-gaster_angle_high_sucrose_graph1 %>%
+  filter(Treatment=="Experimental")
+wilcox.test(exp_high_sucrose_data_exp$mean_gaster_angle~exp_high_sucrose_data_exp$Ant.choice) 
+#Significant difference
+
+
+exp_high_sucrose_data_con<-gaster_angle_high_sucrose_graph1 %>%
+  filter(Treatment=="Control")
+wilcox.test(exp_high_sucrose_data_con$mean_gaster_angle~exp_high_sucrose_data_con$Ant.choice) 
+#Significant difference
+ 
+  
+```
+ 
+
 Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
 ```{r}
 wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) 
@@ -497,6 +490,8 @@ wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_su
 
 wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) 
 #No significant difference
+
+
 
 ```
 
