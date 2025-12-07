@@ -17,10 +17,11 @@ library(ggthemes)
 library(ggstats)
 ```
 
-ANALYZING CHOICE and ABANDONMENT DATA FOR BOTH EXPERIMENTS
- 
+
+Importing the datasheets,and converting the relevant columns into factors.
+Low sucrose experiment- 1.5 M sucrose
+High sucrose experiment- 3 M sucrose
 ```{r}
-#Importing the datasheets,and converting the relevant columns into factors
 
 low_sucrose_experiment_data<-read.csv("Combined ant choices_Low sucrose experiment.csv")
 
@@ -41,168 +42,157 @@ low_sucrose_experiment_choices$choices<-as.factor(low_sucrose_experiment_choices
 high_sucrose_experiment_choices$treatment<-as.factor(high_sucrose_experiment_choices$treatment)
 high_sucrose_experiment_choices$choices<-as.factor(high_sucrose_experiment_choices$choices)
 
+#Creating labels specific to the experiment for the analysis below
+
+#These two dataframes are used for the choice analyses below
+low_sucrose_experiment_choices$label<-as.factor(ifelse(low_sucrose_experiment_choices$treatment=="Control","Control_1.5m","Exp_1.5m"))
+
+high_sucrose_experiment_choices$label<-as.factor(ifelse(high_sucrose_experiment_choices$treatment=="Control","Control_3m","Exp_3m"))
+
+#Ants stay on the trail when they are making a choice vs. when they abandon. So creating another column using the data above to indicate that. These two dataframes will be used for the abandonment analyses below
+
+low_sucrose_experiment_abandonment<-low_sucrose_experiment_choices %>%
+mutate(abandonment=ifelse(low_sucrose_experiment_choices$choices=="Abandoned","Abandoned","On-trail"))
+
+low_sucrose_experiment_abandonment<-low_sucrose_experiment_abandonment[,c(1,3,4)]
+
+high_sucrose_experiment_abandonment<-high_sucrose_experiment_choices %>% mutate(abandonment= ifelse(high_sucrose_experiment_choices$choices=="Abandoned","Abandoned","On-trail"))
+
+high_sucrose_experiment_abandonment<-high_sucrose_experiment_abandonment[,c(1,3,4)]
+
+
 ```
 
 
-ANALYZING CORRECT VS. WRONG CHOICES FOR EACH EXPERIMENT
+1) Analyzing ant choices for low and high sucrose experiments
+
 ```{r}
-
-#1.5M DATA CHOICE ANALYSIS
-
-#Filtering data where ant made either a correct or a wrong choice
+#Filtering data where ants made either a correct or a wrong choice
 low_sucrose_experiment_choices_only<-
   low_sucrose_experiment_choices %>% 
+  filter(choices !="Abandoned")
+
+high_sucrose_experiment_choices_only<-
+  high_sucrose_experiment_choices %>%
   filter(choices !="Abandoned")
 
 #Dropping the abandonment factor level
 low_sucrose_experiment_choices_only$choices<-droplevels(low_sucrose_experiment_choices_only$choices)
 
-#Creating table
-low_sucrose_experiment_choices_only_table<-table(low_sucrose_experiment_choices_only)
-
-chisq.test(low_sucrose_experiment_choices_only_table,correct = F)
-
-#Binomial test for control data
-binom.test(36,40,0.5)
-#Significant!
-
-#Binomial test for experimental data
-binom.test(8,16,0.5)
-#Non-significant 
- 
-#3M DATA CHOICE ANALYSIS
-
-#Filtering data where ant made either a correct or a wrong choice
-high_sucrose_experiment_choices_only<-
-  high_sucrose_experiment_choices %>% 
-  filter(choices !="Abandoned")
-
-#Dropping the abandonment factor level
 high_sucrose_experiment_choices_only$choices<-droplevels(high_sucrose_experiment_choices_only$choices)
 
-#Creating table
-high_sucrose_experiment_choices_only_table<-table(high_sucrose_experiment_choices_only)
+#Creating tables for the binomial and Chi-square tests 
+low_sucrose_experiment_choices_only_table<-table(low_sucrose_experiment_choices_only[-3])
+
+high_sucrose_experiment_choices_only_table<-table(high_sucrose_experiment_choices_only[-3])
+
+#Binomial test for control treatments (Extracting relevant entries from the above choice tables)
+
+binom.test(low_sucrose_experiment_choices_only_table[1],low_sucrose_experiment_choices_only_table[1]+low_sucrose_experiment_choices_only_table[3],0.5)
+
+binom.test (high_sucrose_experiment_choices_only_table[1],high_sucrose_experiment_choices_only_table[1]+high_sucrose_experiment_choices_only_table[3],0.5)
+#Significant!
+
+
+#Binomial test for experimental treatments(Extracting relevant entries from the above choice tables) 
+binom.test(low_sucrose_experiment_choices_only_table[2],low_sucrose_experiment_choices_only_table[2]+low_sucrose_experiment_choices_only_table[4],0.5)
+#Not significant 
+
+binom.test(high_sucrose_experiment_choices_only_table[2],high_sucrose_experiment_choices_only_table[2]+high_sucrose_experiment_choices_only_table[4],0.5)
+#Non-significant 
+
+
+#Chi-square tests to test whether proportion of correct choices are more in the control vs. experimental treatments across both experiments (Using the entire choice tables from above)
+
+chisq.test(low_sucrose_experiment_choices_only_table,correct = F)
+#Significant
 
 chisq.test(high_sucrose_experiment_choices_only_table,correct = F)
 #Significant
 
-#Binomial test for control data
-binom.test(27,33,0.5)
-#Significant!
-
-#Binomial test for experimental data
-binom.test(11,21,0.5)
-#Non-significant 
 ```
 
 
-ANALYZING ABANDONMENT DATA FOR EACH EXPERIMENT
-
-```{r}
-
-#LOW SUCROSE EXPERIMENT ABANDONMENT ANALYSIS
-
-#Filtering data where ant made either a correct or a wrong choice
-low_sucrose_experiment_choices$abandonment<-ifelse(low_sucrose_experiment_choices$choices=="Abandoned","Abandoned","On-trail")
-
-low_sucrose_experiment_abandonment_table<-table(low_sucrose_experiment_choices[-2])
-
-#Chi-square test
-chisq.test(low_sucrose_experiment_abandonment_table,correct = F)
-#Significant
-
-#Binomial test for control data
-binom.test(5,45,0.5)
-#Significantly more ants stay on the trail than abandon here
-
-#Binomial test for experimental data
-binom.test(55,71,0.5)
-#Significantly more ants abandon the trail than stay on the trail
-
-#HIGH SUCROSE EXPERIMENT ABANDONMENT ANALYSIS
-
-#Filtering data where ant made either a correct or a wrong choice
-high_sucrose_experiment_choices$abandonment<-ifelse(high_sucrose_experiment_choices$choices=="Abandoned","Abandoned","On-trail")
-
-high_sucrose_experiment_abandonment_table<-table(high_sucrose_experiment_choices[-2])
-
-#Chi-square test
-chisq.test(high_sucrose_experiment_abandonment_table,correct = F)
-#Significant
-
-
-#Binomial test for control data
-binom.test(2,35,0.5) #Significant
-#Significantly more ants stay on the trail than abandon here
-
-#Binomial test for experimental data
-binom.test(30,51,0.5)
-#Non-significant
-
-```
-
-COMPARING LOW AND HIGH SUCROSE EXPERIMENTS TO FIND IF THE SUCROSE CONCENTRATION INCREASE RESULTED IN ANY CHANGES IN THE CHOICES AND/OR ABANDONMENT IN ANTS
- 
-Comparing correct vs. wrong choices across two experiments
+2) Comparing low and high sucrose experiments to examine whether the increased resource value resulted in changes in proportion of correct choices when the trail was perturbed.
 
 Labels:
 1.5m-Low sucrose experiment
 3m- High sucrose experiment
 ```{r}
+ 
+#Combining the choices from both experiments from the above data frames
+all_exp_combined_data_choices<-rbind(low_sucrose_experiment_choices_only,high_sucrose_experiment_choices_only)
 
-#Creating labels specific to the experiment type and combining the dataframes
-low_sucrose_experiment_choices$label<-as.factor(ifelse(low_sucrose_experiment_choices$treatment=="Control","Control_1.5m","Exp_1.5m"))
-
-high_sucrose_experiment_choices$label<-as.factor(ifelse(high_sucrose_experiment_choices$treatment=="Control","Control_3m","Exp_3m"))
-
-
-#Combining the choices from both experiments
-all_exp_combined_data_choices<-rbind(low_sucrose_experiment_choices,high_sucrose_experiment_choices)
-
-#Subsetting the data from the two treatments (combined for both experiments separately) to compare between the experiments.
+#Subsetting the data for each of the two treatments to compare between the experiments
 all_exp_combined_control<-subset(all_exp_combined_data_choices,all_exp_combined_data_choices$treatment=="Control")
 
 all_exp_combined_experimental<-subset(all_exp_combined_data_choices,all_exp_combined_data_choices$treatment=="Experimental")
 
-#Dropping the uncessary factor levels
+#Dropping the unecessary factor levels for each dataframe
 all_exp_combined_control$label<-droplevels(all_exp_combined_control$label)
 
 all_exp_combined_experimental$label<-droplevels(all_exp_combined_experimental$label)
 
-#COMPARING CORRECT VS. WRONG CHOICES BETWEEN THE TWO EXPERIMENTS FOR EACH TREATMENT
-
-#CONTROL TREATMENT
+# Comparing proportion of correct choices for control and experimental treatments between the two experiments  
+ 
+#Control treatment
 all_exp_combined_control_choices_only<-data.frame(all_exp_combined_control$choices,all_exp_combined_control$label)
 
+#Relabeling the columns and creating a table for the chi-sqaure test
 colnames(all_exp_combined_control_choices_only)<-c("choices","exp_type")
-
-#Removing abandonment data for this analysis
-all_exp_combined_control_choices_only<-subset(all_exp_combined_control_choices_only,all_exp_combined_control_choices_only$choices!="Abandoned")
-
-#Dropping the uncessary factor levels
-all_exp_combined_control_choices_only$choices<-droplevels(all_exp_combined_control_choices_only$choices)
 
 all_exp_combined_control_choices_only_table<-table(all_exp_combined_control_choices_only)
 
+#Chi-square test
 chisq.test(all_exp_combined_control_choices_only_table,correct = F)
 #Not significant
 
-#EXPERIMENTAL TREATMENT
+#Experimental treatment
 
 all_exp_combined_experimental_choices_only<-data.frame(all_exp_combined_experimental$choices,all_exp_combined_experimental$label)
 
+#Relabeling the columns and creating a table for chi-sqaure tests
 colnames(all_exp_combined_experimental_choices_only)<-c("choices","exp_type")
-
-#Removing abandonment data for this analysis
-all_exp_combined_experimental_choices_only<-subset(all_exp_combined_experimental_choices_only,all_exp_combined_experimental_choices_only$choices!="Abandoned")
-
-#Dropping the uncessary factor levels
-all_exp_combined_experimental_choices_only$choices<-droplevels(all_exp_combined_experimental_choices_only$choices)
 
 all_exp_combined_experimental_choices_only_table<-table(all_exp_combined_experimental_choices_only)
 
 chisq.test(all_exp_combined_experimental_choices_only_table,correct = F)
 #Not significant
+
+```
+
+
+2) Analyzing ant abandonment for low and high sucrose experiments
+
+```{r}
+
+#Creating tables for the binomial and Chi-square tests using the dataframes defined above 
+low_sucrose_experiment_abandonment_table<-table(low_sucrose_experiment_abandonment[-2])
+high_sucrose_experiment_abandonment_table<-table(high_sucrose_experiment_abandonment[-2])
+
+#Chi-square tests on the above table
+chisq.test(low_sucrose_experiment_abandonment_table,correct = F)
+#Significant
+
+chisq.test(high_sucrose_experiment_abandonment_table,correct = F)
+#Significant
+
+#Binomial test for control treatments (Extracting relevant entries from the above choice tables)
+binom.test(low_sucrose_experiment_abandonment_table[1],low_sucrose_experiment_abandonment_table[1]+low_sucrose_experiment_abandonment_table[3],0.5)
+#Significant difference
+
+binom.test(high_sucrose_experiment_abandonment_table[1],high_sucrose_experiment_abandonment_table[1]+high_sucrose_experiment_abandonment_table[3],0.5)
+#Significant difference
+
+ 
+#Binomial test for experimental treatments(Extracting relevant entries from the above choice tables) 
+
+binom.test(low_sucrose_experiment_abandonment_table[2],low_sucrose_experiment_abandonment_table[2]+low_sucrose_experiment_abandonment_table[4],0.5)
+#Significant difference
+
+binom.test(high_sucrose_experiment_abandonment_table[2],high_sucrose_experiment_abandonment_table[2]+high_sucrose_experiment_abandonment_table[4],0.5)
+#Not significant 
+
 ```
 
 
@@ -214,55 +204,57 @@ Labels:
 
 ```{r}
 
-#CONTROL
-all_exp_combined_control_abandonment_only<-data.frame(all_exp_combined_control$abandonment,all_exp_combined_control$label)
+#Combining abandonment data across both experiments
+all_exp_combined_abandonment_only<-rbind(low_sucrose_experiment_abandonment,high_sucrose_experiment_abandonment)
 
-colnames(all_exp_combined_control_abandonment_only)<-c("abandonment","exp_type")
+#Control treatment comparison
 
+all_exp_combined_control_abandonment_only<-all_exp_combined_abandonment_only %>% filter(treatment=="Control")
+
+#Converting the column into a factor and removing uncessary factor levels
 all_exp_combined_control_abandonment_only$abandonment<-as.factor(all_exp_combined_control_abandonment_only$abandonment)
 
-all_exp_combined_control_abandonment_only_table<-table(all_exp_combined_control_abandonment_only)
+all_exp_combined_control_abandonment_only$label<-droplevels(all_exp_combined_control_abandonment_only$label)
 
+#Creating table for the chi-square test
+all_exp_combined_control_abandonment_only_table<-table(all_exp_combined_control_abandonment_only[-1])
+
+#Chi-square test
 chisq.test(all_exp_combined_control_abandonment_only_table,correct = F)
 #Not significant
 
+#Experimental treatment comparison
 
-#Experimental
-all_exp_combined_experimental_abandonment_only<-data.frame(all_exp_combined_experimental$abandonment,all_exp_combined_experimental$label)
+all_exp_combined_experimental_abandonment_only<-all_exp_combined_abandonment_only %>% filter(treatment=="Experimental")
 
-colnames(all_exp_combined_experimental_abandonment_only)<-c("abandonment","exp_type")
-
+#Converting the column into a factor and removing uncessary factor levels
 all_exp_combined_experimental_abandonment_only$abandonment<-as.factor(all_exp_combined_experimental_abandonment_only$abandonment)
 
-all_exp_combined_experimental_abandonment_only_table<-table(all_exp_combined_experimental_abandonment_only)
+all_exp_combined_experimental_abandonment_only$label<-droplevels(all_exp_combined_experimental_abandonment_only$label)
 
+#Creating table for the chi-square test
+all_exp_combined_experimental_abandonment_only_table<-table(all_exp_combined_experimental_abandonment_only[-1])
+
+#Chi-square test
 chisq.test(all_exp_combined_experimental_abandonment_only_table,correct = F)
 #Significant!
 
 ```
 
 
-
-
-BOXPLOTS OF ANT CHOICES ACROSS BOTH EXPERIMENTS
+Stacked barplots for choices across both experiments
 ```{r}
 
-choices_combined<-subset(all_exp_combined_data_choices,choices!="Abandoned")
-#Removing abandonment data for the plot
-
-choices_combined$label<-factor(choices_combined$label,levels=c("Control_1.5m","Control_3m","Exp_1.5m","Exp_3m"))
-
-choices_combined<-as.data.frame(choices_combined %>%
+#Calculating the proportion of correct vs. wrong choices for the graph 
+choices_combined<-as.data.frame(all_exp_combined_data_choices %>%
   group_by(label,choices)%>%
-  summarize(total=n())) 
-
-choices_combined <- choices_combined %>%
+  summarize(total=n())%>%
   group_by(label) %>%
   mutate(
     percent = total / sum(total) * 100
-  )
+  ))
 
-
+#Barplot with individual sample sizes for both experiments
 ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
   geom_bar(stat = "identity", color = "black") +
   geom_text(
@@ -290,20 +282,15 @@ ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
 BARCHARTS OF ABANDONMENT ACROSS BOTH EXPERIMENTS
 ```{r}
  
-abandon_combined<-as.data.frame(all_exp_combined_data_choices %>%
-  group_by(label,abandonment)%>%
-  summarize(total=n()))
-
-abandon_combined$label<-factor(abandon_combined$label,levels=c("Control_1.5m","Control_3m","Exp_1.5m","Exp_3m"))
-
-abandon_combined<-as.data.frame(abandon_combined %>%
-  group_by(label) %>%
+abandonment_combined<-as.data.frame(all_exp_combined_abandonment_only %>%group_by(label,abandonment)%>%
+  summarize(total=n()) %>%
+    group_by(label) %>%
   mutate(
-    percent = total / sum(total) * 100,
-    n = sum(total)
-  ))
+    percent = total / sum(total) * 100))
 
-ggplot(abandon_combined, aes(x = label, y = percent, fill = abandonment)) +
+ 
+
+ggplot(abandonment_combined, aes(x = label, y = percent, fill = abandonment)) +
   geom_bar(stat = "identity", color = "black") +
   # Show individual sample sizes inside each stack
   geom_text(
