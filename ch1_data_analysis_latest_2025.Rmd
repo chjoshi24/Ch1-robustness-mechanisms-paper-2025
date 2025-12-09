@@ -316,9 +316,8 @@ gaster_angle_high_sucrose_ready<-na.omit(gaster_angle_high_sucrose_ready)
 
 ```
 
- 
 
-Further subsetting of the data: This data only contains the trials where ant made correct choices did feed on the sucrose, and if they made wrong choices, they did not feed.
+Further subsetting of the data: This data only contains the trials where ant made correct choices did feed on the sucrose, and if they made wrong choices, they did not feed. Following that running Kruskal-Wallis test followed by Dunn' post hoc test (if applicable).
 ```{r}
 #Low sucrose experiment
 gaster_angle_low_sucrose_ready_1<-gaster_angle_low_sucrose_ready %>% filter(!(Ant.choice=="Wrong" & Ant.fed.on.the.feeder=="Yes")) %>%
@@ -344,24 +343,6 @@ dunn_test_high_sucrose_1<-dunn.test(gaster_angle_high_sucrose_ready_1$mean_gaste
 
 ```
 
-
-Comparing average gaster angles in the ants that made a correct choice vs. wrong choice across both treatments and whether they fed on the feeder or not (Whole data)
-```{r}
-#Low sucrose experiment
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_low_sucrose_ready)
-#Not Significant 
-
-#High sucrose experiment
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_high_sucrose_ready)
-#Significant difference
-
-
-#Running Dunn's posthoc test for the high sucrose data to find the specific pairwise differences
-dunn_test_high_sucrose_2<-dunn.test(gaster_angle_high_sucrose_ready$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready$Treatment,gaster_angle_high_sucrose_ready$Ant.choice,gaster_angle_high_sucrose_ready$Ant.fed.on.the.feeder))
-
-```
-
-
 Comparing average gaster angles: control-control and experimental-experimental across two experiment types
 ```{r}
 
@@ -384,6 +365,25 @@ wilcox.test(mean_gaster_angle ~ label, data = subset(combined_gaster_angle_data,
 
 ```
 
+
+Comparing average gaster angles in the ants that made a correct choice vs. wrong choice across both treatments and whether they fed on the feeder or not (Whole data)
+```{r}
+#Low sucrose experiment
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_low_sucrose_ready)
+#Not Significant 
+
+#High sucrose experiment
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_high_sucrose_ready)
+#Significant difference
+
+
+#Running Dunn's posthoc test for the high sucrose data to find the specific pairwise differences
+dunn_test_high_sucrose_2<-dunn.test(gaster_angle_high_sucrose_ready$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready$Treatment,gaster_angle_high_sucrose_ready$Ant.choice,gaster_angle_high_sucrose_ready$Ant.fed.on.the.feeder))
+
+```
+
+ 
+Graphs as they appear in the main manuscript and supplementary section
 
 Fig. 3: Stacked barplots of choices across both experiments
 ```{r}
@@ -421,6 +421,8 @@ ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
 
 
 ```
+
+
 
 Fig. 4: Stacked barplots of abandonment across both experiments
 ```{r}
