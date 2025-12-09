@@ -41,3 +41,55 @@ choices_plot_1<-ggplot(abandon_combined)+
   ) +  theme(axis.line = element_line(color = 'black'))
    
 choices_plot_1+theme(text=element_text(size=25),axis.text = element_text(size=15))+geom_hline(yintercept = 0.5, linetype = "dashed")+scale_fill_manual(values=c("skyblue1","maroon3"))
+
+
+
+
+
+
+#Gaster angles
+
+
+Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
+```{r}
+wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) 
+#No Significant difference
+
+wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) 
+#No significant difference
+
+
+
+```
+
+Boxplots for the gaster angles for both experiments with experiment years shown using different symbols
+
+```{r}
+
+par(mfrow=c(1,2))
+
+#LOW SUCROSE EXPERIMENT
+boxplot(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="Low sucrose (1.5 M) experiment",ylim=c(35,65))
+
+#Adding individual points to the boxplot
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=1,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2022, ])
+ 
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2023, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2024, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=17,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2025, ])
+
+
+#HIGH SUCROSE EXPERIMENT
+boxplot(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose (3 M) experiment",ylim=c(35,65))
+
+#Adding individual points to the boxplot
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2023, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2024, ])
+
+stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=17,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2025, ])
+
+
+```

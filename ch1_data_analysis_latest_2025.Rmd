@@ -11,12 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Required libraries
 ```{r}
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-library(ggstats)
-library(rcompanion)
-library(dunn.test)
+library(tidyverse) #For cleaning and reorganization of the data
+library(ggplot2) #For plotting the graphs
+library(ggthemes) #For formatting the graphs
+library(ggstats)#For formatting the graphs
+library(gridExtra) #For putting ggplots in a grid   
+library(dunn.test) #For running Dunn's posthoc test
+library(rcompanion) #For extracting significance letters from Dunn's posthoc test object using cldList function
 
 ```
 
@@ -245,7 +246,146 @@ chisq.test(all_exp_combined_experimental_abandonment_only_table,correct = F)
 ```
 
 
-Stacked barplots for choices across both experiments
+
+Gaster angle data analysis
+
+Loading the datasets and converting the relevant columns into numeric variables and factors
+```{r}
+#Low sucrose experiment
+gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment.csv")
+
+#Converting the relevant columns to factors
+gaster_angle_low_sucrose$Ant.choice<-as.factor(gaster_angle_low_sucrose$Ant.choice)
+gaster_angle_low_sucrose$Treatment<-as.factor(gaster_angle_low_sucrose$Treatment)
+gaster_angle_low_sucrose$Video<-as.factor(gaster_angle_low_sucrose$Video)
+gaster_angle_low_sucrose$Year<-as.factor(gaster_angle_low_sucrose$Year)
+gaster_angle_low_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_low_sucrose$Ant.fed.on.the.feeder)
+
+#Converting gaster angle measures to numeric variable type.
+gaster_angle_low_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.1)
+gaster_angle_low_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.2)
+gaster_angle_low_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.3)
+#Ignore the warnings here
+
+
+#High sucrose experiment
+gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment.csv")
+
+#Converting the relevant columns to factors
+gaster_angle_high_sucrose$Ant.choice<-as.factor(gaster_angle_high_sucrose$Ant.choice)
+gaster_angle_high_sucrose$Treatment<-as.factor(gaster_angle_high_sucrose$Treatment)
+gaster_angle_high_sucrose$Video<-as.factor(gaster_angle_high_sucrose$Video)
+gaster_angle_high_sucrose$Year<-as.factor(gaster_angle_high_sucrose$Year)
+gaster_angle_high_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_high_sucrose$Ant.fed.on.the.feeder)
+
+
+#Converting gaster angle measures to numeric variable type.
+gaster_angle_high_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.1)
+gaster_angle_high_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.2)
+gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.3)
+#Ignore the warnings here
+
+```
+
+
+Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video.
+ 
+```{r}
+
+#Low sucrose experiment 
+gaster_angle_low_sucrose_ready<-gaster_angle_low_sucrose %>%
+  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder, Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
+
+#Reorganizing the data frame for the further analysis
+gaster_angle_low_sucrose_ready<-as.data.frame(gaster_angle_low_sucrose_ready %>%
+group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>%
+summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
+
+#Removing NAs
+gaster_angle_low_sucrose_ready<-na.omit(gaster_angle_low_sucrose_ready)
+
+#High sucrose experiment
+gaster_angle_high_sucrose_ready<-gaster_angle_high_sucrose %>%
+  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
+
+#Reorganizing the data frame for the further analysis
+gaster_angle_high_sucrose_ready<-as.data.frame(gaster_angle_high_sucrose_ready %>%group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>% summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
+
+#Removing NAs
+gaster_angle_high_sucrose_ready<-na.omit(gaster_angle_high_sucrose_ready)
+
+```
+
+ 
+
+Further subsetting of the data: This data only contains the trials where ant made correct choices did feed on the sucrose, and if they made wrong choices, they did not feed.
+```{r}
+#Low sucrose experiment
+gaster_angle_low_sucrose_ready_1<-gaster_angle_low_sucrose_ready %>% filter(!(Ant.choice=="Wrong" & Ant.fed.on.the.feeder=="Yes")) %>%
+  filter(!(Ant.choice=="Correct" & Ant.fed.on.the.feeder=="No"))
+
+gaster_angle_high_sucrose_ready_1<-gaster_angle_high_sucrose_ready %>% filter(!(Ant.choice=="Wrong" & Ant.fed.on.the.feeder=="Yes")) %>%
+  filter(!(Ant.choice=="Correct" & Ant.fed.on.the.feeder=="No"))
+
+#Comparing average gaster angles between the trials where ants made correct choices and wrong choices across control and experimental treatments
+
+#Low sucrose experiment
+#Kruskal test
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice), data = gaster_angle_low_sucrose_ready_1)
+#Not significant
+
+#Kruskal test
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice), data = gaster_angle_high_sucrose_ready_1)
+#Significant difference
+
+#Running Dunn's posthoc test for the high sucrose data to find the specific pairwise differences
+dunn_test_high_sucrose_1<-dunn.test(gaster_angle_high_sucrose_ready_1$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready_1$Treatment,gaster_angle_high_sucrose_ready_1$Ant.choice))
+
+
+```
+
+
+Comparing average gaster angles in the ants that made a correct choice vs. wrong choice across both treatments and whether they fed on the feeder or not (Whole data)
+```{r}
+#Low sucrose experiment
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_low_sucrose_ready)
+#Not Significant 
+
+#High sucrose experiment
+kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice,Ant.fed.on.the.feeder), data = gaster_angle_high_sucrose_ready)
+#Significant difference
+
+
+#Running Dunn's posthoc test for the high sucrose data to find the specific pairwise differences
+dunn_test_high_sucrose_2<-dunn.test(gaster_angle_high_sucrose_ready$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready$Treatment,gaster_angle_high_sucrose_ready$Ant.choice,gaster_angle_high_sucrose_ready$Ant.fed.on.the.feeder))
+
+```
+
+
+Comparing average gaster angles: control-control and experimental-experimental across two experiment types
+```{r}
+
+gaster_angle_low_sucrose_ready_1$label<-as.factor(ifelse(gaster_angle_low_sucrose_ready_1$Treatment=="Control","Control_1.5m","Exp_1.5m"))
+
+gaster_angle_high_sucrose_ready_1$label<-as.factor(ifelse(gaster_angle_high_sucrose_ready_1$Treatment=="Control","Control_3m","Exp_3m"))
+
+combined_gaster_angle_data<-rbind(gaster_angle_low_sucrose_ready_1,gaster_angle_high_sucrose_ready_1)
+
+  
+combined_gaster_angle_data %>% filter(Treatment=="Control",Ant.choice=="Correct")%>%
+  group_by(label)%>%
+  summarise(mean(mean_gaster_angle))
+
+wilcox.test(mean_gaster_angle ~ label, data = subset(combined_gaster_angle_data,Treatment=="Control" & Ant.choice=="Correct"))
+#Significant
+
+wilcox.test(mean_gaster_angle ~ label, data = subset(combined_gaster_angle_data,Treatment=="Experimental"& Ant.choice=="Correct"))
+#Not significant
+
+```
+
+
+Fig. 3: Stacked barplots of choices across both experiments
 ```{r}
 
 #Calculating the proportion of correct vs. wrong choices for the graph 
@@ -282,7 +422,7 @@ ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
 
 ```
 
-BARCHARTS OF ABANDONMENT ACROSS BOTH EXPERIMENTS
+Fig. 4: Stacked barplots of abandonment across both experiments
 ```{r}
 
 #Calculating the proportion of ants that abandoned vs. the ones that stayed one the trail (i.e., made a choice) for the graph 
@@ -327,161 +467,46 @@ ggplot(abandonment_combined, aes(x = label, y = percent, fill = abandonment)) +
 ```
 
 
-GASTER ANGLE DATA ANALYSIS
-```{r}
-#LOW SUCROSE EXPERIMENT
-gaster_angle_low_sucrose<-read.csv("Combined gaster angles_Low sucrose experiment.csv")
-
-
-#Converting the relevant columns to factors
-gaster_angle_low_sucrose$Ant.choice<-as.factor(gaster_angle_low_sucrose$Ant.choice)
-gaster_angle_low_sucrose$Treatment<-as.factor(gaster_angle_low_sucrose$Treatment)
-gaster_angle_low_sucrose$Video<-as.factor(gaster_angle_low_sucrose$Video)
-gaster_angle_low_sucrose$Year<-as.factor(gaster_angle_low_sucrose$Year)
-gaster_angle_low_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_low_sucrose$Ant.fed.on.the.feeder)
-
-#Converting gaster angle measures to numbers
-gaster_angle_low_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.1)
-gaster_angle_low_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.2)
-gaster_angle_low_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_low_sucrose$Angle.measurement.3)
-#Ignore the warnings here
-
-
-#HIGH SUCROSE EXPERIMENT
-gaster_angle_high_sucrose<-read.csv("Combined gaster angles_High sucrose experiment.csv")
-
-#Converting the relevant columns to factors
-gaster_angle_high_sucrose$Ant.choice<-as.factor(gaster_angle_high_sucrose$Ant.choice)
-gaster_angle_high_sucrose$Treatment<-as.factor(gaster_angle_high_sucrose$Treatment)
-gaster_angle_high_sucrose$Video<-as.factor(gaster_angle_high_sucrose$Video)
-gaster_angle_high_sucrose$Year<-as.factor(gaster_angle_high_sucrose$Year)
-gaster_angle_high_sucrose$Ant.fed.on.the.feeder<-as.factor(gaster_angle_high_sucrose$Ant.fed.on.the.feeder)
-
-
-#Converting gaster angle measures to numbers
-gaster_angle_high_sucrose$Angle.measurement.1<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.1)
-gaster_angle_high_sucrose$Angle.measurement.2<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.2)
-gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucrose$Angle.measurement.3)
-#Ignore the warnings here
-
-```
-
-
-Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video.
- 
+Fig. 5: Gaster angle Boxplots with Dunn posthoc letters (if applicable) and sample sizes, and year.
 ```{r}
 
-#Low sucrose experiment 
-gaster_angle_low_sucrose_ready<-gaster_angle_low_sucrose %>%
-  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder, Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
+#Defining color palette for the years
+year_colors <- c("2022" = "seagreen","2023" = "black","2024" = "#7570b3","2025" = "orange")
 
-gaster_angle_low_sucrose_ready<-as.data.frame(gaster_angle_low_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
+#Low sucrose data
 
-gaster_angle_low_sucrose_ready<-na.omit(gaster_angle_low_sucrose_ready)
-
-#High sucrose experiment
-gaster_angle_high_sucrose_ready<-gaster_angle_high_sucrose %>%
-  transmute(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year,mean_gaster_angle=rowMeans(select(.,Angle.measurement.1:Angle.measurement.3)))
-
-gaster_angle_high_sucrose_ready<-as.data.frame(gaster_angle_high_sucrose_ready %>%
-  group_by(Video,Treatment,Ant.choice,Ant.fed.on.the.feeder,Year) %>%
-  summarise(mean_gaster_angle=mean(mean_gaster_angle,na.rm = T)))
-
-gaster_angle_high_sucrose_ready<-na.omit(gaster_angle_high_sucrose_ready)
-```
-
-
-Boxplots of gaster angles across both treatments in both experiments with information on whether ants fed or not and whether ant made a correct or a wrong choice.
-
-```{r}
-
-#Low sucrose experiment
-#Kruskal test
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice, Ant.fed.on.the.feeder), data = gaster_angle_low_sucrose_ready)
-#Not significant
-
-#Calculating the sample sizes to put on the graph below 
-sample_sizes <- gaster_angle_low_sucrose_ready %>%
-  group_by(Treatment, Ant.choice, Ant.fed.on.the.feeder) %>%
-  summarise(n = n(), .groups = "drop")
-
-# Boxplots
-ggplot(gaster_angle_low_sucrose_ready,
-       aes(x = Treatment, y = mean_gaster_angle, fill = Ant.fed.on.the.feeder)) +
-  geom_boxplot(outlier.shape = NA, alpha = 0.6,
-               position = position_dodge(width = 0.75)) +
-  geom_jitter(alpha = 0.5, size = 1,
-              position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.75)) +
-  facet_grid(~Ant.choice) +    
-  theme_bw(base_size = 14) +
-  labs(x = "Treatment", y = "Mean gaster angle", fill = "Ant fed on feeder") +
-  geom_text(data = sample_sizes,
-            aes(x = Treatment,
-                y=60,
-                label = paste0("n=", n),
-                fill = Ant.fed.on.the.feeder),
-            position = position_dodge(width = 0.75),
-            inherit.aes = FALSE,
-            size = 4)
-
-#High sucrose experiment
-
-#Kruskal test
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice, Ant.fed.on.the.feeder), data = gaster_angle_high_sucrose_ready)
-#Significant difference
-
-#Calculate the dunn test letters and put them on the graph
-
-```
-
-
-
-Subsetting the data: This data excludes the trials where ants made a wrong choice and fed on sucrose.So, this data contains following trials: Ants that made a correct choice and fed, Ants that made a correct choice but did not feed (but reached the feeder), and Ants that made a wrong choice and did not feed
-
-```{r}
-#Low sucrose experiment
-gaster_angle_low_sucrose_ready_1<-gaster_angle_low_sucrose_ready %>% filter(!(Ant.choice=="Wrong" & Ant.fed.on.the.feeder=="Yes"))
-
-sample_size_1<-as.data.frame(gaster_angle_low_sucrose_ready_1 %>%
+#Calculating treatment x ant choice sample sizes to put on the graph
+low_sucrose_sample_size_1<-as.data.frame(gaster_angle_low_sucrose_ready_1 %>%
   group_by(Treatment,Ant.choice) %>%
   summarise(mean_angle = mean(mean_gaster_angle, na.rm = TRUE),
             n = n()))
 
-#Kruskal test to compare gaster angles across ant choices and treatments 
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice), data = gaster_angle_low_sucrose_ready_1)
-#Not significant
-
-#Boxplots
-ggplot(gaster_angle_low_sucrose_ready_1, aes(x = Treatment, 
+boxplot_low_sucrose<-ggplot(gaster_angle_low_sucrose_ready_1, aes(x = Treatment, 
                y = mean_gaster_angle, 
                fill = Ant.choice)) +
-  geom_boxplot(position = position_dodge(width = 0.8))+  
-  labs(title = "Gaster angle by Treatment × Choice",
-       x = "Treatment",
+  geom_boxplot(position = position_dodge(width = 0.8),
+               width = 0.6,
+               color = "black",outlier.shape = NA,coef = Inf) + geom_jitter(aes(color = Year),position = position_dodge(width = 0.8),size = 2)+labs(title = "Low sucrose experiment",x = "Treatment",
        y = "Mean gaster angle",
-       fill = "Ant choice") +geom_text(data = sample_size_1, 
+       fill = "Ant choice") +geom_text(data =low_sucrose_sample_size_1, 
             aes(x = Treatment, 
                 y =60,  # place labels above boxes
                 label = paste0("n=", n),
                 group = Ant.choice),
             position = position_dodge(width = 0.8),
-            inherit.aes = FALSE)+geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
-              alpha = 0.6, size = 2, color = "black")+
-  theme_minimal()
+            inherit.aes = FALSE)+
+  scale_color_manual(values = year_colors)+theme(
+    panel.background = element_blank(),   # removes gray background
+    panel.grid.major = element_blank(),   # removes major grid lines
+    panel.grid.minor = element_blank(),   # removes minor grid lines
+    panel.border     = element_blank(),   # removes outer border
+    axis.line        = element_line(color = "black") # keeps axis lines
+  )
+
 
 #High sucrose experiment
 
-gaster_angle_high_sucrose_ready_1<-gaster_angle_high_sucrose_ready %>% filter(!(Ant.choice=="Wrong" & Ant.fed.on.the.feeder=="Yes"))
-
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice), data = gaster_angle_high_sucrose_ready_1)
-#Significant
-
-#Running Dunn'test
-dunn_test_high_sucrose_1<-dunn.test(gaster_angle_high_sucrose_ready_1$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready_1$Treatment,gaster_angle_high_sucrose_ready_1$Ant.choice))
-
-#Extracting the letters using rcompanion function
+#Extracting the letters from above Dunn'test object using cldList function from the rcompanion package
 dunn_test_high_sucrose_letters_1 <- cldList(P.adjusted ~ comparisons, dunn_test_high_sucrose_1)
 
 #Renaming and reordering the columns as per original data for correct placement of the letters in the graph
@@ -492,186 +517,129 @@ dunn_test_high_sucrose_letters_1<- dunn_test_high_sucrose_letters_1 %>%
     Ant.choice = factor(Ant.choice, levels = c("Correct","Wrong"))
   )
 
-#Graph with sample sizes and Dunn's post hoc letters
-sample_size_2<-gaster_angle_high_sucrose_ready_1 %>%
+#Calculating treatment x ant choice sample sizes to put on the graph
+high_sucrose_sample_size_1<-gaster_angle_high_sucrose_ready_1 %>%
   group_by(Treatment, Ant.choice) %>%
   summarise(mean_angle = mean(mean_gaster_angle, na.rm = TRUE),
             n = n())
-
-ggplot(gaster_angle_high_sucrose_ready_1, aes(x = Treatment, 
-               y = mean_gaster_angle, 
-               fill = Ant.choice)) +
-  geom_boxplot(position = position_dodge(width = 0.8))+  
-  #+ facet_wrap(~ Ant.choice) 
-  labs(title = "Gaster angle by Treatment × Choice",
-       x = "Treatment",
+#Boxplots
+boxplot_high_sucrose<-ggplot(gaster_angle_high_sucrose_ready_1, aes(x = Treatment,y = mean_gaster_angle,fill = Ant.choice)) +
+  geom_boxplot(position = position_dodge(width = 0.8),
+               width = 0.6,color = "black",outlier.shape = NA, coef = Inf)+
+  geom_jitter(aes(color = Year),position = position_dodge(width = 0.8)) +
+  labs(title = "High sucrose experiment",x = "Treatment",
        y = "Mean gaster angle",
-       fill = "Ant choice") +geom_text(data = sample_size_2, 
+       fill = "Ant choice") +geom_text(data = high_sucrose_sample_size_1, 
             aes(x = Treatment, 
                 y =60,  # place labels above boxes
                 label = paste0("n=", n),
                 group = Ant.choice),
             position = position_dodge(width = 0.8),
-            inherit.aes = FALSE)+geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
-              alpha = 0.6, size = 2, color = "black")+
+            inherit.aes = FALSE)+
   geom_text(data = dunn_test_high_sucrose_letters_1,
           aes(x = Treatment,
               y = max(gaster_angle_high_sucrose_ready_1$mean_gaster_angle) + 5,
               label = Letter,
               group = Ant.choice),
           position = position_dodge(width = 0.8),
-          inherit.aes = FALSE)+theme_minimal()
+          inherit.aes = FALSE)+ scale_color_manual(values = year_colors)+
+  theme(
+    panel.background = element_blank(),   # removes gray background
+    panel.grid.major = element_blank(),   # removes major grid lines
+    panel.grid.minor = element_blank(),   # removes minor grid lines
+    panel.border     = element_blank(),   # removes outer border
+    axis.line        = element_line(color = "black") # keeps axis lines
+  )
+
+#Plotting the graphs side by side
+grid.arrange(boxplot_low_sucrose,boxplot_high_sucrose,ncol=2)
+ 
 
 ```
 
-High sucrose experiments
-Further removing trials where ants made a correct choice but did not feed
+
+Fig S1 and S2: Boxplots of average gaster angles in the ants that made a correct choice vs. wrong choice across both treatments and whether they fed on the feeder or not across both experiment types(2 x 2 grids)
 
 ```{r}
-gaster_angle_high_sucrose_ready_2<-gaster_angle_high_sucrose_ready_1 %>% filter (!(Ant.choice=="Correct" & Ant.fed.on.the.feeder=="No"))
+#FigS1
+#Calculating treatment x ant choice x ant fed or not sample sizes to put on the graph
+low_sucrose_sample_size_2<-as.data.frame(gaster_angle_low_sucrose_ready %>%
+  group_by(Treatment,Ant.choice, Ant.fed.on.the.feeder) %>%
+  summarise(mean_angle = mean(mean_gaster_angle, na.rm = TRUE),
+            n = n()))
+  
+ggplot(gaster_angle_low_sucrose_ready, aes(x = Treatment, 
+               y = mean_gaster_angle, 
+               fill = Ant.choice)) +
+  geom_boxplot(position = position_dodge(width = 0.8))+  
+  labs(title = "Low sucrose experiment",x = "Treatment",
+       y = "Mean gaster angle",
+       fill = "Ant choice") +geom_text(data =low_sucrose_sample_size_2, 
+            aes(x = Treatment, 
+                y =60,  # place labels above boxes
+                label = paste0("n=", n),
+                group = Treatment),
+            position = position_dodge(width = 0.8),
+            inherit.aes = FALSE)+geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
+              alpha = 0.6, size = 2, color = "black")+facet_wrap(Ant.choice ~ Ant.fed.on.the.feeder, ncol = 2,labeller = labeller(Ant.fed.on.the.feeder = c("Yes" = "Fed on feeder", "No" = "Not fed")))+
+ theme_minimal(base_size = 13) +
+theme(
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border     = element_blank(),
+    axis.line        = element_line(color = "black"),
+    strip.background = element_blank()
+  )+scale_fill_manual(values = c("Correct" = "#A6CEE3", "Wrong" = "#B2DF8A"))
 
-
-kruskal.test(mean_gaster_angle ~ interaction(Treatment, Ant.choice), data = gaster_angle_high_sucrose_ready_2)
-#Significant
-
-
-#Running Dunn'test
-dunn_test_high_sucrose_2<-dunn.test(gaster_angle_high_sucrose_ready_2$mean_gaster_angle,interaction(gaster_angle_high_sucrose_ready_2$Treatment,gaster_angle_high_sucrose_ready_2$Ant.choice))
-
-#Extracting the letters using rcompanion function
+#FigS2
+#Extracting the letters from above Dunn'test object using cldList function from the rcompanion package
 dunn_test_high_sucrose_letters_2 <- cldList(P.adjusted ~ comparisons, dunn_test_high_sucrose_2)
 
 #Renaming and reordering the columns as per original data for correct placement of the letters in the graph
 dunn_test_high_sucrose_letters_2<- dunn_test_high_sucrose_letters_2 %>% 
-  tidyr::separate(Group, into = c("Treatment","Ant.choice"), sep = "\\.") %>%
+  tidyr::separate(Group, into = c("Treatment","Ant.choice","Ant.fed.on.the.feeder"), sep = "\\.") %>%
   dplyr::mutate(
     Treatment = factor(Treatment, levels = c("Control","Experimental")),
-    Ant.choice = factor(Ant.choice, levels = c("Correct","Wrong"))
+    Ant.choice = factor(Ant.choice, levels = c("Correct","Wrong")),
+    Ant.fed.on.the.feeder= factor(Ant.fed.on.the.feeder,levels= c("Yes","No"))
   )
 
-#Graph with sample sizes and Dunn's post hoc letters
-sample_size_3<-gaster_angle_high_sucrose_ready_2 %>%
-  group_by(Treatment, Ant.choice) %>%
+#Calculating treatment x ant choice x ant fed or not sample sizes to put on the graph
+high_sucrose_sample_size_2<-as.data.frame(gaster_angle_high_sucrose_ready %>%
+  group_by(Treatment,Ant.choice, Ant.fed.on.the.feeder) %>%
   summarise(mean_angle = mean(mean_gaster_angle, na.rm = TRUE),
-            n = n())
+            n = n()))
 
-#Boxplots
-ggplot(gaster_angle_high_sucrose_ready_2, aes(x = Treatment, 
+#Boxplots with Dunn test letters and sample sizes
+
+ggplot(gaster_angle_high_sucrose_ready, aes(x = Treatment, 
                y = mean_gaster_angle, 
                fill = Ant.choice)) +
-  geom_boxplot(position = position_dodge(width = 0.8))+  
-  #+ facet_wrap(~ Ant.choice) 
-  labs(title = "Gaster angle by Treatment × Choice",
-       x = "Treatment",
+  geom_boxplot(position = position_dodge(width = 0.8))+ labs(title = "High sucrose experiment",x = "Treatment",
        y = "Mean gaster angle",
-       fill = "Ant choice") +geom_text(data = sample_size_3, 
+       fill = "Ant choice") +geom_text(data =high_sucrose_sample_size_2, 
             aes(x = Treatment, 
                 y =60,  # place labels above boxes
                 label = paste0("n=", n),
-                group = Ant.choice),
+                group = Treatment),
             position = position_dodge(width = 0.8),
             inherit.aes = FALSE)+geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
-              alpha = 0.6, size = 2, color = "black")+
-  geom_text(data = dunn_test_high_sucrose_letters_2,
+              alpha = 0.6, size = 2, color = "black")+facet_wrap(Ant.choice ~ Ant.fed.on.the.feeder, ncol = 2,labeller = labeller(Ant.fed.on.the.feeder = c("Yes" = "Fed on feeder", "No" = "Not fed")))+geom_text(data = dunn_test_high_sucrose_letters_2,
           aes(x = Treatment,
-              y = max(gaster_angle_high_sucrose_ready_2$mean_gaster_angle) + 5,
+              y = max(gaster_angle_high_sucrose_ready$mean_gaster_angle) + 5,
               label = Letter,
               group = Ant.choice),
           position = position_dodge(width = 0.8),
-          inherit.aes = FALSE)+theme_minimal()
-
-```
-
- 
-Subsetting gaster angles as per ant choices and whether the ants fed or not
-
-```{r}
-#Low sucrose
-
-
-#This contains data for the ants that made correct choices, and also includes the ants that made a wrong choice, but did not feed on the sucrose
-gaster_angle_low_sucrose_graph1<-rbind(gaster_angle_low_sucrose_wrong_choices_unfed,gaster_angle_low_sucrose_correct_choices)
-
-ggplot(gaster_angle_low_sucrose_graph1,aes(Treatment,mean_gaster_angle,fill=Ant.choice))+stat_boxplot(geom="errorbar")+geom_boxplot(outlier.shape = NA)+ theme_minimal()+xlab("Treatment")+ylab("Average gaster angle")+geom_jitter(aes(color=Year))+ggtitle("Low sucrose experiment")+guides(fill=guide_legend(title="Ant choice"))
-
-#Comparing gaster angles for correct vs. wrong choices within the treatment
-
-exp_low_sucrose_data_exp<-gaster_angle_low_sucrose_graph1 %>%
-  filter(Treatment=="Experimental")
-wilcox.test(exp_low_sucrose_data_exp$mean_gaster_angle~exp_low_sucrose_data_exp$Ant.choice) 
-#No Significant difference
-
-
-#High sucrose
-#Low sucrose
-gaster_angle_high_sucrose_wrong_choices_unfed<-subset(gaster_angle_high_sucrose_ready,Ant.fed.on.the.feeder=="No" & Ant.choice=="Wrong")
-
-gaster_angle_high_sucrose_correct_choices<-subset(gaster_angle_high_sucrose_ready,Ant.choice=="Correct")
-
-#This contains data for the ants that made correct choices, and also includes the ants that made a wrong choice, but did not feed on the sucrose
-gaster_angle_high_sucrose_graph1<-rbind(gaster_angle_high_sucrose_wrong_choices_unfed,gaster_angle_high_sucrose_correct_choices)
-
-ggplot(gaster_angle_high_sucrose_graph1,aes(Treatment,mean_gaster_angle,fill=Ant.choice))+stat_boxplot(geom="errorbar")+geom_boxplot(outlier.shape = NA)+ theme_minimal()+xlab("Treatment")+ylab("Average gaster angle")+geom_jitter(aes(color=Year))+ggtitle("High sucrose experiment")+guides(fill=guide_legend(title="Ant choice"))
-
-#Comparing gaster angles for correct vs. wrong choices within the treatment
-
-exp_high_sucrose_data_exp<-gaster_angle_high_sucrose_graph1 %>%
-  filter(Treatment=="Experimental")
-wilcox.test(exp_high_sucrose_data_exp$mean_gaster_angle~exp_high_sucrose_data_exp$Ant.choice) 
-#Significant difference
-
-
-exp_high_sucrose_data_con<-gaster_angle_high_sucrose_graph1 %>%
-  filter(Treatment=="Control")
-wilcox.test(exp_high_sucrose_data_con$mean_gaster_angle~exp_high_sucrose_data_con$Ant.choice) 
-#Significant difference
- 
-  
-```
- 
-
-Wilcoxon test to analyze whether there the gaster angles differ between control and experimental treatments for both experiments.
-```{r}
-wilcox.test(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment) 
-#No Significant difference
-
-wilcox.test(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment) 
-#No significant difference
-
+          inherit.aes = FALSE)+theme(
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border     = element_blank(),
+    axis.line        = element_line(color = "black"),
+    strip.background = element_blank()
+  )+scale_fill_manual(values = c("Correct" = "#A6CEE3", "Wrong" = "#B2DF8A"))
 
 
 ```
-
-Boxplots for the gaster angles for both experiments with experiment years shown using different symbols
-
-```{r}
-
-par(mfrow=c(1,2))
-
-#LOW SUCROSE EXPERIMENT
-boxplot(gaster_angle_low_sucrose_ready$mean_gaster_angle~gaster_angle_low_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="Low sucrose (1.5 M) experiment",ylim=c(35,65))
-
-#Adding individual points to the boxplot
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=1,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2022, ])
  
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2023, ])
-
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2024, ])
-
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=17,data=gaster_angle_low_sucrose_ready[gaster_angle_low_sucrose_ready$Year==2025, ])
-
-
-#HIGH SUCROSE EXPERIMENT
-boxplot(gaster_angle_high_sucrose_ready$mean_gaster_angle~gaster_angle_high_sucrose_ready$Treatment,xlab="Treatment", ylab="Mean gaster angle (degrees)",range=0,frame=F,cex.axis=1.5,cex.lab=1.5,main="High sucrose (3 M) experiment",ylim=c(35,65))
-
-#Adding individual points to the boxplot
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=19,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2023, ])
-
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=18,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2024, ])
-
-stripchart(mean_gaster_angle~Treatment,method="jitter",add=T,vertical=T,pch=17,data=gaster_angle_high_sucrose_ready[gaster_angle_high_sucrose_ready$Year==2025, ])
-
-
-```
-
-
