@@ -9,7 +9,21 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Required libraries
+
+IMP: Package installation step
+
+If the packages below are not installed, this chunk of code will enable the user to install them before going ahead.
+```{r}
+pkgs <- c("tidyverse","ggplot2","ggthemes","ggstats",
+          "gridExtra","dunn.test","rcompanion")
+missing_pkgs <- setdiff(pkgs, rownames(installed.packages()))
+
+if(length(missing_pkgs)) install.packages(missing_pkgs)
+```
+
+
+Required libraries/packages
+
 ```{r}
 library(tidyverse) #For cleaning and reorganization of the data
 library(ggplot2) #For plotting the graphs
@@ -20,6 +34,9 @@ library(dunn.test) #For running Dunn's posthoc test
 library(rcompanion) #For extracting significance letters from Dunn's posthoc test object using cldList function
 
 ```
+
+CODE ORGANIZATION:
+The code is organized as follows: Ant choice analysis, Ant abandonment analysis and gaster angle analysis. This is followed by the code for all the figures in the manuscript (Fig. 3, 4 and 5) and the supplementary section (Fig. S1 and S2).
 
 
 Importing the datasheets,and converting the relevant columns into factors.
@@ -67,9 +84,11 @@ high_sucrose_experiment_abandonment<-high_sucrose_experiment_abandonment[,c(1,3,
 
 ```
 
+ANT CHOICE ANALYSIS
 
-1) Analyzing ant choices for low and high sucrose experiments
 
+
+Analyzing ant choices for low and high sucrose experiments
 ```{r}
 #Filtering data where ants made either a correct or a wrong choice
 low_sucrose_experiment_choices_only<-
@@ -117,7 +136,7 @@ chisq.test(high_sucrose_experiment_choices_only_table,correct = F)
 ```
 
 
-2) Comparing low and high sucrose experiments to examine whether the increased resource value resulted in changes in proportion of correct choices when the trail was perturbed.
+Comparing low and high sucrose experiments to examine whether the increased resource value resulted in changes in proportion of correct choices when the trail was perturbed.
 
 Labels:
 1.5m-Low sucrose experiment
@@ -165,9 +184,9 @@ chisq.test(all_exp_combined_experimental_choices_only_table,correct = F)
 
 ```
 
+ANT ABANDONMENT ANALYSIS
 
-2) Analyzing ant abandonment for low and high sucrose experiments
-
+Analyzing ant abandonment for low and high sucrose experiments
 ```{r}
 
 #Creating tables for the binomial and Chi-square tests using the dataframes defined above 
@@ -201,7 +220,6 @@ binom.test(high_sucrose_experiment_abandonment_table[2],high_sucrose_experiment_
 
 
 Comparing abandonment across both experiments.
-
 Labels:
 1.5m-Low sucrose experiment
 3m- High sucrose experiment
@@ -246,8 +264,8 @@ chisq.test(all_exp_combined_experimental_abandonment_only_table,correct = F)
 ```
 
 
+GASTER ANGLE ANALYSIS
 
-Gaster angle data analysis
 
 Loading the datasets and converting the relevant columns into numeric variables and factors
 ```{r}
@@ -289,7 +307,6 @@ gaster_angle_high_sucrose$Angle.measurement.3<-as.numeric(gaster_angle_high_sucr
 
 
 Taking the averages of the gaster angle across a given frame in a video, and across multiple frames for a video.
- 
 ```{r}
 
 #Low sucrose experiment 
@@ -343,6 +360,7 @@ dunn_test_high_sucrose_1<-dunn.test(gaster_angle_high_sucrose_ready_1$mean_gaste
 
 ```
 
+
 Comparing average gaster angles: control-control and experimental-experimental across two experiment types
 ```{r}
 
@@ -382,6 +400,7 @@ dunn_test_high_sucrose_2<-dunn.test(gaster_angle_high_sucrose_ready$mean_gaster_
 
 ```
 
+PLOTTING ALL THE GRAPHS 
  
 Graphs as they appear in the main manuscript and supplementary section
 
@@ -418,7 +437,6 @@ ggplot(choices_combined, aes(x = label, y = percent, fill = choices)) +
   ) +geom_hline(yintercept = 50, linetype = "dashed")+
   scale_x_discrete(labels=c("Control_1.5m"="Control(1.5 M)","Control_3m"= "Control(3 M)", "Exp_1.5m"="Experimental(1.5 M)","Exp_3m" = "Experimental(3 M)"))+
   guides(fill=guide_legend(title="Choices"))
-
 
 ```
 
@@ -465,7 +483,6 @@ ggplot(abandonment_combined, aes(x = label, y = percent, fill = abandonment)) +
   guides(fill = guide_legend(title = "Abandonment")) +
   scale_fill_manual(values = c("violet", "gray50"))
 
-
 ```
 
 
@@ -504,7 +521,6 @@ boxplot_low_sucrose<-ggplot(gaster_angle_low_sucrose_ready_1, aes(x = Treatment,
     panel.border     = element_blank(),   # removes outer border
     axis.line        = element_line(color = "black") # keeps axis lines
   )
-
 
 #High sucrose experiment
 
@@ -556,7 +572,6 @@ boxplot_high_sucrose<-ggplot(gaster_angle_high_sucrose_ready_1, aes(x = Treatmen
 #Plotting the graphs side by side
 grid.arrange(boxplot_low_sucrose,boxplot_high_sucrose,ncol=2)
  
-
 ```
 
 
@@ -644,4 +659,5 @@ ggplot(gaster_angle_high_sucrose_ready, aes(x = Treatment,
 
 
 ```
- 
+
+END OF THE CODE 
