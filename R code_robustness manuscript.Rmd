@@ -1,7 +1,7 @@
 ---
-title: "ch1_data_analysis"
-author: "Chinmay Joshi"
-date: "2023-02-07"
+title: "R code_robustness manuscript"
+author: "Chinmay Joshi and Anna Dornhaus"
+date: "2025-12-23"
 output: html_document
 ---
 
@@ -36,7 +36,7 @@ library(rcompanion) #For extracting significance letters from Dunn's posthoc tes
 ```
 
 CODE ORGANIZATION:
-The code is organized as follows: Ant choice analysis, Ant abandonment analysis and gaster angle analysis. This is followed by the code for all the figures in the manuscript (Fig. 3, 4 and 5) and the supplementary section (Fig. S1 and S2).It is advisable to run the code in the order in which its written.
+The code is organized as follows: Ant choice analysis, Ant abandonment analysis and gaster angle analysis. This is followed by the code for all the figures in the manuscript (Fig. 3, 4 and 5) and the supplementary section (Fig. S1 and S2). It is advisable to run the code in the order in which its written.
 
 
 Importing the datasheets,and converting the relevant columns into factors.
