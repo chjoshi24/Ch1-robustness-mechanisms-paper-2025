@@ -513,24 +513,49 @@ control_correct_symbol_low_sucrose <- gaster_angle_low_sucrose_ready_1 %>%
            label = "*")
 
 #Boxplot
+#Boxplot
 boxplot_low_sucrose <- ggplot(gaster_angle_low_sucrose_ready_1,
   aes(x = Treatment, y = mean_gaster_angle, fill = Ant.choice)) +
-    geom_boxplot(position = position_dodge(width = 0.8),
-              width = 0.6, color = "black", outlier.shape = NA, coef = Inf) +
-    geom_jitter(aes(color = Year), position = position_dodge(width = 0.8), size = 2) +
-    labs(title = "Low sucrose experiment", x = "Treatment", y = "Mean gaster angle", fill = "Ant choice") +
-    geom_text(data = low_sucrose_sample_size_1,aes(x = Treatment, y = 60, label = paste0("n=", n), group = Ant.choice), 
-              position = position_dodge(width = 0.8), inherit.aes = FALSE)+
+    # Boxplots with increased spacing
+    geom_boxplot(position = position_dodge(width = 1.2),
+                 width = 0.6, color = "black",
+                 outlier.shape = NA, coef = Inf) +
+    # Jittered points that align perfectly with the boxplots
+    geom_jitter(
+      aes(color = Year, group = Ant.choice),
+      position = position_jitterdodge(
+        jitter.width = 0.40,
+        jitter.height = 0,
+        dodge.width = 1.0
+      ),
+      size = 2
+    ) +
+    # Sample size labels
+    geom_text(data = low_sucrose_sample_size_1,
+              aes(x = Treatment, y = 60,
+                  label = paste0("n=", n),
+                  group = Ant.choice),
+              position = position_dodge(width = 1.0),
+              inherit.aes = FALSE) +
+    # Significance symbol for Control–Correct
     geom_text(data = control_correct_symbol_low_sucrose,
-              aes(x = Treatment, y = y, label = label, group = Ant.choice),
-              position = position_dodge2(width = 0.8, preserve = "single"),
-              inherit.aes = FALSE, size = 10, fontface = "bold") +
-    scale_color_manual(values = year_colors) +
-    theme(panel.background = element_blank(),
+              aes(x = Treatment, y = y,
+                  label = label,
+                  group = Ant.choice),
+              position = position_dodge2(width = 1.0,
+                                         preserve = "single"),inherit.aes = FALSE,
+              size = 10, fontface = "bold") +
+  scale_color_manual(values = year_colors) +
+  theme(panel.background = element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.border     = element_blank(),
-          axis.line        = element_line(color = "black"))
+          axis.line        = element_line(color = "black")) +labs(title = "Low sucrose experiment",
+         x = "Treatment",
+         y = "Mean gaster angle",
+         fill = "Ant choice")
+
+
 
 #High sucrose experiment
 
@@ -552,24 +577,52 @@ control_correct_symbol_high_sucrose <- gaster_angle_high_sucrose_ready_1 %>%
     mutate(Treatment = "Control",
            Ant.choice = factor("Correct", levels = levels(gaster_angle_high_sucrose_ready_1$Ant.choice)),
            label = "*")
+
 #Boxplot
 boxplot_high_sucrose <- ggplot(gaster_angle_high_sucrose_ready_1,
-aes(x = Treatment, y = mean_gaster_angle, fill = Ant.choice)) + geom_boxplot(position = position_dodge(width = 0.8),width = 0.6, color = "black", outlier.shape = NA, coef = Inf) + 
-  geom_jitter(aes(color = Year), position = position_dodge(width = 0.8)) +
-  labs(title = "High sucrose experiment", x = "Treatment", y = "Mean gaster angle", fill = "Ant choice") +
-  geom_text(data = high_sucrose_sample_size_1, aes(x = Treatment, y = 60, label = paste0("n=", n), group = Ant.choice),position = position_dodge(width = 0.8), inherit.aes = FALSE) +
-  geom_text(data = dunn_test_high_sucrose_letters_1,aes(x = Treatment,
-                  y =max(gaster_angle_high_sucrose_ready_1$mean_gaster_angle) + 5,label = Letter, group = Ant.choice),position = position_dodge(width = 0.8), inherit.aes = FALSE) +
-    geom_text(data = control_correct_symbol_high_sucrose,
-              aes(x = Treatment, y = y, label = label, group = Ant.choice),
-              position = position_dodge2(width = 0.4, preserve = "single"),
-              inherit.aes = FALSE, size = 10, fontface = "bold", hjust = 2) +
-    scale_color_manual(values = year_colors) +
-    theme(panel.background = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.border     = element_blank(),
-          axis.line        = element_line(color = "black"))
+aes(x = Treatment, y = mean_gaster_angle, fill = Ant.choice)) + 
+  # Boxplots with increased spacing
+  geom_boxplot(position = position_dodge(width = 1.0),
+               width = 0.6, color = "black",
+               outlier.shape = NA, coef = Inf) + 
+  # Jittered points aligned perfectly with the boxplots
+  geom_jitter(
+    aes(color = Year, group = Ant.choice),
+    position = position_jitterdodge(
+      jitter.width = 0.40,
+      jitter.height = 0,
+      dodge.width = 1.0
+    ),size = 2
+  ) +labs(title = "High sucrose experiment", x = "Treatment",
+y = "Mean gaster angle",fill = "Ant choice") +
+  # Sample size labels
+  geom_text(data = high_sucrose_sample_size_1,
+            aes(x = Treatment, y = 60,
+                label = paste0("n=", n),
+                group = Ant.choice),
+            position = position_dodge(width = 1.0),
+            inherit.aes = FALSE) +
+  # Dunn test letters
+  geom_text(data = dunn_test_high_sucrose_letters_1,
+            aes(x = Treatment, y = max(gaster_angle_high_sucrose_ready_1$mean_gaster_angle) + 5,
+label = Letter,
+                group = Ant.choice),
+            position = position_dodge(width = 1.0),
+            inherit.aes = FALSE) +
+  # Significance symbol for Control–Correct
+  geom_text(data = control_correct_symbol_high_sucrose,
+            aes(x = Treatment, y = y,
+                label = label,
+                group = Ant.choice),
+            position = position_dodge2(width = 1.0,preserve = "single"),
+            inherit.aes = FALSE,
+            size = 10, fontface = "bold", hjust = 2) +
+  scale_color_manual(values = year_colors) +
+  theme(panel.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border     = element_blank(),
+        axis.line        = element_line(color = "black"))
 
 #Plotting the graphs side by side
 grid.arrange(boxplot_low_sucrose, boxplot_high_sucrose, ncol = 2)
