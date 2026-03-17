@@ -1,7 +1,7 @@
 # Robustness mechanism manuscript code and data files
 This repository contains R code and other related files for the robustness mechanism experiment. 
 
-Preprint link: https://www.biorxiv.org/node/5131247.external-links.html 
+Preprint link: https://www.biorxiv.org/content/10.64898/2025.12.23.696297v2 
 
 ## File information
 * **Combined ant choices_low sucrose experiment.csv and Combined ant choices_high sucrose experiment.csv**: These csv files contain data for what choices ants made during each of the experiments (see the supplementary file S1 for more information on the columns)
